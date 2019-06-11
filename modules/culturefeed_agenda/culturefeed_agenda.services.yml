@@ -7,7 +7,7 @@ services:
   # Culturefeed event parameter convert
   culturefeed_event:
     class: Drupal\culturefeed_agenda\ParamConverter\CulturefeedEventParamConverter
-    arguments: ['@cultuurkuur_entry_api.client', '@request_stack']
+    arguments: ['@culturefeed_search_api.client', '@request_stack']
     tags:
       - { name: paramconverter }
 

@@ -3,7 +3,7 @@
 namespace Drupal\culturefeed_agenda\ParamConverter;
 
 use Drupal\Core\ParamConverter\ParamConverterInterface;
-use Drupal\cultuurkuur_entry\DrupalEntryApiClient;
+use Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Route;
 
@@ -13,11 +13,11 @@ use Symfony\Component\Routing\Route;
 class CulturefeedEventParamConverter implements ParamConverterInterface {
 
   /**
-   * The Drupal Entry API client.
+   * The Culturefeed search client.
    *
-   * @var \Drupal\cultuurkuur_entry\DrupalEntryApiClient
+   * @var \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface
    */
-  protected $entryApiClient;
+  protected $searchClient;
 
   /**
    * The current request.
@@ -29,13 +29,13 @@ class CulturefeedEventParamConverter implements ParamConverterInterface {
   /**
    * CulturefeedEventParamConverter constructor.
    *
-   * @param \Drupal\cultuurkuur_entry\DrupalEntryApiClient $entryApiClient
-   *   The CultureFeed Entry API client.
+   * @param \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface $searchClient
+   *   The Culturefeed search client.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
    */
-  public function __construct(DrupalEntryApiClient $entryApiClient, RequestStack $requestStack) {
-    $this->entryApiClient = $entryApiClient;
+  public function __construct(DrupalCulturefeedSearchClientInterface $searchClient, RequestStack $requestStack) {
+    $this->searchClient = $searchClient;
     $this->request = $requestStack->getCurrentRequest();
   }
 
@@ -49,7 +49,8 @@ class CulturefeedEventParamConverter implements ParamConverterInterface {
     }
 
     try {
-      return $this->entryApiClient->getEvent($value);
+      // Optionally reset the search cache.
+      return $this->searchClient->searchEvent($value, $this->request->query->has('reset'));
     }
     catch (\Throwable $t) {
       return NULL;
