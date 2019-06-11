@@ -1,0 +1,7 @@
+google-maps:
+  js:
+    js/google-maps.js: { }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal

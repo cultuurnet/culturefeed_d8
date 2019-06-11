@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a formatted Culturefeed content field.
+ *
+ * Available variables:
+ * - title: The title
+ * - items: A collection of culturefeed items
+ * - more_link: More link
+ *
+ * @see template_preprocess_culturefeed_content_formatter()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% if title %}
+  <h3>{{ title }}</h3>
+{% endif %}
+{% if items %}
+  <div>
+    {% for item in items %}
+      {{ item }}
+    {% endfor %}
+  </div>
+{% endif %}
+{% if more_link %}
+<div>
+    {{ more_link }}
+</div>
+{% endif %}

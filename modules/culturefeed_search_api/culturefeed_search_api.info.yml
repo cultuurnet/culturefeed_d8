@@ -1,0 +1,8 @@
+name: Culturefeed search API
+description: 'Provides a client to connect with the search API.'
+type: module
+core: 8.x
+package: 'CultureFeed'
+dependencies:
+  - culturefeed_core
+  - monolog

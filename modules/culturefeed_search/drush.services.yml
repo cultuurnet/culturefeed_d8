@@ -1,0 +1,6 @@
+services:
+  culturefeed_search.commands:
+    class: \Drupal\culturefeed_search\Commands\CultureFeedSearchCommands
+    arguments: ['@cache_tags.invalidator']
+    tags:
+      - { name: drush.command }

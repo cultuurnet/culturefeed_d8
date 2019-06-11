@@ -1,0 +1,27 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a Culturefeed search facet item.
+ *
+ * Available variables:
+ * - label: The facet item label.
+ * - count: The number of items in the facet item.
+ * - active: Indicates if the facet item is active
+ * - active_trail: Indicates if the facet item is in the active trail
+ * - has_active_children: Indicates if the facet item has active children
+ * - url: The Url of the facet item (no URL if the item is active).
+ * - remove_url: Url the remove the item if the item is active.
+ *
+ * @see template_preprocess_culturefeed_search_facet_item()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% if active %}
+  <div class="active">{{ label }}
+  {% if remove_url %}{{ link("×", remove_url, { 'class':['active']}) }}{% endif %}
+  </div>
+{% else %}
+  {{ link(label, url) }} {% if not active_trail %}<span>({{ count }})</span>{% endif %}
+{% endif %}

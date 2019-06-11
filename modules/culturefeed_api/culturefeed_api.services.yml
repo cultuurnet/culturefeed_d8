@@ -1,0 +1,4 @@
+services:
+  culturefeed_api.client:
+    class: Drupal\culturefeed_api\DrupalCultureFeedClient
+    arguments: ['@config.factory', '@logger.factory', '@cache.data', '@language_manager', '@cache_tags.invalidator',  '@culturefeed_user.user_context_manager']

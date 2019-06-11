@@ -1,0 +1,4 @@
+services:
+  culturefeed_search_api.client:
+    class: Drupal\culturefeed_search_api\DrupalCulturefeedSearchClient
+    arguments: ['@config.factory', '@logger.factory', '@cache.data', '@language_manager']

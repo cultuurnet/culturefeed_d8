@@ -1,0 +1,29 @@
+culturefeed_agenda.event_detail:
+  path: '/agenda/e/{slug}/{event}'
+  defaults:
+    _controller: '\Drupal\culturefeed_agenda\Controller\AgendaDetailController::detail'
+    _title_callback: '\Drupal\culturefeed_agenda\Controller\AgendaDetailController::title'
+  options:
+    parameters:
+      event:
+        type: culturefeed_event
+  requirements:
+    _access: 'TRUE'
+
+culturefeed_agenda.agenda:
+  path: '/agenda/search'
+  defaults:
+    _controller: '\Drupal\culturefeed_agenda\Controller\AgendaSearchController::searchPage'
+    _title: 'Agenda'
+  requirements:
+    _access: 'TRUE'
+
+culturefeed_agenda.settings:
+  path: '/admin/config/culturefeed/agenda'
+  defaults:
+    _form: '\Drupal\culturefeed_agenda\Form\AgendaSettingsForm'
+    _title: 'Agenda settings'
+  requirements:
+    _permission: 'administer culturefeed agenda configuration'
+  options:
+    _admin_route: TRUE

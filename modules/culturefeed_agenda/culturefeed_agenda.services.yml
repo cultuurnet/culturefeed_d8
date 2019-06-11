@@ -1,0 +1,18 @@
+services:
+  # Intermediate search page service
+  culturefeed_agenda.search_page_service:
+    class: Drupal\culturefeed_agenda\AgendaSearchPageService
+    arguments: ['@request_stack', '@culturefeed_search_api.client', '@culturefeed_search.facet_helper', '@event_dispatcher']
+
+  # Culturefeed event parameter convert
+  culturefeed_event:
+    class: Drupal\culturefeed_agenda\ParamConverter\CulturefeedEventParamConverter
+    arguments: ['@cultuurkuur_entry_api.client', '@request_stack']
+    tags:
+      - { name: paramconverter }
+
+  culturefeed_agenda.catalog_breadcrumbs:
+    class: Drupal\culturefeed_agenda\BreadcrumbBuilder\AgendaBreadcrumbBuilder
+    arguments: ['@request_stack']
+    tags:
+    - { name: breadcrumb_builder, priority: 1012 }

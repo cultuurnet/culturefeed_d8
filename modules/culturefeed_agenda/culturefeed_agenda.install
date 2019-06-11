@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Install and update file.
+ */
+
+/**
+ * Write url aliases for the translations.
+ */
+function culturefeed_agenda_install() {
+  /** @var \Drupal\Core\Path\AliasStorageInterface $aliasStorage */
+  $aliasStorage = Drupal::service('path.alias_storage');
+  $aliasStorage->save('/agenda/search', '/agenda/zoeken', 'nl');
+}

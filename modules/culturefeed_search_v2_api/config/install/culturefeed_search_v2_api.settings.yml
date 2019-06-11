@@ -1,0 +1,4 @@
+endpoint_url: "http://www.uitid.be/uitid/rest/searchv2"
+authorization_key: "9be75cca4c274b026c367c913c7774e2"
+secret: "a3a85ca04a085362e340581e7b9d3187"
+enable_cache: true

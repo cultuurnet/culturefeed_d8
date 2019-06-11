@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Default theme implementation for an event mini teaser.
+ *
+ * Available variables:
+ * - id: The ID of the event
+ * - name: The name of the event
+ * - teaser: Indicates if this is a teaser or not
+ * - view_mode: The view mode currently used
+ * - id: The Cdbid of the event
+ * - description: The description of the event
+ * - summary: The shortened description
+ * - where: The location where the event takes place
+ *   - name: The location name
+ *   - address: Address parts
+ *     - street: The address street
+ *     - postalcode: The address postal code
+ *     - city: The address city
+ * - when_summary: Summary of when the location takes place
+ * - organizer: Organizer of the event
+ * - age_range: The age range of the event
+ * - vlieg: Boolean or minimum age if "Vlieg" event
+ * - uitpas: Boolean indicating if the event is an "Uitpas" event
+ * - copyright: Copyright string
+ * - age_from: The "age from" of the event
+ * - for_kids: Boolean indicating if the event is for kids
+ * - themes: The event themes
+ * - labels: The event labels
+ * - image: Image url
+ * - url: Url to detail page
+ *
+ * @see template_preprocess_culturefeed_event()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div>
+  <h2>{{ name }}</h2>
+  <img src="{{ image }}" />
+  <p>{{ summary }}</p>
+</div>

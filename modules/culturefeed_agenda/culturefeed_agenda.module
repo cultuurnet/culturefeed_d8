@@ -1,0 +1,257 @@
+<?php
+
+/**
+ * @file
+ * Contains culturefeed_agenda.module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function culturefeed_agenda_theme() {
+  $theme = [];
+
+  $theme['culturefeed_event'] = [
+    'render element' => 'elements',
+    'template' => 'culturefeed-event',
+    'file' => 'includes/theme.inc',
+  ];
+
+  $theme['culturefeed_event__teaser'] = [
+    'render element' => 'elements',
+    'template' => 'culturefeed-event--teaser',
+    'base hook' => 'culturefeed_event',
+  ];
+
+  $theme['culturefeed_event__teaser_mini'] = [
+    'render element' => 'elements',
+    'template' => 'culturefeed-event--teaser-mini',
+    'base hook' => 'culturefeed_event',
+  ];
+
+  $theme['culturefeed_agenda_search_page'] = [
+    'variables' => [
+      'search_form' => NULL,
+      'active_filters' => NULL,
+      'result_count' => NULL,
+      'results' => NULL,
+      'pager' => NULL,
+      'result_count_summary' => NULL,
+    ],
+    'file' => 'includes/theme.inc',
+  ];
+
+  $theme['culturefeed_agenda_search_results'] = [
+    'variables' => [
+      'results' => [],
+      'empty' => NULL,
+    ],
+    'file' => 'includes/theme.inc',
+  ];
+
+  $theme['culturefeed_agenda_search_result_count'] = [
+    'variables' => [
+      'count' => NULL,
+    ],
+    'file' => 'includes/theme.inc',
+  ];
+
+  $theme['culturefeed_agenda_search_result_count_summary'] = [
+    'variables' => [
+      'total' => NULL,
+      'current_page' => NULL,
+      'items_per_page' => NULL,
+    ],
+    'file' => 'includes/theme.inc',
+  ];
+
+  $theme['culturefeed_agenda_search_pager'] = [
+    'variables' => [
+      'pager' => NULL,
+    ],
+    'file' => 'includes/theme.inc',
+  ];
+
+  $theme['culturefeed_agenda_search_form'] = [
+    'render element' => 'form',
+    'file' => 'includes/theme.inc',
+  ];
+
+  return $theme;
+}
+
+/**
+ * Implements hook_theme_suggestions_{culturefeed_event}().
+ */
+function culturefeed_agenda_theme_suggestions_culturefeed_event(array $variables) {
+  $suggestions = [];
+  $view_mode = $variables['elements']['#view_mode'] ?? 'full';
+
+  // View mode suggestion.
+  $suggestions[] = 'culturefeed_event__' . $view_mode;
+
+  return $suggestions;
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function culturefeed_agenda_page_attachments_alter(array &$attachments) {
+  $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $config = \Drupal::config('culturefeed_agenda.settings');
+
+  // Google Maps API key.
+  $attachments['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag' => 'script',
+      '#attributes' => [
+        'src' => 'https://maps.googleapis.com/maps/api/js?v=3&region=BE&hl=' . $langcode . '&key=' . $config->get('google_maps_api_key'),
+      ],
+    ],
+    'google-maps-api',
+  ];
+
+  // Build social media tags with Event object info.
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  if ($route_name == 'culturefeed_agenda.event_detail') {
+
+    /** @var \CultuurNet\SearchV3\ValueObjects\Event $event */
+    $event = $route_match->getParameter('event');
+
+    // Facebook/OG tags.
+    if ($event->getName()) {
+      $attachments['#attached']['html_head'][] = [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => [
+            'property' => 'og:title',
+            'content' => $event->getName()
+                ->getValueForLanguage($langcode) ?? '',
+          ],
+        ],
+        'og:title',
+      ];
+    }
+
+    if ($event->getDescription()) {
+      $attachments['#attached']['html_head'][] = [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array(
+            'property' => 'og:description',
+            'content' => $event->getDescription()->getValueForLanguage($langcode) ?? '',
+          ),
+        ],
+        'og:description',
+      ];
+    }
+
+    if ($event->getImage()) {
+      $attachments['#attached']['html_head'][] = [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array(
+            'property' => 'og:image',
+            'content' => $event->getImage(),
+          ),
+        ],
+        'og:image',
+      ];
+    }
+
+    $current_url = \Drupal::request()->getSchemeAndHttpHost() . \Drupal::service('path.current')->getPath();
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'og:url',
+          'content' => $current_url,
+        ),
+      ],
+      'og:url',
+    ];
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'og:type',
+          'content' => 'website',
+        ),
+      ],
+      'og:type',
+    ];
+
+    // Twitter tags.
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'name' => 'twitter:card',
+          'content' => 'summary_large_image',
+        ),
+      ],
+      'twitter:card',
+    ];
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'name' => 'twitter:site',
+          'content' => '@canoncultuurcel',
+        ),
+      ],
+      'twitter:site',
+    ];
+
+    if ($event->getName()) {
+      $attachments['#attached']['html_head'][] = [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array(
+            'name' => 'twitter:title',
+            'content' => $event->getName()->getValueForLanguage($langcode) ?? '',
+          ),
+        ],
+        'twitter:title',
+      ];
+    }
+    if ($event->getDescription()) {
+      $attachments['#attached']['html_head'][] = [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array(
+            'name' => 'twitter:description',
+            'content' => $event->getDescription()->getValueForLanguage($langcode) ?? '',
+          ),
+        ],
+        'twitter:description',
+      ];
+    }
+
+    if ($event->getImage()) {
+      $attachments['#attached']['html_head'][] = [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array(
+            'name' => 'twitter:image',
+            'content' => $event->getImage(),
+          ),
+        ],
+        'twitter:image',
+      ];
+    }
+  }
+}

@@ -1,0 +1,9 @@
+culturefeed_api.settings:
+  path: '/admin/config/culturefeed/api-settings'
+  defaults:
+    _form: '\Drupal\culturefeed_api\Form\CultureFeedApiSettingsForm'
+    _title: 'CultureFeed API'
+  requirements:
+    _permission: 'administer culturefeed api configuration'
+  options:
+    _admin_route: TRUE

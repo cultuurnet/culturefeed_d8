@@ -1,0 +1,86 @@
+# Dutch translations for Culturfeed agenda
+#
+msgid ""
+msgstr ""
+
+msgctxt "culturefeed_agenda"
+msgid "Search event"
+msgstr "Zoek activiteit"
+
+msgctxt "culturefeed_agenda"
+msgid "Enter your search term here"
+msgstr "Vul je zoekterm in"
+
+msgctxt "culturefeed_agenda"
+msgid "Search"
+msgstr "Zoeken"
+
+msgctxt "culturefeed_agenda"
+msgid "Search"
+msgstr "Zoeken"
+
+msgctxt "culturefeed_agenda"
+msgid "Your search yielded no results."
+msgstr "Je zoekopdracht gaf geen resultaten terug."
+
+msgctxt "culturefeed_agenda"
+msgid "%count results found"
+msgstr "%count resultaten gevonden"
+
+msgctxt "culturefeed_agenda"
+msgid "Your search yielded no results."
+msgstr "Je zoekopdracht gaf geen resultaten terug."
+
+msgctxt "culturefeed_agenda"
+msgid "Your search yielded no results."
+msgstr "Je zoekopdracht gaf geen resultaten terug."
+
+msgctxt "culturefeed_agenda"
+msgid "%count result found."
+msgid_plural "%count results found."
+msgstr[0] "%count resultaat gevonden"
+msgstr[1] "%count resultaten gevonden"
+
+msgctxt "culturefeed_agenda"
+msgid "@from-@to of @count results"
+msgstr "@from-@to van @count resultaten"
+
+msgctxt "culturefeed_agenda"
+msgid "There are no search results."
+msgstr "Er zijn geen zoekresultaten."
+
+msgctxt "culturefeed_agenda"
+msgid "Edit your search or <a href=\"@result_url\">start a new search</a>."
+msgstr "Wijzig je zoekopdracht of <a href=\"@result_url\">voer een nieuwe zoekopdracht uit</a>."
+
+msgctxt "culturefeed_agenda"
+msgid "Read more"
+msgstr "Lees meer"
+
+msgctxt "culturefeed_agenda"
+msgid "Organisation"
+msgstr "Organisatie"
+
+msgctxt "culturefeed_agenda"
+msgid "Location"
+msgstr "Locatie"
+
+msgctxt "culturefeed_agenda"
+msgid "When"
+msgstr "Wanneer"
+
+msgctxt "culturefeed_agenda"
+msgid "Contact"
+msgstr "Contact"
+
+msgctxt "culturefeed_agenda"
+msgid "Reservations"
+msgstr "Reservaties"
+
+msgctxt "culturefeed_agenda"
+msgid "Call"
+msgstr "Bell naar"
+
+msgctxt "culturefeed_agenda"
+msgid "Links"
+msgstr "Links"

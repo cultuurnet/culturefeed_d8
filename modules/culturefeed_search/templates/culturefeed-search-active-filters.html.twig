@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a Culturefeed search active filters list.
+ *
+ * Available variables:
+ * - links: The active filters links
+ *
+ * @see template_preprocess_culturefeed_search_active_filters()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% for link in links %}
+  <div>{{ link.text }} <a href="{{ link.url }}">&times;</a></div>
+{% endfor %}

@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * Contains culturefeed_search.module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function culturefeed_search_theme() {
+  $theme = [];
+
+  $theme['culturefeed_search_facet'] = [
+    'variables' => [
+      'facet' => NULL,
+    ],
+    'template' => 'culturefeed-search-facet',
+    'file' => 'includes/theme.inc',
+  ];
+
+  $theme['culturefeed_search_facet_item'] = [
+    'variables' => [
+      'facet_bucket' => NULL,
+      'facet_id' => NULL,
+    ],
+    'template' => 'culturefeed-search-facet-item',
+    'file' => 'includes/theme.inc',
+  ];
+
+  $theme['culturefeed_search_active_filters'] = [
+    'variables' => [
+      'links' => [],
+    ],
+    'template' => 'culturefeed-search-active-filters',
+    'file' => 'includes/theme.inc',
+  ];
+
+  return $theme;
+}

@@ -1,0 +1,145 @@
+{#
+/**
+ * @file
+ * Default theme implementation for an event.
+ *
+ * Available variables:
+ * - id: The ID of the event
+ * - name: The name of the event
+ * - teaser: Indicates if this is a teaser or not
+ * - view_mode: The view mode currently used
+ * - id: The Cdbid of the event
+ * - description: The description of the event
+ * - summary: The shortened description
+ * - where: The location where the event takes place
+ *   - name: The location name
+ *   - address: Address parts
+ *     - street: The address street
+ *     - postalcode: The address postal code
+ *     - city: The address city
+ * - when_summary: Summary of when the location takes place
+ * - organizer: Organizer of the event
+ * - performers: The performers of the event
+ * - age_range: The age range of the event
+ * - vlieg: Boolean or minimum age if "Vlieg" event
+ * - uitpas: Boolean indicating if the event is an "Uitpas" event
+ * - copyright: Copyright string
+ * - age_from: The "age from" of the event
+ * - for_kids: Boolean indicating if the event is for kids
+ * - themes: The event themes
+ * - labels: The event labels
+ * - image: Image url
+ * - url: Url to detail page
+ *
+ * @see template_preprocess_culturefeed_event()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div>
+  <div>
+    {% if where.geo %}
+    <div class="google-map" style="width:500px; height:500px;" data-location="{{ where|json_encode() }}" data-directions="{{ directions_link }}"></div>
+    {% endif %}
+    <h2>{{ name }}</h2>
+    <p>
+      {% if type %}
+        {{ type|join(', ') }}
+      {% endif %}
+    </p>
+    {% if age_from %}
+      <div>
+        <strong>{{ age_from }}+</strong>
+      </div>
+    {% endif %}
+
+    {% if description %}
+    <div>
+      {{ description | raw }}
+    </div>
+    {% endif %}
+
+    <dl>
+      {% if performers %}
+        <dt>{% trans with {'context': 'culturefeed_agenda'} %}With{% endtrans %}</dt>
+        <dd>{{ performers }}</dd>
+      {% endif %}
+
+      {% if organizer %}
+        <dt>{% trans with {'context': 'culturefeed_agenda'} %}Organisation{% endtrans %}</dt>
+        <dd>{{ organizer }}</dd>
+      {% endif %}
+
+      {% if where.name or where.address %}
+        <dt>{% trans with {'context': 'culturefeed_agenda'} %}Location{% endtrans %}</dt>
+        <dd>
+          <p>
+            {% if where.name %}
+              {{ where.name }}
+            {% endif %}
+            {% if where.address %}
+              {% if where.address.street %}
+                <br/>{{ where.address.street }}
+              {% endif %}
+              {% if where.address.postalcode or where.address.city %}
+                <br/>{{ where.address.postalcode }} {{ where.address.city }}
+              {% endif %}
+            {% endif %}
+          </p>
+        </dd>
+      {% endif %}
+
+      {% if when_details %}
+        <dt>{% trans with {'context': 'culturefeed_agenda'} %}When{% endtrans %}</dt>
+        <dd>{{ when_details | raw }}</dd>
+      {% endif %}
+
+      {% if contact_info and (contact_info.emails or contact_info.phone_numbers) %}
+        <dt>{% trans with {'context': 'culturefeed_agenda'} %}Contact{% endtrans %}</dt>
+        <dd>
+          {% for email in contact_info.emails %}
+            <a href="mailto:{{ email }}">{{ email }}</a><br/>
+          {% endfor %}
+          {% for phone_number in contact_info.phone_numbers %}
+            {{ phone_number }}<br/>
+          {% endfor %}
+        </dd>
+      {% endif %}
+
+      {% if booking_info %}
+        <dt>{% trans with {'context': 'culturefeed_agenda'} %}Reservations{% endtrans %}</dt>
+        <dd>
+          <ul>
+            {% if (booking_info.phone is defined) %}
+              <li>{% trans with {'context': 'culturefeed_agenda'} %}Call{% endtrans %}
+                <strong>{{ booking_info.phone }}</strong></li>
+            {% endif %}
+            {% if (booking_info.email is defined) %}
+              <li>{{ booking_info.email }}</li>
+            {% endif %}
+            {% if (booking_info.url is defined) %}
+              <li><a href="{{ booking_info.url.url }}" target="_blank" data-click-tracking-category="detail"
+                     data-click-tracking-action="ticket"
+                     data-click-tracking-label="{{ name }}">{{ booking_info.url.label }}</a></li>
+            {% endif %}
+          </ul>
+        </dd>
+      {% endif %}
+
+      {% if links %}
+        <dt>{% trans with {'context': 'culturefeed_agenda'} %}Links{% endtrans %}</dt>
+        <dd>
+          {% for link in links %}
+            <a href="{{ link }}" data-click-tracking-category="detail" data-click-tracking-action="contact"
+               data-click-tracking-label="{{ link }}" target="_blank">{{ link }}</a><br/>
+          {% endfor %}
+        </dd>
+      {% endif %}
+
+    </dl>
+  </div>
+  <div>
+    <img src="{{ image }}" alt="{{ name }}"/>
+  </div>
+</div>

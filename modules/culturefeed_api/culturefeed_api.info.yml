@@ -1,0 +1,5 @@
+name: CultureFeed API
+description: 'Provides a client to connect with the CultureFeed API.'
+type: module
+core: 8.x
+package: 'CultureFeed'

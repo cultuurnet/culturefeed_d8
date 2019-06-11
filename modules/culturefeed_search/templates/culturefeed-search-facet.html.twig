@@ -1,0 +1,44 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a Culturefeed search facet.
+ *
+ * Available variables:
+ * - id: The id of the facet
+ * - items: A nested list of facet items. Each facet item contains:
+ *   - content: The content of the facet item.
+ *   - attributes: HTML attributes for the menu item.
+ *   - children: The facet item child items.
+ *
+ * @see template_preprocess_culturefeed_search_facet()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% import _self as facets %}
+
+{#
+  We call a macro which calls itself to render the full facet tree.
+#}
+{{ facets.facet_items(items, attributes, 0) }}
+
+{% macro facet_items(items, attributes, facet_level) %}
+  {% import _self as facets %}
+  {% if items %}
+    {% if facet_level == 0 %}
+      <ul{{ attributes.addClass('culturefeed-facets') }}>
+    {% else %}
+      <ul>
+    {% endif %}
+    {% for facet_item in items %}
+      <li{{ facet_item.attributes }}>
+        {{ facet_item.content }}
+        {% if facet_item.children %}
+          {{ facets.facet_items(facet_item.children, attributes, facet_level + 1) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

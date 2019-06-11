@@ -1,0 +1,10 @@
+services:
+  culturefeed_search.facet_helper:
+    class: Drupal\culturefeed_search\FacetHelper
+    arguments: []
+
+  culturefeed_search.search_page_prepare_facets_event_subscriber:
+    class: Drupal\culturefeed_search\EventSubscriber\SearchPagePrepareFacetsEventSubscriber
+    arguments: ['@request_stack', '@keyvalue.expirable']
+    tags:
+    - { name: 'event_subscriber' }

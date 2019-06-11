@@ -1,0 +1,8 @@
+# Dutch translations for Culturefeed search
+#
+msgid ""
+msgstr ""
+
+msgctxt "culturefeed_search"
+msgid "Search on municipality"
+msgstr "Zoeken op gemeente"
