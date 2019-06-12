@@ -1,0 +1,17 @@
+{
+	"name": "cultuurnet/culturefeed-d8",
+	"type": "drupal-module",
+	"description": "Publiq CultureFeed modules for Drupal 8.",
+	"license": "Apache-2.0",
+	"require": {
+		"cultuurnet/Search": "dev-feature/symfony-3",
+		"cultuurnet/cdb": "dev-develop as 2.1",
+		"cultuurnet/culturefeed-php": "dev-develop",
+		"cultuurnet/search-v3": "dev-master",
+		"cultuurnet/search-v3-php-utilities": "dev-master",
+		"guzzlehttp/oauth-subscriber": "^0.3.0",
+		"monolog/monolog": "1.23.0"
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
+}
