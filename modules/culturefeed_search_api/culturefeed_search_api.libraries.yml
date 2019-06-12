@@ -1,0 +1,7 @@
+hidden-value-autocomplete:
+  js:
+    js/hidden-value-autocomplete.js: { }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupal.autocomplete
