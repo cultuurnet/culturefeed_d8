@@ -1,0 +1,5 @@
+culturefeed_search.settings:
+  route_name: culturefeed_search.settings
+  parent: system.admin_config
+  description: 'Administer the CultureFeed search settings.'
+  title: 'CultureFeed search settings'

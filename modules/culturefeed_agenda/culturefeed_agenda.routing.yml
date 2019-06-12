@@ -19,7 +19,7 @@ culturefeed_agenda.agenda:
     _access: 'TRUE'
 
 culturefeed_agenda.settings:
-  path: '/admin/config/culturefeed/agenda'
+  path: '/admin/config/culturefeed-search/agenda'
   defaults:
     _form: '\Drupal\culturefeed_agenda\Form\AgendaSettingsForm'
     _title: 'Agenda settings'

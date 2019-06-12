@@ -2,4 +2,4 @@ culturefeed_agenda.settings:
   title: 'Agenda settings'
   description: 'Manage the search agenda settings.'
   route_name: culturefeed_agenda.settings
-  parent: culturefeed_core.settings
+  parent: culturefeed_search.settings

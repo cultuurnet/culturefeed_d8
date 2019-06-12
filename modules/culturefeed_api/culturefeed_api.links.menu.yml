@@ -1,5 +1,11 @@
+culturefeed.settings:
+  title: 'CultureFeed settings'
+  description: 'Change CultureFeed settings'
+  route_name: culturefeed.settings
+  parent: system.admin_config
+
 culturefeed_api.settings:
   title: 'CultureFeed API settings'
   description: 'Change CultureFeed API setting like API Application key, location, ...'
   route_name: culturefeed_api.settings
-  parent: culturefeed_core.settings
+  parent: culturefeed.settings
