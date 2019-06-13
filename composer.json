@@ -7,7 +7,6 @@
 		"cultuurnet/culturefeed-php": "dev-develop",
 		"cultuurnet/search-v3": "dev-master",
 		"cultuurnet/search-v3-php-utilities": "dev-master",
-		"guzzlehttp/oauth-subscriber": "^0.3.0",
 		"monolog/monolog": "1.23.0"
 	},
 	"minimum-stability": "dev",
