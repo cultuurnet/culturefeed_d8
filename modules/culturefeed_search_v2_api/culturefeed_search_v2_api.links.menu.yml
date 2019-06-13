@@ -1,5 +1,0 @@
-culturefeed_search_v2_api.settings:
-  title: 'CultureFeed search v2 API settings'
-  description: 'Manage the CultureFeed search V2 API settings.'
-  route_name: culturefeed_search_v2_api.settings
-  parent: culturefeed_search.settings

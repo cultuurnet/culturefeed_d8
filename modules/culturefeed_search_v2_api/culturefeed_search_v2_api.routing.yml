@@ -1,7 +1,0 @@
-culturefeed_search_v2_api.settings:
-  path: '/admin/config/culturefeed-search/search-v2-api'
-  defaults:
-    _form: '\Drupal\culturefeed_search_v2_api\Form\CultureFeedSearchV2ApiSettingsForm'
-    _title: 'CultureFeed search V2 API settings'
-  requirements:
-    _permission: 'administer culturefeed search v2 api'

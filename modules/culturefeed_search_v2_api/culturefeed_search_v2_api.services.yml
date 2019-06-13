@@ -1,4 +1,0 @@
-services:
-  culturefeed_search_v2_api.client:
-    class: Drupal\culturefeed_search_v2_api\DrupalCultureFeedSearchV2Client
-    arguments: ['@config.factory', '@cache.data']

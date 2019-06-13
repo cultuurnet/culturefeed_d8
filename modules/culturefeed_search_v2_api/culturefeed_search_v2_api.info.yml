@@ -1,7 +1,0 @@
-name: CultureFeed Search V2 API
-description: 'Provides a client to connect with the CultureFeed search V2 API.'
-type: module
-core: 8.x
-package: 'CultureFeed'
-dependencies:
-  - monolog
