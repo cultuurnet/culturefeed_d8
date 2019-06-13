@@ -51,3 +51,7 @@ Once monolog is installed, update the 'monolog.channel_handlers' section in the 
   monolog.channel_handlers:
     culturefeed_search_api: ['untranslated_drupal_log']
 ```    
+
+## License
+
+[Apache-2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
