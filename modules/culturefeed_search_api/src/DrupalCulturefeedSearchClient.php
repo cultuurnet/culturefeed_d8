@@ -140,7 +140,6 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    * {@inheritdoc}
    */
   public function searchEvents(SearchQueryInterface $searchQuery) {
-    $searchQuery->addParameter(new AudienceType('*'));
     $query = $searchQuery->toArray();
     $hash = Crypt::hashBase64(serialize($query));
     $cid = 'culturefeed_search_api.search_events:' . $hash;
