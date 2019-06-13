@@ -22,13 +22,6 @@ class CultureFeedUserContextManager implements CultureFeedUserContextManagerInte
   protected $currentUser;
 
   /**
-   * The temp store.
-   *
-   * @var \Drupal\Core\TempStore\PrivateTempStore
-   */
-  protected $privateTempStore;
-
-  /**
    * The user context.
    *
    * @var \Drupal\culturefeed_api\CultureFeedUserContextInterface
@@ -43,18 +36,22 @@ class CultureFeedUserContextManager implements CultureFeedUserContextManagerInte
   protected $session;
 
   /**
+   * Is the session initialized.
+   *
+   * @var bool
+   */
+  protected $initialized = FALSE;
+
+  /**
    * CultureFeedUserContextManager constructor.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The current user.
-   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $privateTempStoreFactory
-   *   The temp store.
    * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
    *   The active session (if any).
    */
-  public function __construct(AccountInterface $account, PrivateTempStoreFactory $privateTempStoreFactory, SessionInterface $session) {
+  public function __construct(AccountInterface $account, SessionInterface $session) {
     $this->currentUser = $account;
-    $this->privateTempStore = $privateTempStoreFactory->get(self::SESSION_KEY);
     $this->userContext = new CultureFeedUserContext();
     $this->session = $session;
 
@@ -66,11 +63,15 @@ class CultureFeedUserContextManager implements CultureFeedUserContextManagerInte
    * {@inheritdoc}
    */
   public function init() {
-    // Only try to get the user context from the private temp store if a session has been started
-    // If no session was started, the empty CultureFeedUserContext has already been set as fallback.
-    if ($this->session->isStarted()) {
-      if ($context = $this->privateTempStore->get(self::SESSION_KEY)) {
-        $this->userContext = $context;
+    if (!$this->initialized) {
+      $this->initialized = TRUE;
+
+      // Only try to get the user context if a session has been started
+      // If no session was started, the empty MyLibraryUserContext has already been set as fallback.
+      if ($this->session->isStarted() && $this->currentUser->isAuthenticated()) {
+        if ($context = $this->session->get(self::SESSION_KEY)) {
+          $this->userContext = $context;
+        }
       }
     }
   }
@@ -87,7 +88,9 @@ class CultureFeedUserContextManager implements CultureFeedUserContextManagerInte
    * {@inheritdoc}
    */
   public function persist() {
-    $this->privateTempStore->set(self::SESSION_KEY, $this->userContext);
+    if ($this->currentUser->isAuthenticated()) {
+      $this->session->set(self::SESSION_KEY, $this->userContext);
+    }
   }
 
   /**
