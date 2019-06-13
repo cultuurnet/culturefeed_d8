@@ -68,7 +68,7 @@ class Url extends CoreUrl {
     $string = preg_replace('/' . preg_quote($separator) . '$/', '', $string);
     $string = preg_replace('/^' . preg_quote($separator) . '/', '', $string);
 
-    return $string;
+    return empty($string) ? '-' : $string;
   }
 
 }

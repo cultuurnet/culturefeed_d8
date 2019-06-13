@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\culturefeed_user;
+namespace Drupal\culturefeed_api;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
@@ -31,7 +31,7 @@ class CultureFeedUserContextManager implements CultureFeedUserContextManagerInte
   /**
    * The user context.
    *
-   * @var \Drupal\culturefeed_user\CultureFeedUserContextInterface
+   * @var \Drupal\culturefeed_api\CultureFeedUserContextInterface
    */
   protected $userContext;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\culturefeed_user;
+namespace Drupal\culturefeed_api;
 
 /**
  * Provides a context class for CultureFeed "UiTID" users.

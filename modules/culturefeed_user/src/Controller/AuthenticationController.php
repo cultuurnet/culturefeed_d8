@@ -7,13 +7,12 @@ use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\culturefeed_api\DrupalCultureFeedClient;
 use Drupal\culturefeed_user\CultureFeedCurrentUserInterface;
-use Drupal\culturefeed_user\CultureFeedUserContextManagerInterface;
+use Drupal\culturefeed_api\CultureFeedUserContextManagerInterface;
 use Drupal\externalauth\ExternalAuthInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class AuthenticationController.
@@ -37,7 +36,7 @@ class AuthenticationController extends ControllerBase {
   /**
    * CultureFeed user context manager service.
    *
-   * @var \Drupal\culturefeed_user\CultureFeedUserContextManagerInterface
+   * @var \Drupal\culturefeed_api\CultureFeedUserContextManagerInterface
    */
   protected $userContextManager;
 
@@ -62,7 +61,7 @@ class AuthenticationController extends ControllerBase {
     return new static(
       $container->get('culturefeed_api.client'),
       $container->get('externalauth.externalauth'),
-      $container->get('culturefeed_user.user_context_manager'),
+      $container->get('culturefeed_api.user_context_manager'),
       $container->get('current_user'),
       $container->get('culturefeed_user.current_user')
     );
@@ -75,7 +74,7 @@ class AuthenticationController extends ControllerBase {
    *   The CultureFeed API client.
    * @param \Drupal\externalauth\ExternalAuthInterface $externalAuth
    *   The drupal external auth service.
-   * @param \Drupal\culturefeed_user\CultureFeedUserContextManagerInterface $userContextManager
+   * @param \Drupal\culturefeed_api\CultureFeedUserContextManagerInterface $userContextManager
    *   The CultureFeed "UiTID" user context manager.
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user.

@@ -1,0 +1,4 @@
+endpoint_url: 'https://search.uitdatabank.be'
+enable_cache: 1
+regions_list: 'https://search.uitdatabank.be/autocomplete.json'
+debug: 0

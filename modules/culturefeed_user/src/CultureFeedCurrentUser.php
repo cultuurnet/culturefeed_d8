@@ -3,6 +3,7 @@
 namespace Drupal\culturefeed_user;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\culturefeed_api\CultureFeedUserContextManagerInterface;
 use Drupal\culturefeed_api\DrupalCultureFeedClient;
 
 /**
@@ -37,7 +38,7 @@ class CultureFeedCurrentUser implements CultureFeedCurrentUserInterface {
   /**
    * CultureFeedCurrentUser constructor.
    *
-   * @param CultureFeedUserContextManagerInterface $cultureFeedUserContextManager
+   * @param \Drupal\culturefeed_api\CultureFeedUserContextManagerInterface $cultureFeedUserContextManager
    *   "CultureFeed" user context manager service.
    * @param \Drupal\culturefeed_api\DrupalCultureFeedClient $cultureFeedClient
    *   The "CultureFeed" client.

@@ -1,4 +1,9 @@
 services:
+
+  culturefeed_api.user_context_manager:
+    class: Drupal\culturefeed_api\CultureFeedUserContextManager
+    arguments: ['@current_user', '@tempstore.private', '@session']
+
   culturefeed_api.client:
     class: Drupal\culturefeed_api\DrupalCultureFeedClient
-    arguments: ['@config.factory', '@logger.factory', '@cache.data', '@language_manager', '@cache_tags.invalidator',  '@culturefeed_user.user_context_manager']
+    arguments: ['@config.factory', '@logger.factory', '@cache.data', '@language_manager', '@cache_tags.invalidator',  '@culturefeed_api.user_context_manager']

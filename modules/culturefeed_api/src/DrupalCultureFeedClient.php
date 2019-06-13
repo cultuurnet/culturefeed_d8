@@ -8,11 +8,9 @@ use CultureFeed_ICultureFeedDecoratorBase;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
-use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\culturefeed_user\CultureFeedUserContextManagerInterface;
 
 /**
  * Provides a Drupal wrapper around the CultureFeed API client.
@@ -64,7 +62,7 @@ class DrupalCultureFeedClient extends CultureFeed_ICultureFeedDecoratorBase {
   /**
    * The CultureFeed user context manager.
    *
-   * @var \Drupal\culturefeed_user\CultureFeedUserContextManagerInterface
+   * @var \Drupal\culturefeed_api\CultureFeedUserContextManagerInterface
    */
   protected $cultureFeedUserContextManager;
 
@@ -88,16 +86,12 @@ class DrupalCultureFeedClient extends CultureFeed_ICultureFeedDecoratorBase {
    *   The language manager.
    * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cacheTagsInvalidator
    *   The cache tags invalidator.
-   * @param \Drupal\culturefeed_user\CultureFeedUserContextManagerInterface $cultureFeedUserContextManager
+   * @param \Drupal\culturefeed_api\CultureFeedUserContextManagerInterface $cultureFeedUserContextManager
    *   The user context manager.
    */
   public function __construct(ConfigFactory $configFactory, LoggerChannelFactoryInterface $loggerChannelFactory, CacheBackendInterface $cacheBackend, LanguageManagerInterface $languageManager, CacheTagsInvalidatorInterface $cacheTagsInvalidator, CultureFeedUserContextManagerInterface $cultureFeedUserContextManager) {
 
     $this->config = $configFactory->get('culturefeed_api.settings');
-
-    if (!$this->config->get('api_location') || !$this->config->get('application_key') || !$this->config->get('shared_secret')) {
-      throw new ConfigException('The culturefeed_api module is not configured.');
-    }
 
     $this->languageManager = $languageManager;
     $this->cacheBackend = $cacheBackend;

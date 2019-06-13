@@ -6,4 +6,3 @@ package: 'CultureFeed'
 dependencies:
   - culturefeed_api
   - externalauth:externalauth
-gitns

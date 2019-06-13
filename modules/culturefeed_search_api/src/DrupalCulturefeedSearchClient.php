@@ -84,10 +84,6 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
   public function __construct(ConfigFactory $configFactory, LoggerChannelFactoryInterface $loggerChannelFactory, CacheBackendInterface $cacheBackend, LanguageManagerInterface $languageManager) {
     $this->config = $configFactory->get('culturefeed_search_api.settings');
 
-    if (!$this->config->get('endpoint_url') || !$this->config->get('api_key')) {
-      drupal_set_message('The culturefeed_search_api module is not configured.', 'error');
-    }
-
     $this->languageManager = $languageManager;
     $this->cacheBackend = $cacheBackend;
     $this->cacheEnabled = $this->config->get('enable_cache') === NULL ? TRUE : $this->config->get('enable_cache');
@@ -144,6 +140,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    * {@inheritdoc}
    */
   public function searchEvents(SearchQueryInterface $searchQuery) {
+    $searchQuery->addParameter(new AudienceType('*'));
     $query = $searchQuery->toArray();
     $hash = Crypt::hashBase64(serialize($query));
     $cid = 'culturefeed_search_api.search_events:' . $hash;
