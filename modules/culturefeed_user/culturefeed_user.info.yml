@@ -5,3 +5,5 @@ core: 8.x
 package: 'CultureFeed'
 dependencies:
   - culturefeed_api
+  - externalauth:externalauth
+gitns
