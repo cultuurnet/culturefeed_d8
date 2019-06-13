@@ -92,9 +92,9 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     $this->cacheBackend = $cacheBackend;
     $this->cacheEnabled = $this->config->get('enable_cache') === NULL ? TRUE : $this->config->get('enable_cache');
 
-    /** @var \Drupal\monolog\Logger\Logger $logger */
     $logger = $loggerChannelFactory->get('culturefeed_search_api');
 
+    $handlerStack = HandlerStack::create();
     if ($logger instanceof MonologLogger) {
       // If debug is enabled, set all handlers to debug mode.
       $level = $this->config->get('debug') ? Logger::DEBUG : Logger::NOTICE;
@@ -105,7 +105,6 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
         $handler->setLevel($level);
       }
 
-      $handlerStack = HandlerStack::create();
       $handlerStack->push(
         Middleware::log(
           $logger,
@@ -113,17 +112,18 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
         )
       );
 
-      $guzzleClient = new Client([
-        'base_uri' => $this->config->get('endpoint_url'),
-        'headers' => [
-          'X-Api-Key' => $this->config->get('api_key'),
-        ],
-        'handler' => $handlerStack,
-      ]);
-
-      $serializer = new Serializer();
-      $this->client = new SearchClient($guzzleClient, $serializer);
     }
+
+    $guzzleClient = new Client([
+      'base_uri' => $this->config->get('endpoint_url'),
+      'headers' => [
+        'X-Api-Key' => $this->config->get('api_key'),
+      ],
+      'handler' => $handlerStack,
+    ]);
+
+    $serializer = new Serializer();
+    $this->client = new SearchClient($guzzleClient, $serializer);
   }
 
   /**

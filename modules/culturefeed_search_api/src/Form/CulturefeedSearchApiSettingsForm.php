@@ -62,7 +62,7 @@ class CulturefeedSearchApiSettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Enable debug'),
       '#default_value' => $config->get('debug') === NULL ? FALSE : $config->get('debug'),
-      '#description' => $this->t('When enabling debug mode. All API calls will be logged.'),
+      '#description' => $this->t('When enabling debug mode. All API calls will be logged. This option only works if you have the monolog module installed and configured.'),
     ];
 
     return parent::buildForm($form, $form_state);
