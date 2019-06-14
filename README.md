@@ -37,6 +37,7 @@ Basic elements to build up an event search (such as provided by Culturefeed Agen
 
 ### Culturefeed agenda
 Provides a Culturefeed search page available on 'agenda/search' and detail pages. The blocks provided by this module can be used to extend the detail pages of events, actors and productions. Includes also a simple search form.
+This module provides a controller, but all the agenda components are split up into blocks. You can use the default controller or take over the controller via page manager.
 
 ### Culturefeed_content
 Adds a CultureFeed content field to add a search query to any of your entity types.
