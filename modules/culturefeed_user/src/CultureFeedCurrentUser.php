@@ -17,7 +17,7 @@ class CultureFeedCurrentUser implements CultureFeedCurrentUserInterface {
   /**
    * CultureFeed "UiTID" user context manager service.
    *
-   * @var CultureFeedUserContextManagerInterface
+   * @var \Drupal\culturefeed_api\CultureFeedUserContextManagerInterface
    */
   protected $cultureFeedUserContextManager;
 

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Culturefeed D8" default="test">
+
+    <fileset id="php" dir="./" excludes="**/*.svg">
+        <include name="**/*.php"/>
+        <include name="**/*.module" />
+        <include name="**/*.inc" />
+        <exclude name="vendor/" />
+    </fileset>
+
+    <target name="composer-validate">
+        <exec executable="composer" passthru="true" checkreturn="true">
+            <arg value="validate"/>
+        </exec>
+    </target>
+
+    <target name="coding-standards">
+        <exec command="vendor/bin/phpcs modules --config-set installed_paths vendor/drupal/coder/coder_sniffer"
+              passthru="true"/>
+        <exec command="vendor/bin/phpcs modules --standard=vendor/drupal/coder/coder_sniffer/Drupal/ruleset.xml"
+              passthru="true"/>
+    </target>
+
+    <target name="phpcbf">
+        <exec command="vendor/bin/phpcbf . --standard=vendor/drupal/coder/coder_sniffer/Drupal/ruleset.xml"
+              passthru="true"/>
+    </target>
+
+    <target name="lint">
+        <phplint>
+            <fileset refid="php"/>
+        </phplint>
+    </target>
+
+    <target name="phpcpd" description="Copy/Paste Detection">
+        <phpcpd>
+            <fileset refid="php"/>
+        </phpcpd>
+    </target>
+
+    <target name="test">
+        <phingcall target="composer-validate"/>
+        <phingcall target="lint"/>
+        <phingcall target="phpcpd"/>
+        <phingcall target="coding-standards"/>
+    </target>
+
+</project>

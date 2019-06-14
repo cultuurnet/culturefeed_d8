@@ -54,8 +54,9 @@ class SearchPagePrepareFacetsEventSubscriber implements EventSubscriberInterface
     // The original facets.
     $facets = $event->getFacets();
 
-    // Add any facets that are in the query string, but not in the already prepared facets.
-    // This can happen if a user used a custom filter, combined with a real facet.
+    // Add facets that are in the query string, but not in the prepared facets.
+    // This can happen if a user used a custom filter,
+    // combined with a real facet.
     $supportedFacets = [
       'regions',
       'types',
@@ -67,7 +68,8 @@ class SearchPagePrepareFacetsEventSubscriber implements EventSubscriberInterface
 
       if ($this->currentRequest->query->has($facetId)) {
 
-        // Use the already prepared facet if possible. If not, create a new one here.
+        // Use the already prepared facet if possible.
+        // If not, create a new one here.
         $facet = $facets[$facetId] ?? new Facet($facetId);
         $value = $this->currentRequest->query->get($facetId);
         if (is_array($value)) {

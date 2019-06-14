@@ -9,7 +9,9 @@ use Monolog\Logger;
 use Drupal\dblog\Logger\DBlog;
 
 /**
- * Provides a monolog handler to log messages that should not be translated (example api debug info).
+ * Provides a monolog handler to log messages that should not be translated.
+ *
+ * We use this to log api debug info.
  */
 class UntranslatedDatabaseLogHandler extends AbstractHandler {
 

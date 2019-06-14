@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Tokens for culturefeed user module.
@@ -19,7 +20,7 @@ function culturefeed_user_token_info() {
 
   $info['tokens']['cultuurkuur_site']['request_query_param'] = [
     'name' => t('Request query param'),
-    'description' => t('The value of the request query param \'aanvraag\', if provided.'),
+    'description' => t("The value of the request query param 'aanvraag', if provided."),
   ];
 
   $info['types']['uitiduser'] = [
@@ -33,7 +34,7 @@ function culturefeed_user_token_info() {
   ];
 
   $info['tokens']['uitiduser']['first_name'] = [
-    'name' => t('UiTID user\'s first name'),
+    'name' => t("UiTID user's first name"),
     'description' => t('The first name of the active UiTID user.'),
   ];
 
@@ -86,24 +87,31 @@ function culturefeed_user_tokens($type, $tokens, array $data, array $options, Bu
             case 'name':
               $replacements[$original] = $cultureFeedUser->familyName;
               break;
+
             case 'first_name':
               $replacements[$original] = $cultureFeedUser->givenName;
               break;
+
             case 'email':
               $replacements[$original] = $cultureFeedUser->mbox;
               break;
+
             case 'street':
               $replacements[$original] = $cultureFeedUser->street;
               break;
+
             case 'zipcode':
               $replacements[$original] = $cultureFeedUser->zip;
               break;
+
             case 'city':
               $replacements[$original] = $cultureFeedUser->city;
               break;
+
             case 'country':
               $replacements[$original] = $cultureFeedUser->country;
               break;
+
           }
         }
       }

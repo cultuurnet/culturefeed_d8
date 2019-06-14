@@ -5,7 +5,7 @@ namespace Drupal\culturefeed_search_api;
 use CultuurNet\SearchV3\SearchClientInterface;
 
 /**
- * Provides an interface for Culturefeed clients that implement extended functionality.
+ * Provides an interface for Culturefeed clients.
  */
 interface DrupalCulturefeedSearchClientInterface extends SearchClientInterface {
 

@@ -3,7 +3,6 @@
 namespace Drupal\culturefeed_api;
 
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -66,8 +65,7 @@ class CultureFeedUserContextManager implements CultureFeedUserContextManagerInte
     if (!$this->initialized) {
       $this->initialized = TRUE;
 
-      // Only try to get the user context if a session has been started
-      // If no session was started, the empty MyLibraryUserContext has already been set as fallback.
+      // Only try to get the user context if a session has been started.
       if ($this->session->isStarted() && $this->currentUser->isAuthenticated()) {
         if ($context = $this->session->get(self::SESSION_KEY)) {
           $this->userContext = $context;

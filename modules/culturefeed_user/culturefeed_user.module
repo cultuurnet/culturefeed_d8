@@ -12,9 +12,7 @@ function culturefeed_user_theme() {
   $theme = [];
 
   $theme['culturefeed_user_authenticated_page'] = [
-    'variables' => [
-
-    ],
+    'variables' => [],
     'template' => 'culturefeed-user-authenticated-page',
     'file' => 'includes/theme.inc',
   ];

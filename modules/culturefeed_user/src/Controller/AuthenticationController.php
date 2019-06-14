@@ -219,4 +219,5 @@ class AuthenticationController extends ControllerBase {
       '#theme' => 'culturefeed_user_authenticated_page',
     ];
   }
+
 }

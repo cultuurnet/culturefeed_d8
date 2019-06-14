@@ -21,7 +21,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *
  * The search page service is an intermediate service
  * for performing a search and requesting details about the performed search.
- * It ensures all blocks requesting details about a search get the same fully loaded search information.
+ * It ensures all blocks requesting details about a search
+ * get the same fully loaded search information.
  */
 abstract class AbstractCulturefeedSearchPageService implements SearchPageServiceInterface {
 

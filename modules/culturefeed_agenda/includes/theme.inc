@@ -170,14 +170,15 @@ function template_preprocess_culturefeed_event__full(array &$variables) {
     }
   }
 
-  // Create a summary from the long description and strip the summary from the description.
+  // Create a summary from the long description
+  // and strip the summary from the description.
   $longDescription = \Drupal::service('renderer')->render($variables['description']);
   $introParagraph = substr($longDescription, strpos($longDescription, '<p'), strpos($longDescription, '</p>') + 4);
 
   if ($introParagraph) {
     // Remove the extracted text from the long description.
     $variables['description'] = [
-      '#markup' => str_replace($introParagraph, '', $longDescription)
+      '#markup' => str_replace($introParagraph, '', $longDescription),
     ];
 
     // Overwrite the default summary text.

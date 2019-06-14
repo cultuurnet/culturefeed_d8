@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Provides a subscriber that redirects users to the auth connect route (for immediate login).
+ * Provides a subscriber that redirects users to the auth connect route.
  */
 class AutoLoginSubscriber implements EventSubscriberInterface {
 
@@ -33,6 +33,7 @@ class AutoLoginSubscriber implements EventSubscriberInterface {
    * AutoLoginSubscriber constructor.
    *
    * @param \Drupal\Core\Session\AccountProxyInterface $account
+   *   The current account.
    * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    *   The route match service.
    */

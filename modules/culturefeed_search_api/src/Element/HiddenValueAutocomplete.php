@@ -9,7 +9,8 @@ use Drupal\Core\Render\Element\Textfield;
 /**
  * Creates a hidden value autocomplete element.
  *
- * The value of the selected item is stored in the value element, and the label of the selected item is shown in the
+ * The value of the selected item is stored in the value element,
+ * and the label of the selected item is shown in the
  * autocomplete element instead.
  *
  * @FormElement("culturefeed_hidden_value_autocomplete")
@@ -58,7 +59,7 @@ class HiddenValueAutocomplete extends FormElement {
       'hidden-value-autocomplete--group',
     ];
 
-    // Create the autocomplete element with the properties of the parent element.
+    // Create the autocomplete element with the properties of the parent.
     $element['label'] = [
       '#input' => $element['#input'],
       '#type' => 'textfield',

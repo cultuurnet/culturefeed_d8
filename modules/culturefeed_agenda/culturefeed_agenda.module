@@ -81,7 +81,7 @@ function culturefeed_agenda_theme() {
 }
 
 /**
- * Implements hook_theme_suggestions_{culturefeed_event}().
+ * Implements hook_theme_suggestions_culturefeed_event().
  */
 function culturefeed_agenda_theme_suggestions_culturefeed_event(array $variables) {
   $suggestions = [];
@@ -129,8 +129,7 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
           '#tag' => 'meta',
           '#attributes' => [
             'property' => 'og:title',
-            'content' => $event->getName()
-                ->getValueForLanguage($langcode) ?? '',
+            'content' => $event->getName()->getValueForLanguage($langcode) ?? '',
           ],
         ],
         'og:title',
@@ -142,10 +141,10 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
         [
           '#type' => 'html_tag',
           '#tag' => 'meta',
-          '#attributes' => array(
+          '#attributes' => [
             'property' => 'og:description',
             'content' => $event->getDescription()->getValueForLanguage($langcode) ?? '',
-          ),
+          ],
         ],
         'og:description',
       ];
@@ -156,10 +155,10 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
         [
           '#type' => 'html_tag',
           '#tag' => 'meta',
-          '#attributes' => array(
+          '#attributes' => [
             'property' => 'og:image',
             'content' => $event->getImage(),
-          ),
+          ],
         ],
         'og:image',
       ];
@@ -170,10 +169,10 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
       [
         '#type' => 'html_tag',
         '#tag' => 'meta',
-        '#attributes' => array(
+        '#attributes' => [
           'property' => 'og:url',
           'content' => $current_url,
-        ),
+        ],
       ],
       'og:url',
     ];
@@ -181,10 +180,10 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
       [
         '#type' => 'html_tag',
         '#tag' => 'meta',
-        '#attributes' => array(
+        '#attributes' => [
           'property' => 'og:type',
           'content' => 'website',
-        ),
+        ],
       ],
       'og:type',
     ];
@@ -194,10 +193,10 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
       [
         '#type' => 'html_tag',
         '#tag' => 'meta',
-        '#attributes' => array(
+        '#attributes' => [
           'name' => 'twitter:card',
           'content' => 'summary_large_image',
-        ),
+        ],
       ],
       'twitter:card',
     ];
@@ -205,10 +204,10 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
       [
         '#type' => 'html_tag',
         '#tag' => 'meta',
-        '#attributes' => array(
+        '#attributes' => [
           'name' => 'twitter:site',
           'content' => '@canoncultuurcel',
-        ),
+        ],
       ],
       'twitter:site',
     ];
@@ -218,10 +217,10 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
         [
           '#type' => 'html_tag',
           '#tag' => 'meta',
-          '#attributes' => array(
+          '#attributes' => [
             'name' => 'twitter:title',
             'content' => $event->getName()->getValueForLanguage($langcode) ?? '',
-          ),
+          ],
         ],
         'twitter:title',
       ];
@@ -231,10 +230,10 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
         [
           '#type' => 'html_tag',
           '#tag' => 'meta',
-          '#attributes' => array(
+          '#attributes' => [
             'name' => 'twitter:description',
             'content' => $event->getDescription()->getValueForLanguage($langcode) ?? '',
-          ),
+          ],
         ],
         'twitter:description',
       ];
@@ -245,10 +244,10 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
         [
           '#type' => 'html_tag',
           '#tag' => 'meta',
-          '#attributes' => array(
+          '#attributes' => [
             'name' => 'twitter:image',
             'content' => $event->getImage(),
-          ),
+          ],
         ],
         'twitter:image',
       ];

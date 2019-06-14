@@ -43,7 +43,7 @@ interface CultureFeedCurrentUserInterface {
   public function getName();
 
   /**
-   * Get the "CultureFeed" user's pages he is an admin of.
+   * Get the admin pages of the "CultureFeed" user.
    *
    * @param string|null $category
    *   Optionally filter the pages by category.

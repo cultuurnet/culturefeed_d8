@@ -16,7 +16,6 @@ use Drupal\Core\Link;
 function template_preprocess_culturefeed_user_authenticated_page(array &$variables) {
   $query = \Drupal::request()->query->all();
 
-
   $query['via'] = 'facebook';
   $variables['login_facebook'] = Link::createFromRoute(t('Login with Facebook'), 'culturefeed_user.connect', [], ['query' => $query]);
 
