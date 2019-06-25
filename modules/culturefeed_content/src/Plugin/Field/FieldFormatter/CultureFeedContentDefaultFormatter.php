@@ -111,21 +111,25 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
 
     /** @var \Drupal\culturefeed_content\Plugin\Field\FieldType\CultureFeedContentFieldType $item */
     foreach ($items as $delta => $item) {
-      $elements[$delta] = [
-        '#lazy_builder' => [
-          'culturefeed_content.field_lazy_builder:buildCulturefeedContent', [
-            $item->get('title')->getValue() ?? '',
-            $item->get('query_string')->getValue() ?? '',
-            $this->getSetting('view_mode'),
-            $item->get('rows')->getValue(),
-            $item->get('sort')->getValue(),
-            $item->get('sort_direction')->getValue() ?? 'desc',
-            $item->get('show_more_link')->getValue() ?? TRUE,
-            $item->get('more_link')->getValue() ?? '',
+      $query_string = $item->get('query_string')->getValue();
+
+      if (!empty($query_string)) {
+        $elements[$delta] = [
+          '#lazy_builder' => [
+            'culturefeed_content.field_lazy_builder:buildCulturefeedContent', [
+              $item->get('title')->getValue() ?? '',
+              $item->get('query_string')->getValue() ?? '',
+              $this->getSetting('view_mode'),
+              $item->get('rows')->getValue(),
+              $item->get('sort')->getValue(),
+              $item->get('sort_direction')->getValue() ?? 'desc',
+              $item->get('show_more_link')->getValue() ?? TRUE,
+              $item->get('more_link')->getValue() ?? '',
+            ],
           ],
-        ],
-        '#create_placeholder' => TRUE,
-      ];
+          '#create_placeholder' => TRUE,
+        ];
+      }
     }
 
     return $elements;
