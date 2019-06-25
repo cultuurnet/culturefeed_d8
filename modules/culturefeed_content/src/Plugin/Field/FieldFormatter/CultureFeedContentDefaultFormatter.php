@@ -118,7 +118,7 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
           '#lazy_builder' => [
             'culturefeed_content.field_lazy_builder:buildCulturefeedContent', [
               $item->get('title')->getValue() ?? '',
-              $item->get('query_string')->getValue() ?? '',
+              $query_string,
               $this->getSetting('view_mode'),
               $item->get('rows')->getValue(),
               $item->get('sort')->getValue(),
