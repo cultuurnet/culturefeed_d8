@@ -140,6 +140,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    * {@inheritdoc}
    */
   public function searchEvents(SearchQueryInterface $searchQuery) {
+    $this->alterQuery($searchQuery, 'events');
     $query = $searchQuery->toArray();
     $hash = Crypt::hashBase64(serialize($query));
     $cid = 'culturefeed_search_api.search_events:' . $hash;
@@ -181,6 +182,8 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     $searchQuery->addParameter(new Id($eventId));
     $searchQuery->addParameter(new AudienceType('*'));
 
+    $this->alterQuery($searchQuery, 'event');
+
     $events = $this->client->searchEvents($searchQuery);
     $items = $events->getMember()->getItems() ?? [];
 
@@ -201,6 +204,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    * {@inheritdoc}
    */
   public function searchPlaces(SearchQueryInterface $searchQuery) {
+    $this->alterQuery($searchQuery, 'places');
     return $this->client->searchPlaces($searchQuery);
   }
 
@@ -208,6 +212,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    * {@inheritdoc}
    */
   public function searchOffers(SearchQueryInterface $searchQuery) {
+    $this->alterQuery($searchQuery, 'offers');
     return $this->client->searchOffers($searchQuery);
   }
 
@@ -243,6 +248,22 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     }
 
     return $this->staticCache[$cid];
+  }
+
+  /**
+   * Alter a Culturefeed search query before it is executed.
+   *
+   * @param \CultuurNet\SearchV3\SearchQueryInterface $searchQuery
+   *   The search query to alter.
+   * @param string $type
+   *   The type of query that is executed. Can be one of the following:
+   *   - events
+   *   - event
+   *   - places
+   *   - offers.
+   */
+  protected function alterQuery(SearchQueryInterface $searchQuery, $type = 'events') {
+    \Drupal::moduleHandler()->alter('culturefeed_search_api_query', $searchQuery, $type);
   }
 
 }
