@@ -25,6 +25,13 @@ class CulturefeedContentFieldLazyBuilder {
   protected $searchClient;
 
   /**
+   * The current pager element.
+   *
+   * @var int
+   */
+  protected $pagerElement;
+
+  /**
    * CulturefeedContentFieldLazyBuilder constructor.
    *
    * @param \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface $searchClient
@@ -32,6 +39,7 @@ class CulturefeedContentFieldLazyBuilder {
    */
   public function __construct(DrupalCulturefeedSearchClientInterface $searchClient) {
     $this->searchClient = $searchClient;
+    $this->pagerElement = 0;
   }
 
   /**
@@ -53,11 +61,13 @@ class CulturefeedContentFieldLazyBuilder {
    *   Use default link or custom.
    * @param string $moreLink
    *   Custom show more link url.
+   * @param bool $showPager
+   *   Show a pager when the results are limited using $limit. Defaults to false.
    *
    * @return array
    *   Render array.
    */
-  public function buildCulturefeedContent(string $title = '', string $query = '', string $viewMode = '', int $limit = 10, string $sort = NULL, string $sortDirection = 'desc', bool $defaultMoreLink = TRUE, string $moreLink = '') {
+  public function buildCulturefeedContent(string $title = '', string $query = '', string $viewMode = '', int $limit = 10, string $sort = NULL, string $sortDirection = 'desc', bool $defaultMoreLink = TRUE, string $moreLink = '', bool $showPager = FALSE) {
     if (!empty($query)) {
       $query = str_replace(',', ' AND ', '(' . rtrim($query . ')', ','));
     }
@@ -95,6 +105,11 @@ class CulturefeedContentFieldLazyBuilder {
       $searchQuery->addParameter(new AudienceType('*'));
       $searchQuery->setLimit($limit);
 
+      // Add pager support.
+      if ($showPager && $limit) {
+        $searchQuery->setStart(pager_find_page($this->pagerElement) * $limit);
+      }
+
       if ($sort) {
         $searchQuery->addSort($sort, $sortDirection);
       }
@@ -102,6 +117,20 @@ class CulturefeedContentFieldLazyBuilder {
       $results = $this->searchClient->searchEvents($searchQuery);
       if (!empty($results->getMember()->getItems())) {
         $build['#items'] = $results->getMember()->getItems();
+      }
+
+      if ($showPager && $limit) {
+        // Initialize the pager.
+        pager_default_initialize($results->getTotalItems(), $limit, $this->pagerElement);
+
+        $build['#pager'] = [
+          '#type' => 'pager',
+          '#quantity' => 5,
+          '#element' => $this->pagerElement,
+        ];
+
+        // Support multiple pagers on one page.
+        $this->pagerElement++;
       }
     }
     catch (\Exception $e) {
