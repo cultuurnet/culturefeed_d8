@@ -17,6 +17,7 @@ function culturefeed_content_theme() {
       'view_mode' => NULL,
       'title' => NULL,
       'more_link' => NULL,
+      'pager' => NULL,
     ],
     'file' => 'includes/theme.inc',
   ];
