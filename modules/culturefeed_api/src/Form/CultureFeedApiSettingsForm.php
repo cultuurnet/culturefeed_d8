@@ -69,6 +69,7 @@ class CultureFeedApiSettingsForm extends ConfigFormBase {
     $config->set('api_location', $form_state->getValue('api_location'));
     $config->set('application_key', $form_state->getValue('application_key'));
     $config->set('shared_secret', $form_state->getValue('shared_secret'));
+    $config->set('enable_cache', $form_state->getValue('enable_cache'));
     $config->save();
 
     Cache::invalidateTags(['culturefeed_api']);

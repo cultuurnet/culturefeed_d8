@@ -14,8 +14,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class SearchPagePrepareFacetsEventSubscriber implements EventSubscriberInterface {
 
-  const KEY_VALUE_EXPIRATION_TIME = 60 * 60 * 24;
-
   /**
    * The current request.
    *
