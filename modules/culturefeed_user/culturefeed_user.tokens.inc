@@ -13,16 +13,6 @@ use Drupal\Core\Render\BubbleableMetadata;
 function culturefeed_user_token_info() {
   $info = [];
 
-  $info['types']['cultuurkuur_site'] = [
-    'name' => t('Cultuurkuur site'),
-    'description' => t('Custom tokens for the Cultuurkuur site'),
-  ];
-
-  $info['tokens']['cultuurkuur_site']['request_query_param'] = [
-    'name' => t('Request query param'),
-    'description' => t("The value of the request query param 'aanvraag', if provided."),
-  ];
-
   $info['types']['uitiduser'] = [
     'name' => t('UiTID user'),
     'description' => t('Custom tokens with values from the active UiTID user.'),
