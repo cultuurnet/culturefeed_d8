@@ -77,6 +77,7 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
   public static function defaultSettings() {
     return [
       'view_mode' => 'teaser',
+      'pager' => FALSE,
     ] + parent::defaultSettings();
   }
 
@@ -93,6 +94,13 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
       '#description' => $this->t('Enter the desired output view mode for the search items'),
     ];
 
+    $form['pager'] = [
+      '#title' => $this->t('Show pager'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->getSetting('pager'),
+      '#description' => $this->t('Check if a pager should be displayed below the results.'),
+    ];
+
     return $form;
   }
 
@@ -100,7 +108,10 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    return ['#markup' => $this->t('View mode: %view_mode', ['%view_mode' => $this->getSetting('view_mode')])];
+    $summary = [];
+    $summary[] = $this->t('View mode: %view_mode', ['%view_mode' => $this->getSetting('view_mode')]);
+    $summary[] = $this->t('Pager: %pager', ['%pager' => $this->getSetting('pager') ? $this->t('Displayed') : $this->t('Hidden')]);
+    return $summary;
   }
 
   /**
@@ -122,6 +133,7 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
             $item->get('sort_direction')->getValue() ?? 'desc',
             $item->get('show_more_link')->getValue() ?? TRUE,
             $item->get('more_link')->getValue() ?? '',
+            $this->getSetting('pager'),
           ],
         ],
         '#create_placeholder' => TRUE,
