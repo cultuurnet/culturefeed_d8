@@ -133,9 +133,8 @@ class Facet {
    *   Buckets to set active.
    */
   public function setActiveBuckets(array $activeBuckets) {
-    $activeBucketIds = array_keys($activeBuckets);
     foreach ($this->buckets as $bucket) {
-      $this->checkActiveBucket($bucket, $activeBucketIds);
+      $this->checkActiveBucket($bucket, $activeBuckets);
 
       foreach ($bucket->getChildren() as $child) {
         if ($child->isActive() || $child->hasActiveChildren()) {
@@ -154,8 +153,9 @@ class Facet {
    *   The active buckets to check against.
    */
   private function checkActiveBucket(FacetBucket $bucket, array $activeBuckets) {
-    if (in_array($bucket->getId(), $activeBuckets)) {
+    if (isset($activeBuckets[$bucket->getId()])) {
       $bucket->setActive();
+      $bucket->setLabel($activeBuckets[$bucket->getId()]);
     }
 
     // Traverse the child buckets.
