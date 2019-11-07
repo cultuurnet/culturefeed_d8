@@ -12,6 +12,7 @@ use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigException;
 use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\monolog\Logger\Logger;
@@ -70,6 +71,13 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
   protected $config;
 
   /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
    * DrupalSearchClient constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactory $configFactory
@@ -80,11 +88,14 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    *   The cache backend.
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
+   *   The module handler.
    */
-  public function __construct(ConfigFactory $configFactory, LoggerChannelFactoryInterface $loggerChannelFactory, CacheBackendInterface $cacheBackend, LanguageManagerInterface $languageManager) {
+  public function __construct(ConfigFactory $configFactory, LoggerChannelFactoryInterface $loggerChannelFactory, CacheBackendInterface $cacheBackend, LanguageManagerInterface $languageManager, ModuleHandlerInterface $moduleHandler) {
     $this->config = $configFactory->get('culturefeed_search_api.settings');
 
     $this->languageManager = $languageManager;
+    $this->moduleHandler = $moduleHandler;
     $this->cacheBackend = $cacheBackend;
     $this->cacheEnabled = $this->config->get('enable_cache') === NULL ? TRUE : $this->config->get('enable_cache');
 
@@ -263,7 +274,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    *   - offers.
    */
   protected function alterQuery(SearchQueryInterface $searchQuery, $type = 'events') {
-    \Drupal::moduleHandler()->alter('culturefeed_search_api_query', $searchQuery, $type);
+    $this->moduleHandler->alter('culturefeed_search_api_query', $searchQuery, $type);
   }
 
 }
