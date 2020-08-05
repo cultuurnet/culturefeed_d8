@@ -27,6 +27,8 @@ class RegionsFacetFilterForm extends FormBase {
       '#required' => FALSE,
       '#no_validate' => TRUE,
       '#placeholder' => $this->t('Search on municipality', [], ['context' => 'culturefeed_search']),
+      '#title' => $this->t('Search on municipality', [], ['context' => 'culturefeed_search']),
+      '#title_display' => 'invisible',
       '#default_value' => NULL,
     ];
 
