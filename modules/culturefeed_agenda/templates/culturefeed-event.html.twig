@@ -18,6 +18,8 @@
  *     - postalcode: The address postal code
  *     - city: The address city
  * - when_summary: Summary of when the location takes place
+ * - when_details: Full details of the event date(s)
+ * - event_passed: TRUE if the event is passed
  * - organizer: Organizer of the event
  * - performers: The performers of the event
  * - age_range: The age range of the event
@@ -92,7 +94,14 @@
 
       {% if when_details %}
         <dt>{% trans with {'context': 'culturefeed_agenda'} %}When{% endtrans %}</dt>
-        <dd>{{ when_details | raw }}</dd>
+        <dd>
+            {% if event_passed %}
+                <strong>Deze activiteit is afgelopen.</strong><br />
+                Originele datum: {{ when_details }}
+            {% else %}
+                {{ when_details }}
+            {% endif %}
+        </dd>
       {% endif %}
 
       {% if contact_info and (contact_info.emails or contact_info.phone_numbers) %}

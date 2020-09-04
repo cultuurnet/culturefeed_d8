@@ -77,6 +77,10 @@ function template_preprocess_culturefeed_event(array &$variables) {
     $variables['when_details'] = Markup::create($variables['when_details']);
   }
 
+  if ($endDate = $event->getEndDate()) {
+    $variables['event_passed'] = $endDate->getTimestamp() < Drupal::time()->getCurrentTime();
+  }
+
   if (isset($variables['prices'])) {
     foreach ($variables['prices'] as $key => $price) {
       $variables['prices'][$key]['price'] = Markup::create($variables['prices'][$key]['price']);
