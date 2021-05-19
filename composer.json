@@ -6,7 +6,8 @@
 	"require": {
 		"cultuurnet/culturefeed-php": "dev-develop",
 		"cultuurnet/search-v3": "dev-master",
-		"cultuurnet/search-v3-php-utilities": "dev-master"
+		"cultuurnet/search-v3-php-utilities": "dev-master",
+		"ext-curl": "*"
 	},
 	"require-dev": {
 		"drupal/coder": "^8.3",

@@ -251,7 +251,16 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
       return $cache->data;
     }
 
-    $data = file_get_contents($jsonLocation);
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $jsonLocation);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $data = curl_exec($curl);
+    curl_close($curl);
+
+    if (!$data) {
+      return [];
+    }
+
     $this->staticCache[$cid] = json_decode($data);
 
     if ($this->cacheEnabled) {
