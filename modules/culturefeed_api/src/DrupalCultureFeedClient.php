@@ -218,17 +218,20 @@ class DrupalCultureFeedClient extends CultureFeed_ICultureFeedDecoratorBase {
    *   Whether the user is private.
    * @param bool $use_auth
    *   Whether to use authentication.
+   * @param bool $mbox_include_private
+   *   Whether to request also the email in non private mode.
    * @param bool $reset
    *   Whether to reset the users cache.
    *
    * @return \CultureFeed_User
    *   Retrieved or cached user object.
    */
-  public function getUser($id, $private = FALSE, $use_auth = TRUE, bool $reset = FALSE) {
+  public function getUser($id, $private = FALSE, $use_auth = TRUE, $mbox_include_private = FALSE, bool $reset = FALSE) {
     return $this->realCultureFeed->getUser(
       $id,
       $private,
-      $use_auth
+      $use_auth,
+      $mbox_include_private
     );
   }
 
