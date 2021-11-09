@@ -3,7 +3,7 @@
 namespace Drupal\culturefeed_search\Event;
 
 use CultuurNet\SearchV3\SearchQueryInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event thrown when the search page is executed.

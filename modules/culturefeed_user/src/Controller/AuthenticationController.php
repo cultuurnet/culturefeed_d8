@@ -9,7 +9,6 @@ use Drupal\culturefeed_api\DrupalCultureFeedClient;
 use Drupal\culturefeed_user\CultureFeedCurrentUserInterface;
 use Drupal\culturefeed_api\CultureFeedUserContextManagerInterface;
 use Drupal\externalauth\ExternalAuthInterface;
-use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -117,20 +116,21 @@ class AuthenticationController extends ControllerBase {
     try {
       $token = $this->cultureFeedClient->getRequestToken($callback_url->getGeneratedUrl());
     }
-    catch (Exception $e) {
-      drupal_set_message(t('An error occurred while logging in. Please try again later.'), 'error');
+    catch (\Exception $e) {
+      $this->messenger()->addError($this->t('An error occurred while logging in. Please try again later.'));
       watchdog_exception('culturefeed', $e);
       return new RedirectResponse($this->getUrlGenerator()->generateFromRoute('<front>'), 302);
     }
     if (!$token) {
-      drupal_set_message(t('An error occurred while logging in. Please try again later.'), 'error');
+      $this->messenger()->addError($this->t('An error occurred while logging in. Please try again later.'));
       return new RedirectResponse($this->getUrlGenerator()->generateFromRoute('<front>'), 302);
     }
 
     $_SESSION['oauth_token'] = $token['oauth_token'];
     $_SESSION['oauth_token_secret'] = $token['oauth_token_secret'];
 
-    $skip_confirmation = isset($_GET['skipConfirmation']) ? TRUE : FALSE;
+    $request_get_skipConfirmation = $request->query->get('skipConfirmation');
+    $skip_confirmation = isset($request_get_skipConfirmation);
 
     $auth_url = $this->cultureFeedClient->getUrlAuthorize($token, $callback_url->getGeneratedUrl(), \CultureFeed::AUTHORIZE_TYPE_REGULAR, $skip_confirmation, NULL, NULL, $language->getId());
 
@@ -163,8 +163,8 @@ class AuthenticationController extends ControllerBase {
         /** @var \CultureFeed_User $account */
         $account = $this->cultureFeedClient->getUser($token['userId']);
       }
-      catch (Exception $e) {
-        drupal_set_message(t('An error occurred while logging in. Please try again later.'), 'error');
+      catch (\Exception $e) {
+        $this->messenger()->addError($this->t('An error occurred while logging in. Please try again later.'));
         watchdog_exception('culturefeed', $e);
         return new RedirectResponse($this->getUrlGenerator()->generateFromRoute('<front>'), 302);
       }

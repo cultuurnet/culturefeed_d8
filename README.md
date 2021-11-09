@@ -2,12 +2,12 @@
 
 Prerequisites:
 
-- php > v7 and the php intl extension 
+- php > v7.3 and the php intl extension
 - composer installed (http://getcomposer.org/doc/00-intro.md#downloading-the-composer-executable)
 - Drupal installed via composer
 
 ```bash
-composer require cultuurnet/culturefeed-d8
+composer require cultuurnet/culturefeed-d9
 ```
 
 ## Modules
@@ -51,7 +51,7 @@ Once monolog is installed, update the 'monolog.channel_handlers' section in the 
 ```bash
   monolog.channel_handlers:
     culturefeed_search_api: ['untranslated_drupal_log']
-```    
+```
 
 ## License
 

@@ -6,6 +6,7 @@ use CultuurNet\SearchV3\Parameter\AudienceType;
 use CultuurNet\SearchV3\Parameter\Query;
 use CultuurNet\SearchV3\SearchQuery;
 use Drupal\Core\Link;
+use Drupal\Core\Pager\PagerManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface;
@@ -25,6 +26,13 @@ class CulturefeedContentFieldLazyBuilder {
   protected $searchClient;
 
   /**
+   * The Pager manager service.
+   *
+   * @var \Drupal\Core\Pager\PagerManagerInterface
+   */
+  protected $pagerManager;
+
+  /**
    * The current pager element.
    *
    * @var int
@@ -36,9 +44,12 @@ class CulturefeedContentFieldLazyBuilder {
    *
    * @param \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface $searchClient
    *   The Culturefeed search client.
+   * @param \Drupal\Core\Pager\PagerManagerInterface $pager_manager
+   *   The Pager manager service.
    */
-  public function __construct(DrupalCulturefeedSearchClientInterface $searchClient) {
+  public function __construct(DrupalCulturefeedSearchClientInterface $searchClient, PagerManagerInterface $pager_manager) {
     $this->searchClient = $searchClient;
+    $this->pagerManager = $pager_manager;
     $this->pagerElement = 0;
   }
 
@@ -62,7 +73,8 @@ class CulturefeedContentFieldLazyBuilder {
    * @param string $moreLink
    *   Custom show more link url.
    * @param bool $showPager
-   *   Show a pager when the results are limited using $limit. Defaults to false.
+   *   Show a pager when the results are limited using $limit.
+   *   Defaults to false.
    *
    * @return array
    *   Render array.
@@ -107,7 +119,7 @@ class CulturefeedContentFieldLazyBuilder {
 
       // Add pager support.
       if ($showPager && $limit) {
-        $searchQuery->setStart(pager_find_page($this->pagerElement) * $limit);
+        $searchQuery->setStart($this->pagerManager->findPage($this->pagerElement) * $limit);
       }
 
       if ($sort) {
@@ -121,7 +133,7 @@ class CulturefeedContentFieldLazyBuilder {
 
       if ($showPager && $limit) {
         // Initialize the pager.
-        pager_default_initialize($results->getTotalItems(), $limit, $this->pagerElement);
+        $this->pagerManager->createPager($results->getTotalItems(), $limit, $this->pagerElement);
 
         $build['#pager'] = [
           '#type' => 'pager',

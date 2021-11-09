@@ -127,7 +127,7 @@ class ActiveFiltersBlock extends BlockBase implements ContainerFactoryPluginInte
       }
     }
 
-    $event = $this->eventDispatcher->dispatch(SearchPagePrepareActiveFiltersEvent::PREPARE, new SearchPagePrepareActiveFiltersEvent($links));
+    $event = $this->eventDispatcher->dispatch(new SearchPagePrepareActiveFiltersEvent($links), SearchPagePrepareActiveFiltersEvent::PREPARE);
 
     $links = $event->getLinks();
 

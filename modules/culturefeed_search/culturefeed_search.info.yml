@@ -4,6 +4,6 @@ type: module
 core: 8.x
 package: 'CultureFeed'
 dependencies:
-  - culturefeed_search_api
+  - culturefeed_search_api:culturefeed_search_api
 'interface translation project': culturefeed_search
 'interface translation server pattern': modules/custom/culturefeed_search/translations/%language.po
