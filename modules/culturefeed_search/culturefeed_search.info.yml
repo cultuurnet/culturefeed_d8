@@ -1,7 +1,7 @@
 name: Culturefeed search
 description: 'Provides generic search functionality and elements.'
 type: module
-core: 8.x
+core_version_requirement: ^9
 package: 'CultureFeed'
 dependencies:
   - culturefeed_search_api:culturefeed_search_api
