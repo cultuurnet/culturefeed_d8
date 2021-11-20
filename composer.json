@@ -1,10 +1,10 @@
 {
-	"name": "cultuurnet/culturefeed-d9",
+	"name": "cultuurnet/culturefeed-d8",
 	"type": "drupal-module",
 	"description": "Publiq CultureFeed modules for Drupal 9.",
 	"license": "Apache-2.0",
 	"require": {
-        	"drupal/core": "^9.0",
+		"drupal/core": "^9.0",
 		"cultuurnet/culturefeed-php": "dev-develop",
 		"cultuurnet/search-v3": "dev-master",
 		"cultuurnet/search-v3-php-utilities": "dev-master",
