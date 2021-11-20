@@ -5,7 +5,7 @@
 	"license": "Apache-2.0",
 	"require": {
 		"drupal/core": "^9.0",
-		"cultuurnet/culturefeed-php": "dev-develop",
+		"cultuurnet/culturefeed-php": "dev-master",
 		"cultuurnet/search-v3": "dev-master",
 		"cultuurnet/search-v3-php-utilities": "dev-master",
 		"ext-curl": "*"
