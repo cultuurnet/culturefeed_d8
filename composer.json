@@ -4,11 +4,13 @@
 	"description": "Publiq CultureFeed modules for Drupal 9.",
 	"license": "Apache-2.0",
 	"require": {
-		"drupal/core": "^9.0",
+		"cultuurnet/calendar-summary-v3": "^3.0",
 		"cultuurnet/culturefeed-php": "dev-master",
-		"cultuurnet/search-v3": "dev-master",
-		"cultuurnet/search-v3-php-utilities": "dev-master",
-		"ext-curl": "*"
+		"cultuurnet/search-v3": "^3.0",
+		"drupal/core": "^9.0",
+		"jwage/purl": "^1.0",
+		"ext-curl": "*",
+		"ext-intl": "*"
 	},
 	"require-dev": {
 		"drupal/coder": "^8.3",
