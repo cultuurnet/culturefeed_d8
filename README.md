@@ -7,7 +7,7 @@ Prerequisites:
 - Drupal installed via composer
 
 ```bash
-composer require cultuurnet/culturefeed-d9
+composer require cultuurnet/culturefeed-d8
 ```
 
 ## Modules
