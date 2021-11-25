@@ -2,7 +2,7 @@
 
 namespace Drupal\culturefeed_search\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
+use Drupal\Component\EventDispatcher\Event;
 
 /**
  * Event thrown when the before the active filters are rendered.

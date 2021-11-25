@@ -2,7 +2,7 @@
 
 namespace Drupal\culturefeed_search\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
+use Drupal\Component\EventDispatcher\Event;
 
 /**
  * Event thrown when the facets are being prepared for a Culturfeed search page.
