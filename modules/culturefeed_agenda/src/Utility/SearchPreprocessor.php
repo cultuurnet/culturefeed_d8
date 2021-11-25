@@ -12,7 +12,6 @@ use Purl\Url;
  * A preproccesor utility for search templates.
  */
 class SearchPreprocessor {
-  use TextProcessingTrait;
 
   /**
    * Preprocess event data for twig templates..
@@ -72,7 +71,7 @@ class SearchPreprocessor {
     $variables['summary'] = strip_tags($variables['description']);
     if (!empty($settings['description']['characters'])) {
       $originalSummary = $variables['summary'];
-      $variables['summary'] = $this->createSummary($variables['summary'], $settings['description']['characters']);
+      $variables['summary'] = text_summary($variables['summary'], NULL, $settings['description']['characters']);
       if (strlen($variables['summary']) < strlen($originalSummary)) {
         // Only add ellipsis if the summary does not end at the end of sentence.
         $punctuation = ['.', '!', '?', '。', '؟ '];
@@ -169,8 +168,9 @@ class SearchPreprocessor {
 
     $variables['summary'] = '';
     if (!empty($settings['description']['characters'])) {
-      $variables['summary'] = $this->createHtmlSummary(
+      $variables['summary'] = text_summary(
         $variables['description'],
+        filter_fallback_format(),
         $settings['description']['characters']
       );
 
