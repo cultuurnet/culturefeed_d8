@@ -129,8 +129,7 @@ class AuthenticationController extends ControllerBase {
     $_SESSION['oauth_token'] = $token['oauth_token'];
     $_SESSION['oauth_token_secret'] = $token['oauth_token_secret'];
 
-    $request_get_skipConfirmation = $request->query->get('skipConfirmation');
-    $skip_confirmation = isset($request_get_skipConfirmation);
+    $skip_confirmation = $request->query->has('skipConfirmation');
 
     $auth_url = $this->cultureFeedClient->getUrlAuthorize($token, $callback_url->getGeneratedUrl(), \CultureFeed::AUTHORIZE_TYPE_REGULAR, $skip_confirmation, NULL, NULL, $language->getId());
 
