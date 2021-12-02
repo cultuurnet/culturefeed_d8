@@ -2,9 +2,6 @@
 
 namespace Drupal\culturefeed_api;
 
-use CultureFeed;
-use CultureFeed_DefaultOAuthClient;
-use CultureFeed_ICultureFeedDecoratorBase;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
@@ -15,7 +12,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 /**
  * Provides a Drupal wrapper around the CultureFeed API client.
  */
-class DrupalCultureFeedClient extends CultureFeed_ICultureFeedDecoratorBase {
+class DrupalCultureFeedClient extends \CultureFeed_ICultureFeedDecoratorBase {
 
   /**
    * The cache backend.
@@ -120,10 +117,10 @@ class DrupalCultureFeedClient extends CultureFeed_ICultureFeedDecoratorBase {
     }
 
     if ($token && $secret) {
-      $client = new CultureFeed_DefaultOAuthClient($this->config->get('application_key'), $this->config->get('shared_secret'), $token, $secret);
+      $client = new \CultureFeed_DefaultOAuthClient($this->config->get('application_key'), $this->config->get('shared_secret'), $token, $secret);
     }
     else {
-      $client = new CultureFeed_DefaultOAuthClient($this->config->get('application_key'), $this->config->get('shared_secret'));
+      $client = new \CultureFeed_DefaultOAuthClient($this->config->get('application_key'), $this->config->get('shared_secret'));
     }
     $client->setEndpoint($this->config->get('api_location'));
     return new \CultureFeed($client);
@@ -177,7 +174,7 @@ class DrupalCultureFeedClient extends CultureFeed_ICultureFeedDecoratorBase {
   public function getUrlAuthorize(
     $token,
     $callback = '',
-    $type = CultureFeed::AUTHORIZE_TYPE_REGULAR,
+    $type = \CultureFeed::AUTHORIZE_TYPE_REGULAR,
     $skip_confirmation = FALSE,
     $skip_authorization = FALSE,
     $via = '',

@@ -5,7 +5,7 @@
  * Template preprocessors for agenda templates.
  */
 
-use CultuurNet\SearchV3Utilities\SearchPreprocessor;
+use Drupal\culturefeed_agenda\Utility\SearchPreprocessor;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;

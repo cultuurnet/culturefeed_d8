@@ -2,7 +2,7 @@ services:
   # Intermediate search page service
   culturefeed_agenda.search_page_service:
     class: Drupal\culturefeed_agenda\AgendaSearchPageService
-    arguments: ['@request_stack', '@culturefeed_search_api.client', '@culturefeed_search.facet_helper', '@event_dispatcher']
+    arguments: ['@request_stack', '@culturefeed_search_api.client', '@culturefeed_search.facet_helper', '@event_dispatcher', '@pager.manager']
 
   # Culturefeed event parameter convert
   culturefeed_event:

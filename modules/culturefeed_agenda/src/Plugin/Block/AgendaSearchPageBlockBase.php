@@ -53,7 +53,7 @@ abstract class AgendaSearchPageBlockBase extends BlockBase implements ContainerF
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\culturefeed_search_api\SearchPageServiceInterface $searchPageService
+   * @param \Drupal\culturefeed_search\SearchPageServiceInterface $searchPageService
    *   The search page service.
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The form builder.

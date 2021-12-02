@@ -2,8 +2,8 @@ name: 'CultureFeed Content'
 type: module
 description: 'Field to render a CultureFeed search'
 package: 'CultureFeed'
-core: '8.x'
+core_version_requirement: ^9
 dependencies:
-  - culturefeed_agenda
+  - culturefeed_agenda:culturefeed_agenda
 'interface translation project': culturefeed_content
 'interface translation server pattern': modules/custom/culturefeed_content/translations/%language.po

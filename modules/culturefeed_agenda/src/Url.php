@@ -3,7 +3,6 @@
 namespace Drupal\culturefeed_agenda;
 
 use CultuurNet\SearchV3\ValueObjects\Event;
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Url as CoreUrl;
 
 /**
@@ -19,7 +18,7 @@ class Url extends CoreUrl {
    * @param array $options
    *   Extra options for the url.
    *
-   * @return Drupal\Core\Url
+   * @return \Drupal\Core\Url
    *   The Url
    */
   public static function toEventDetail(Event $event, array $options = []) {
@@ -51,7 +50,7 @@ class Url extends CoreUrl {
     $length = 50;
 
     // Lowercase.
-    $string = Unicode::strtolower($string);
+    $string = mb_strtolower($string);
 
     // Replace non alphanumeric and non underscore charachters by separator.
     $string = preg_replace('/[^a-z0-9]/i', '-', $string);

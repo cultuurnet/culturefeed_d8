@@ -1,4 +1,4 @@
 services:
   culturefeed_content.field_lazy_builder:
     class: Drupal\culturefeed_content\CulturefeedContentFieldLazyBuilder
-    arguments: ['@culturefeed_search_api.client']
+    arguments: ['@culturefeed_search_api.client', '@pager.manager']

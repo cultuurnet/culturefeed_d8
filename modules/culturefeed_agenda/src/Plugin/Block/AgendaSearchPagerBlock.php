@@ -3,6 +3,7 @@
 namespace Drupal\culturefeed_agenda\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides an 'AgendaSearchPagerBlock' block.
@@ -20,11 +21,30 @@ class AgendaSearchPagerBlock extends AgendaSearchPageBlockBase {
   const PAGER_MAX_LINKS = 5;
 
   /**
+   * The Pager manager service.
+   *
+   * @var \Drupal\Core\Pager\PagerManagerInterface
+   */
+  protected $pagerManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('pager.manager')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function build() {
     // Initialize the pager.
-    pager_default_initialize($this->searchPageService->getTotalResults(), $this->searchPageService->getItemsPerPage());
+    $this->pagerManager->createPager($this->searchPageService->getTotalResults(), $this->searchPageService->getItemsPerPage());
 
     return [
       '#theme' => 'culturefeed_agenda_search_pager',
