@@ -1,0 +1,10 @@
+name: Culturefeed organisations
+description: 'Provides the Culturefeed organisation functionality'
+type: module
+core: 8.x
+package: 'CultureFeed'
+dependencies:
+  - culturefeed_search
+  - culturefeed_search_api
+'interface translation project': culturefeed_organisations
+'interface translation server pattern': modules/custom/culturefeed_organisations/translations/%language.po
