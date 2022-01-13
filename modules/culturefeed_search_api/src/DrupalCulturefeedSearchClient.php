@@ -229,6 +229,14 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function searchOrganizers(SearchQueryInterface $searchQuery): PagedCollection {
+    $this->alterQuery($searchQuery, 'organizers');
+    return $this->client->searchOrganizers($searchQuery);
+  }
+
+  /**
    * Get the available regions.
    *
    * @return \stdClass[]
