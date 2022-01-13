@@ -4,3 +4,19 @@
  * @file
  * Contains culturefeed_organisations.module.
  */
+
+
+/**
+ * Implements hook_theme().
+ */
+function culturefeed_organisations_theme() {
+  $theme = [];
+
+  $theme['culturefeed_organizer'] = [
+    'render element' => 'elements',
+    'template' => 'culturefeed-organizer',
+    'file' => 'includes/theme.inc',
+  ];
+
+  return $theme;
+}

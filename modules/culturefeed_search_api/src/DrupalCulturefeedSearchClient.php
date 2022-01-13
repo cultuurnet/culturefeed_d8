@@ -29,6 +29,11 @@ use Monolog\Logger as MonologLogger;
  */
 class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInterface {
 
+  public const ITEM_ENDPOINTS = [
+    'event' => 'searchEvents',
+    'organizer' => 'searchOrganizers',
+  ];
+
   /**
    * The search client.
    *
@@ -179,7 +184,35 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    * {@inheritdoc}
    */
   public function searchEvent(string $eventId, bool $reset = FALSE) {
-    $cid = 'culturefeed_search_api.search_event:' . $eventId;
+    return $this->searchItem('event', $eventId, $reset);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function searchOrganizer(string $organizerId, bool $reset = FALSE) {
+    return $this->searchItem('organizer', $organizerId, $reset);
+  }
+
+  /**
+   * Search for a single item (eg. organizer, event).
+   *
+   * @param string $type
+   *   The item type.
+   * @param string $id
+   *   The Id to search for.
+   * @param bool $reset
+   *   Indicates if the cache should be reset.
+   *
+   * @return mixed|null
+   *   The item or null.
+   */
+  private function searchItem(string $type, string $id, bool $reset = FALSE) {
+    if (!isset(self::ITEM_ENDPOINTS[$type])) {
+      throw new \Exception('Invalid search type specified');
+    }
+
+    $cid = sprintf('culturefeed_search_api.search_%s:%s', $type, $id);
 
     if (!$reset && isset($this->staticCache[$cid])) {
       return $this->staticCache[$cid];
@@ -191,20 +224,21 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     }
 
     $searchQuery = new SearchQuery(TRUE);
-    $searchQuery->addParameter(new Id($eventId));
+    $searchQuery->addParameter(new Id($id));
     $searchQuery->addParameter(new AudienceType('*'));
 
-    $this->alterQuery($searchQuery, 'event');
+    $this->alterQuery($searchQuery, $type);
 
-    $events = $this->client->searchEvents($searchQuery);
-    $items = $events->getMember()->getItems() ?? [];
+    $method = self::ITEM_ENDPOINTS[$type];
+    $items = $this->client->{$method}($searchQuery);
+    $items = $items->getMember()->getItems() ?? [];
 
     $this->staticCache[$cid] = !empty($items) ? reset($items) : NULL;
 
     if ($this->cacheEnabled) {
       $this->cacheBackend->set($cid, $this->staticCache[$cid], strtotime('+2 hours'), [
         'culturefeed_search_api',
-        'culturefeed_search_api.search_event',
+        'culturefeed_search_api.search_' . $type,
         $cid,
       ]);
     }
