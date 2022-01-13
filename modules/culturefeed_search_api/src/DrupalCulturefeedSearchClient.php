@@ -8,6 +8,7 @@ use CultuurNet\SearchV3\SearchClient;
 use CultuurNet\SearchV3\SearchQuery;
 use CultuurNet\SearchV3\SearchQueryInterface;
 use CultuurNet\SearchV3\Serializer\Serializer;
+use CultuurNet\SearchV3\ValueObjects\PagedCollection;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigException;
@@ -143,14 +144,14 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
   /**
    * {@inheritdoc}
    */
-  public function getClient() {
+  public function getClient(): ClientInterface {
     return $this->client->getClient();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function searchEvents(SearchQueryInterface $searchQuery) {
+  public function searchEvents(SearchQueryInterface $searchQuery): PagedCollection {
     $this->alterQuery($searchQuery, 'events');
     $query = $searchQuery->toArray();
     $hash = Crypt::hashBase64(serialize($query));
@@ -214,7 +215,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
   /**
    * {@inheritdoc}
    */
-  public function searchPlaces(SearchQueryInterface $searchQuery) {
+  public function searchPlaces(SearchQueryInterface $searchQuery): PagedCollection {
     $this->alterQuery($searchQuery, 'places');
     return $this->client->searchPlaces($searchQuery);
   }
@@ -222,7 +223,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
   /**
    * {@inheritdoc}
    */
-  public function searchOffers(SearchQueryInterface $searchQuery) {
+  public function searchOffers(SearchQueryInterface $searchQuery): PagedCollection {
     $this->alterQuery($searchQuery, 'offers');
     return $this->client->searchOffers($searchQuery);
   }
