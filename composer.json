@@ -5,7 +5,7 @@
 	"license": "Apache-2.0",
 	"require": {
 		"cultuurnet/culturefeed-php": "dev-develop",
-		"cultuurnet/search-v3": "dev-master",
+		"cultuurnet/search-v3": "dev-epic/organizers",
 		"cultuurnet/search-v3-php-utilities": "dev-master",
 		"ext-curl": "*"
 	},
