@@ -5,6 +5,7 @@
  * Template preprocessors for agenda templates.
  */
 
+use Purl\Url;
 use CultuurNet\SearchV3Utilities\SearchPreprocessor;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Link;
@@ -140,6 +141,25 @@ function template_preprocess_culturefeed_event__teaser(array &$variables) {
     elseif ($variables['where']['name']) {
       $variables['location'] = $variables['where']['name'];
     }
+  }
+}
+
+/**
+ * Preprocess additional variables for an event in the minii teaser view mode.
+ *
+ * @param array $variables
+ *   Array of currently known variables.
+ */
+function template_preprocess_culturefeed_event__teaser_mini(array &$variables) {
+  if (!empty($variables['image'])) {
+    $url = Url::parse($variables['image']);
+    $url->getQuery()->setData([
+      'crop' => 'auto',
+      'width' => 75,
+      'height' => 75,
+    ]);
+
+    $variables['image'] = $url->__toString();
   }
 }
 
