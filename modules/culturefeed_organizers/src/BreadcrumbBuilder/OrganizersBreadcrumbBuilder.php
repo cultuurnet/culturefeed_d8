@@ -10,9 +10,9 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Provides a breadcrumb builder for organisations.
+ * Provides a breadcrumb builder for organizers.
  */
-class OrganisationsBreadcrumbBuilder implements BreadcrumbBuilderInterface {
+class OrganizersBreadcrumbBuilder implements BreadcrumbBuilderInterface {
 
   use StringTranslationTrait;
 
