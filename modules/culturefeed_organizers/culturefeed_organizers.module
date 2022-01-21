@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Contains culturefeed_organizers.module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function culturefeed_organizers_theme() {
+  $theme = [];
+
+  $theme['culturefeed_organizer'] = [
+    'render element' => 'elements',
+    'template' => 'culturefeed-organizer',
+    'file' => 'includes/theme.inc',
+  ];
+
+  $theme['culturefeed_organizers_organizer_events'] = [
+    'variables' => [
+      'result' => NULL,
+    ],
+    'template' => 'culturefeed-organizers-organizer-events',
+    'file' => 'includes/theme.inc',
+  ];
+
+  return $theme;
+}

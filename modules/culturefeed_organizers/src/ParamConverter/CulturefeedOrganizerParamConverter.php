@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\culturefeed_organisations\ParamConverter;
+namespace Drupal\culturefeed_organizers\ParamConverter;
 
 use Drupal\Core\ParamConverter\ParamConverterInterface;
 use Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface;
@@ -49,7 +49,7 @@ class CulturefeedOrganizerParamConverter implements ParamConverterInterface {
     }
 
     try {
-      return $this->searchClient->searchOrganizer($value, $this->request->query->has('reset'));
+      return $this->searchClient->searchOrganizer($value);
     }
     catch (\Throwable $t) {
       return NULL;

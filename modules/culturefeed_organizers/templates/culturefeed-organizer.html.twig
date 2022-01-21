@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Default theme implementation for an organizer.
+ *
+ * Available variables:
+ *
+ * @see template_preprocess_culturefeed_organizer()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div>
+  {% if description %}
+    <p>{{ description }}</p>
+  {% endif %}
+
+  <div>
+  {% if image %}
+    <img src="{{ image }}?crop=auto&scale=both&width=500" alt="{{ name }}"/>
+  {% endif %}
+  </div>
+
+  <div>
+  {% if address %}
+    {{ address.street }}<br/>
+    {{ address.postalcode }} {{ address.city }}
+  {% endif %}
+  </div>
+
+  {% if contact_info.emails %}
+    <div>
+      {% for email in contact_info.emails %}
+        {{ email }}<br/>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if contact_info.phone_numbers %}
+    <div>
+      {% for number in contact_info.phone_numbers %}
+        {{ number }}<br/>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if links %}
+    <div>
+      {% for link in links %}
+        <a href="{{ link }}">{{ link }}</a><br/>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</div>

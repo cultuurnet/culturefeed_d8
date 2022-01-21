@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\culturefeed_organisations\Controller;
+namespace Drupal\culturefeed_organizers\Controller;
 
 use CultuurNet\SearchV3\ValueObjects\Organizer;
 use Drupal\Core\Controller\ControllerBase;

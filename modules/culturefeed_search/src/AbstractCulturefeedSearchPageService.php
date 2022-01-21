@@ -198,7 +198,7 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
 
     if (!empty($params['organiser'])) {
       // OrganizerId parameter not working at time of writing.
-      $this->searchQuery->addParameter(new Query('organizer.id:'.$params['organiser']));
+      $this->searchQuery->addParameter(new Query('organizer.id:' . $params['organiser']));
     }
 
     // Parameter mapping.

@@ -1,6 +1,6 @@
 services:
   culturefeed_organizer:
-    class: Drupal\culturefeed_organisations\ParamConverter\CulturefeedOrganizerParamConverter
+    class: Drupal\culturefeed_organizers\ParamConverter\CulturefeedOrganizerParamConverter
     arguments: ['@culturefeed_search_api.client', '@request_stack']
     tags:
       - { name: paramconverter }
