@@ -1,23 +1,23 @@
 <?php
 
-namespace Drupal\culturefeed_agenda\Plugin\Block;
+namespace Drupal\culturefeed_organizers\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\culturefeed_agenda\Form\AgendaSearchForm;
+use Drupal\culturefeed_organizers\Form\OrganizerSearchForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides an 'AgendaSearchFormBlock' block.
+ * Provides an 'OrganizerSearchFormBlock' block.
  *
  * @Block(
- *  id = "culturefeed_agenda_search_form",
- *  admin_label = @Translation("Agenda search form")
+ *  id = "culturefeed_organizer_search_form",
+ *  admin_label = @Translation("Organizer search form")
  * )
  */
-class AgendaSearchFormBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class OrganizerSearchFormBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The form builder.
@@ -55,12 +55,11 @@ class AgendaSearchFormBlock extends BlockBase implements ContainerFactoryPluginI
     );
   }
 
-
   /**
    * {@inheritdoc}
    */
   public function build() {
-    return $this->formBuilder->getForm(AgendaSearchForm::class);
+    return $this->formBuilder->getForm(OrganizerSearchForm::class);
   }
 
   /**

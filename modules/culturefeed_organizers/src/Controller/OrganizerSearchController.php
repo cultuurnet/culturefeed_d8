@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\culturefeed_agenda\Controller;
+namespace Drupal\culturefeed_organizers\Controller;
 
 use Drupal\Core\Block\BlockManagerInterface;
 use Drupal\Core\Cache\Cache;
@@ -8,9 +8,9 @@ use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Defines a route controller for the agenda search page.
+ * Defines a route controller for the organizer search page.
  */
-class AgendaSearchController extends ControllerBase {
+class OrganizerSearchController extends ControllerBase {
 
   /**
    * The block manager.
@@ -39,15 +39,15 @@ class AgendaSearchController extends ControllerBase {
   }
 
   /**
-   * Agenda search page.
+   * Organizer search page.
    *
    * @return array
    *   The response array.
    */
   public function searchPage() {
     return [
-      '#theme' => 'culturefeed_agenda_search_page',
-      '#search_form' => $this->buildBlockPlugin('culturefeed_agenda_search_form'),
+      '#theme' => 'culturefeed_organizer_search_page',
+      '#search_form' => $this->buildBlockPlugin('culturefeed_organizer_search_form'),
       '#active_filters' => $this->buildBlockPlugin('culturefeed_search_active_filters_block'),
       '#results' => $this->buildBlockPlugin('culturefeed_search_search_page_results'),
       '#pager' => $this->buildBlockPlugin('culturefeed_search_search_page_pager'),
@@ -69,17 +69,17 @@ class AgendaSearchController extends ControllerBase {
     $build = [];
 
     $blockPlugin = $this->blockManager->createInstance($pluginId, [
-      'service' => 'culturefeed_agenda.search_page_service',
+      'service' => 'culturefeed_organizer.search_page_service',
     ]);
     if ($blockPlugin->access($this->currentUser())) {
       $build = [
-        '#cache' => [
-          'keys' => [$pluginId],
-          'contexts' => $blockPlugin->getCacheContexts(),
-          'tags' => Cache::mergeTags(['block_view'], $blockPlugin->getCacheTags()),
-          'max-age' => $blockPlugin->getCacheMaxAge(),
-        ],
-      ] + $blockPlugin->build();
+          '#cache' => [
+            'keys' => [$pluginId],
+            'contexts' => $blockPlugin->getCacheContexts(),
+            'tags' => Cache::mergeTags(['block_view'], $blockPlugin->getCacheTags()),
+            'max-age' => $blockPlugin->getCacheMaxAge(),
+          ],
+        ] + $blockPlugin->build();
     }
 
     return $build;

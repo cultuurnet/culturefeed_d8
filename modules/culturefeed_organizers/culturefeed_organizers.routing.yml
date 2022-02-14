@@ -9,3 +9,11 @@ culturefeed_organizers.organizer_detail:
         type: culturefeed_organizer
   requirements:
     _access: 'TRUE'
+
+culturefeed_organizers.search:
+  path: '/organizers'
+  defaults:
+    _controller: '\Drupal\culturefeed_organizers\Controller\OrganizerSearchController::searchPage'
+    _title: 'Organizers'
+  requirements:
+    _access: 'TRUE'

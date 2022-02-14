@@ -1,4 +1,13 @@
 services:
+  culturefeed_search.abstract_search_page_service:
+    arguments: ['@request_stack', '@culturefeed_search_api.client', '@culturefeed_search.facet_helper', '@event_dispatcher']
+    abstract: true
+
+  culturefeed_search.search_page_service_manager:
+    class: Drupal\culturefeed_search\SearchPageServiceManager
+    tags:
+      - { name: service_collector, tag: culturefeed_search_page, call: addSearchPage }
+
   culturefeed_search.facet_helper:
     class: Drupal\culturefeed_search\FacetHelper
     arguments: []
@@ -7,4 +16,4 @@ services:
     class: Drupal\culturefeed_search\EventSubscriber\SearchPagePrepareFacetsEventSubscriber
     arguments: ['@request_stack', '@keyvalue.expirable']
     tags:
-    - { name: 'event_subscriber' }
+      - { name: 'event_subscriber' }

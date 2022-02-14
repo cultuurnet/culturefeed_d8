@@ -17,6 +17,12 @@ function culturefeed_organizers_theme() {
     'file' => 'includes/theme.inc',
   ];
 
+  $theme['culturefeed_organizer__teaser'] = [
+    'render element' => 'elements',
+    'template' => 'culturefeed-organizer--teaser',
+    'base hook' => 'culturefeed_organizer',
+  ];
+
   $theme['culturefeed_organizers_organizer_events'] = [
     'variables' => [
       'result' => NULL,
@@ -25,5 +31,34 @@ function culturefeed_organizers_theme() {
     'file' => 'includes/theme.inc',
   ];
 
+  $theme['culturefeed_organizers_search_page'] = [
+    'variables' => [
+      'search_form' => NULL,
+      'active_filters' => NULL,
+      'result_count' => NULL,
+      'results' => NULL,
+      'pager' => NULL,
+      'result_count_summary' => NULL,
+    ],
+  ];
+
+  $theme['culturefeed_organizers_search_form'] = [
+    'render element' => 'form',
+    'file' => 'includes/theme.inc',
+  ];
+
   return $theme;
+}
+
+/**
+ * Implements hook_theme_suggestions_culturefeed_organizer().
+ */
+function culturefeed_organizers_theme_suggestions_culturefeed_organizer(array $variables) {
+  $suggestions = [];
+  $view_mode = $variables['elements']['#view_mode'] ?? 'full';
+
+  // View mode suggestion.
+  $suggestions[] = 'culturefeed_organizer__' . $view_mode;
+
+  return $suggestions;
 }
