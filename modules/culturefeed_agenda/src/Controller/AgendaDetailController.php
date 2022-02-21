@@ -5,7 +5,7 @@ namespace Drupal\culturefeed_agenda\Controller;
 use CultuurNet\SearchV3\ValueObjects\Event;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\culturefeed_agenda\Url;
+use Drupal\culturefeed_search\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -52,8 +52,7 @@ class AgendaDetailController extends ControllerBase {
    *   Return render array or redirect to event detail page.
    */
   public function detail($slug, Event $event) {
-
-    if ($slug !== Url::eventSlug($event, $this->currentLanguage->getId())) {
+    if ($slug !== Url::slug($event->getName(), $this->currentLanguage->getId())) {
       return new RedirectResponse(Url::toEventDetail($event)->toString(), 301);
     }
 
@@ -74,7 +73,7 @@ class AgendaDetailController extends ControllerBase {
    * @param \CultuurNet\SearchV3\ValueObjects\Event $event
    *   The Culturefeed event being displayed.
    *
-   * @return \Drupal\Component\Render\FormattableMarkup
+   * @return \Drupal\Component\Render\FormattableMarkup|string
    *   The page title.
    */
   public function title(Event $event) {
