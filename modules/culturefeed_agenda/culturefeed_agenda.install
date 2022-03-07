@@ -9,7 +9,10 @@
  * Write url aliases for the translations.
  */
 function culturefeed_agenda_install() {
-  /** @var \Drupal\Core\Path\AliasStorageInterface $aliasStorage */
-  $aliasStorage = Drupal::service('path.alias_storage');
-  $aliasStorage->save('/agenda/search', '/agenda/zoeken', 'nl');
+  $path_alias = \Drupal::entityTypeManager()->getStorage('path_alias')->create([
+    'path' => '/agenda/search',
+    'alias' => '/agenda/zoeken',
+    'langcode' => 'nl',
+  ]);
+  $path_alias->save();
 }

@@ -9,6 +9,7 @@ use CultuurNet\SearchV3\Parameter\TermIds;
 use CultuurNet\SearchV3\SearchQuery;
 use CultuurNet\SearchV3\SearchQueryInterface;
 use CultuurNet\SearchV3\ValueObjects\PagedCollection;
+use Drupal\Core\Pager\PagerManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\culturefeed_search\Event\SearchPagePrepareFacetsEvent;
 use Drupal\culturefeed_search\Event\SearchPageServiceExecuteEvent;
@@ -55,6 +56,13 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
    * @var \Symfony\Component\EventDispatcher\EventDispatcher
    */
   protected $eventDispatcher;
+
+  /**
+   * The Pager manager service.
+   *
+   * @var \Drupal\Core\Pager\PagerManagerInterface
+   */
+  protected $pagerManager;
 
   /**
    * The search query.
@@ -109,12 +117,15 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
    *   Facet helper service.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
+   * @param \Drupal\Core\Pager\PagerManagerInterface $pager_manager
+   *   The Pager manager service.
    */
-  public function __construct(RequestStack $requestStack, DrupalCulturefeedSearchClientInterface $searchClient, FacetHelper $facetHelper, EventDispatcherInterface $eventDispatcher) {
+  public function __construct(RequestStack $requestStack, DrupalCulturefeedSearchClientInterface $searchClient, FacetHelper $facetHelper, EventDispatcherInterface $eventDispatcher, PagerManagerInterface $pager_manager) {
     $this->currentRequest = $requestStack->getCurrentRequest();
     $this->searchClient = $searchClient;
     $this->facetHelper = $facetHelper;
     $this->eventDispatcher = $eventDispatcher;
+    $this->pagerManager = $pager_manager;
 
     // Initialize with an empty search query and search result.
     $this->searchQuery = new SearchQuery(TRUE);
@@ -147,14 +158,14 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
   protected function execute() {
     try {
       // Build the search query.
-      $this->searchQuery->setStart(pager_find_page() * $this->itemsPerPage);
+      $this->searchQuery->setStart($this->pagerManager->findPage() * $this->itemsPerPage);
       $this->searchQuery->setLimit($this->itemsPerPage);
 
       // Set API search parameters according to query parameters.
       $this->setSearchParameters($this->currentRequest->query->all());
 
       // Allow others to alter the query before execution.
-      $this->eventDispatcher->dispatch(SearchPageServiceExecuteEvent::EXECUTE, new SearchPageServiceExecuteEvent($this->searchQuery));
+      $this->eventDispatcher->dispatch(new SearchPageServiceExecuteEvent($this->searchQuery), SearchPageServiceExecuteEvent::EXECUTE);
 
       // Add hard-coded facet types.
       $this->addFacets();
@@ -319,7 +330,7 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
 
       // Allow other modules/scripts to react to the facets being prepared.
       /** @var \Drupal\culturefeed_search\Event\SearchPagePrepareFacetsEvent $event */
-      $event = $this->eventDispatcher->dispatch(SearchPagePrepareFacetsEvent::PREPARE, new SearchPagePrepareFacetsEvent($this->facets));
+      $event = $this->eventDispatcher->dispatch(new SearchPagePrepareFacetsEvent($this->facets), SearchPagePrepareFacetsEvent::PREPARE);
       $this->facets = $event->getFacets();
     }
 

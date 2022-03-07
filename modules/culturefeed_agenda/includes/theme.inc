@@ -5,13 +5,12 @@
  * Template preprocessors for agenda templates.
  */
 
-use Purl\Url as PurlUrl;
-use CultuurNet\SearchV3Utilities\SearchPreprocessor;
+use Drupal\culturefeed_agenda\Utility\SearchPreprocessor;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url as CoreUrl;
-use Drupal\culturefeed_search\Url;
+use Drupal\culturefeed_agenda\Url;
 
 /**
  * Preprocess an event item.
@@ -145,25 +144,6 @@ function template_preprocess_culturefeed_event__teaser(array &$variables) {
 }
 
 /**
- * Preprocess additional variables for an event in the minii teaser view mode.
- *
- * @param array $variables
- *   Array of currently known variables.
- */
-function template_preprocess_culturefeed_event__teaser_mini(array &$variables) {
-  if (!empty($variables['image'])) {
-    $url = PurlUrl::parse($variables['image']);
-    $url->getQuery()->setData([
-      'crop' => 'auto',
-      'width' => 75,
-      'height' => 75,
-    ]);
-
-    $variables['image'] = $url->__toString();
-  }
-}
-
-/**
  * Preprocess additional variables for an event in the full view mode.
  *
  * @param array $variables
@@ -230,3 +210,60 @@ function template_preprocess_culturefeed_event__full(array &$variables) {
   }
 }
 
+/**
+ * Preprocess Culturefeed agenda search results.
+ *
+ * @param array $variables
+ *   List of current known variables.
+ */
+function template_preprocess_culturefeed_agenda_search_results(array &$variables) {
+  // Prepare the search result rows.
+  $variables['rows'] = [];
+
+  /** @var \CultuurNet\SearchV3\ValueObjects\Event $item */
+  foreach ($variables['results'] as $item) {
+    $variables['rows'][] = [
+      '#theme' => 'culturefeed_event',
+      '#view_mode' => 'teaser',
+      '#item' => $item,
+      '#settings' => [
+        'image' => [
+          'width' => 150,
+          'height' => 150,
+          'fit' => 'auto',
+        ],
+      ],
+    ];
+  }
+
+  // Reset url.
+  $variables['reset_url'] = Url::fromRoute('<current>')->toString();
+}
+
+/**
+ * Preprocess Culturefeed agenda search result count summary.
+ *
+ * @param array $variables
+ *   List of current known variables.
+ */
+function template_preprocess_culturefeed_agenda_search_result_count_summary(array &$variables) {
+  $variables['summary'] = NULL;
+
+  $total = $variables['total'];
+  $currentPage = $variables['current_page'];
+  $itemsPerPage = $variables['items_per_page'];
+
+  // Don't show the text if there is only one result item.
+  if ($total > 1) {
+    $variables['summary'] = t('@from-@to of @count results',
+      [
+        '@from' => $currentPage * $itemsPerPage + 1,
+        '@to' => $total < 20 ? $total : $currentPage * $itemsPerPage + 20,
+        '@count' => $total,
+      ],
+      [
+        'context' => 'culturefeed_agenda',
+      ]
+    );
+  }
+}

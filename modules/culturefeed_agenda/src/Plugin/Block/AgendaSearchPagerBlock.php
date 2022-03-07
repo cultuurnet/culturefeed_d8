@@ -3,7 +3,6 @@
 namespace Drupal\culturefeed_agenda\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
-use Drupal\culturefeed_search\Plugin\Block\SearchPageBlockBase;
 use Drupal\culturefeed_search\Plugin\Block\SearchPagePagerBlock;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Culturefeed D8" default="test">
+<project name="Culturefeed D9" default="test">
 
     <fileset id="php" dir="./" excludes="**/*.svg">
         <include name="**/*.php"/>

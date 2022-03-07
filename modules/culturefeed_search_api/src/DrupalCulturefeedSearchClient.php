@@ -174,7 +174,12 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     $this->staticCache[$cid] = $this->client->searchEvents($searchQuery);
 
     if ($this->cacheEnabled) {
-      $this->cacheBackend->set($cid, $this->staticCache[$cid], strtotime('+2 hours'), ['culturefeed_search_api', 'culturefeed_search_api.search_events']);
+      $this->cacheBackend->set(
+        $cid,
+        $this->staticCache[$cid],
+        strtotime('+2 hours'),
+        ['culturefeed_search_api', 'culturefeed_search_api.search_events']
+      );
     }
 
     return $this->staticCache[$cid];
@@ -307,7 +312,12 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     $this->staticCache[$cid] = json_decode($data);
 
     if ($this->cacheEnabled) {
-      $this->cacheBackend->set($cid, $this->staticCache[$cid], strtotime('+24 hours'), ['culturefeed_search_api', 'culturefeed_search_api.regions_list']);
+      $this->cacheBackend->set(
+        $cid,
+        $this->staticCache[$cid],
+        strtotime('+24 hours'),
+        ['culturefeed_search_api', 'culturefeed_search_api.regions_list']
+      );
     }
 
     return $this->staticCache[$cid];
