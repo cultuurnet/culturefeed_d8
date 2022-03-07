@@ -1,13 +1,14 @@
 <?php
 
-namespace Drupal\culturefeed_agenda;
+namespace Drupal\culturefeed_search;
 
 use CultuurNet\SearchV3\ValueObjects\Event;
-use Drupal\Component\Utility\Unicode;
+use CultuurNet\SearchV3\ValueObjects\Organizer;
+use CultuurNet\SearchV3\ValueObjects\TranslatedString;
 use Drupal\Core\Url as CoreUrl;
 
 /**
- * Url class for culturefeed agenda.
+ * Url class for Culturefeed search items.
  */
 class Url extends CoreUrl {
 
@@ -19,39 +20,54 @@ class Url extends CoreUrl {
    * @param array $options
    *   Extra options for the url.
    *
-   * @return Drupal\Core\Url
-   *   The Url
+   * @return \Drupal\Core\Url
+   *   The Url.
    */
-  public static function toEventDetail(Event $event, array $options = []) {
-
+  public static function toEventDetail(Event $event, array $options = []): CoreUrl {
     $language = $options['language'] ?? \Drupal::languageManager()->getCurrentLanguage();
 
     return CoreUrl::fromRoute('culturefeed_agenda.event_detail', [
-      'slug' => static::eventSlug($event, $language->getId()),
+      'slug' => static::slug($event->getName(), $language->getId()),
       'event' => $event->getCdbid(),
     ], $options);
   }
 
   /**
-   * Get the title slug for this event.
+   * Creates a new Url object that points to the organizer detail page.
    *
-   * @param \CultuurNet\SearchV3\ValueObjects\Event $event
-   *   The event to generate a slug for.
+   * @param \CultuurNet\SearchV3\ValueObjects\Organizer $event
+   *   The organizer to generate an url for.
+   * @param array $options
+   *   Extra options for the url.
+   *
+   * @return \Drupal\Core\Url
+   *   The Url.
+   */
+  public static function toOrganizerDetail(Organizer $organizer, array $options = []): CoreUrl {
+    $language = $options['language'] ?? \Drupal::languageManager()->getCurrentLanguage();
+
+    return CoreUrl::fromRoute('culturefeed_organizers.organizer_detail', [
+      'slug' => static::slug($organizer->getName(), $language->getId()),
+      'organizer' => $organizer->getCdbid(),
+    ], $options);
+  }
+
+  /**
+   * Gets a slug from a given TranslatedString object.
+   *
    * @param string $langcode
-   *   Langcode to use for generation.
+   *   Language to use for generation.
    *
    * @return bool|null|string|string[]
    *   The title slug.
    */
-  public static function eventSlug(Event $event, $langcode) {
-
-    // Transliterate.
-    $string = \Drupal::transliteration()->transliterate($event->getName()->getValueForLanguage($langcode));
+  public static function slug(TranslatedString $name, string $langcode) {
+    $string = \Drupal::transliteration()->transliterate($name->getValueForLanguage($langcode));
     $separator = '-';
     $length = 50;
 
     // Lowercase.
-    $string = Unicode::strtolower($string);
+    $string = mb_strtolower($string);
 
     // Replace non alphanumeric and non underscore charachters by separator.
     $string = preg_replace('/[^a-z0-9]/i', '-', $string);
