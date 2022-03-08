@@ -1,7 +1,7 @@
-name: Culturefeed organisations
-description: 'Provides the Culturefeed organisation functionality'
+name: Culturefeed organizers
+description: 'Provides the Culturefeed organizers functionality'
 type: module
-core: 8.x
+core_version_requirement: ^9
 package: 'CultureFeed'
 dependencies:
   - culturefeed_search
