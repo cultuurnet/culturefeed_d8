@@ -448,8 +448,8 @@ class SearchPreprocessor {
       // Temporary set to the default 'Available' till we have a solution to
       // fetch this from the valueObject.
       new BookingAvailability('Available'),
-      DateTimeImmutable::createFromMutable($event->getStartDate()),
-      DateTimeImmutable::createFromMutable($event->getEndDate()),
+      !empty($event->getStartDate()) ? DateTimeImmutable::createFromMutable($event->getStartDate()) : NULL,
+      !empty($event->getEndDate()) ? DateTimeImmutable::createFromMutable($event->getEndDate()) : NULL,
       new CalendarType($event->getCalendarType()),
     );
 
