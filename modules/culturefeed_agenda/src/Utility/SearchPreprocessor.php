@@ -441,7 +441,10 @@ class SearchPreprocessor {
   protected function eventToOffer(Event $event): Offer {
     $offer = new Offer(
       OfferType::event(),
-      new Status($event->getStatus()->getType(), $event->getStatus()->getReason()->getValues()),
+      new Status(
+        $event->getStatus()->getType(),
+        !empty($event->getStatus()->getReason()) ? $event->getStatus()->getReason()->getValues() : []
+      ),
       // Temporary set to the default 'Available' till we have a solution to
       // fetch this from the valueObject.
       new BookingAvailability('Available'),
