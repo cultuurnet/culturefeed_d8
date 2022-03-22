@@ -3,8 +3,14 @@
 namespace Drupal\culturefeed_agenda\Utility;
 
 use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
+use CultuurNet\CalendarSummaryV3\Offer\BookingAvailability;
+use CultuurNet\CalendarSummaryV3\Offer\CalendarType;
+use CultuurNet\CalendarSummaryV3\Offer\Offer;
+use CultuurNet\CalendarSummaryV3\Offer\OfferType;
+use CultuurNet\CalendarSummaryV3\Offer\Status;
 use CultuurNet\SearchV3\ValueObjects\Event;
 use CultuurNet\SearchV3\ValueObjects\Place;
+use DateTimeImmutable;
 use IntlDateFormatter;
 use Purl\Url;
 
@@ -314,7 +320,7 @@ class SearchPreprocessor {
 
     $formatter = new CalendarHTMLFormatter($locale);
 
-    return $formatter->format($event, 'md');
+    return $formatter->format($this->eventToOffer($event), 'md');
   }
 
   /**
@@ -340,7 +346,7 @@ class SearchPreprocessor {
 
     $formatter = new CalendarHTMLFormatter($locale);
 
-    return $formatter->format($event, 'lg');
+    return $formatter->format($this->eventToOffer($event), 'lg');
   }
 
   /**
@@ -421,6 +427,32 @@ class SearchPreprocessor {
     }
 
     return FALSE;
+  }
+
+  /**
+   * Transform an Event to an Offer to allow formatting of the Event.
+   *
+   * @param \CultuurNet\SearchV3\ValueObjects\Event $event
+   *   The Event.
+   *
+   * @return Offer
+   *   The Offer.
+   */
+  protected function eventToOffer(Event $event): Offer {
+    $offer = new Offer(
+      OfferType::event(),
+      new Status($event->getStatus()->getType(), $event->getStatus()->getReason()->getValues()),
+      // Temporary set to the default 'Available' till we have a solution to
+      // fetch this from the valueObject.
+      new BookingAvailability('Available'),
+      DateTimeImmutable::createFromMutable($event->getStartDate()),
+      DateTimeImmutable::createFromMutable($event->getEndDate()),
+      new CalendarType($event->getCalendarType()),
+    );
+
+    // @todo: Add the properties 'withSubEvents' and 'withOpeningHours'.
+
+    return $offer;
   }
 
 }
