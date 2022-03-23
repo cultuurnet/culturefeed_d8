@@ -1,6 +1,6 @@
 services:
   culturefeed_search.abstract_search_page_service:
-    arguments: ['@request_stack', '@culturefeed_search_api.client', '@culturefeed_search.facet_helper', '@event_dispatcher']
+    arguments: ['@request_stack', '@culturefeed_search_api.client', '@culturefeed_search.facet_helper', '@event_dispatcher', '@pager.manager']
     abstract: true
 
   culturefeed_search.search_page_service_manager:
