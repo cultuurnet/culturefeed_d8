@@ -4,6 +4,7 @@ namespace Drupal\culturefeed_search_api;
 
 use CultuurNet\SearchV3\Parameter\AudienceType;
 use CultuurNet\SearchV3\Parameter\Id;
+use CultuurNet\SearchV3\Parameter\Query;
 use CultuurNet\SearchV3\SearchClient;
 use CultuurNet\SearchV3\SearchQuery;
 use CultuurNet\SearchV3\SearchQueryInterface;
@@ -229,8 +230,14 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     }
 
     $searchQuery = new SearchQuery(TRUE);
-    $searchQuery->addParameter(new Id($id));
-    $searchQuery->addParameter(new AudienceType('*'));
+
+    // @todo: Remove when the organizer endpoint supports the ID parameter.
+    if ($type === 'organizer') {
+      $searchQuery->addParameter(new Query('id:' . $id));
+    } else {
+      $searchQuery->addParameter(new AudienceType('*'));
+      $searchQuery->addParameter(new Id($id));
+    }
 
     $this->alterQuery($searchQuery, $type);
 

@@ -48,7 +48,7 @@ class Url extends CoreUrl {
 
     return CoreUrl::fromRoute('culturefeed_organizers.organizer_detail', [
       'slug' => static::slug($organizer->getName(), $language->getId()),
-      'organizer' => $organizer->getCdbid(),
+      'culturefeed_organizer' => $organizer->getCdbid(),
     ], $options);
   }
 

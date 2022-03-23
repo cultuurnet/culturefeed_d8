@@ -5,6 +5,8 @@
  * Template preprocessors for Culturefeed organisation templates.
  */
 
+use Drupal\culturefeed_search\Url;
+
 /**
  * Preprocess an organizer item.
  *
@@ -38,6 +40,7 @@ function template_preprocess_culturefeed_organizer(array &$variables) {
     $variables['links'] = $contactPoint->getUrls();
   }
 
+  $variables['url'] = Url::toOrganizerDetail($organizer);
 }
 
 /**

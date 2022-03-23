@@ -5,7 +5,9 @@ namespace Drupal\culturefeed_organizers\Controller;
 use CultuurNet\SearchV3\ValueObjects\Organizer;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\culturefeed_search\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Defines a controller for Culturefeed organizer details.
@@ -43,31 +45,34 @@ class OrganizerDetailController extends ControllerBase {
    *
    * @param string $slug
    *   The organizer slug.
-   * @param \CultuurNet\SearchV3\ValueObjects\Organizer $organizer
+   * @param \CultuurNet\SearchV3\ValueObjects\Organizer $culturefeed_organizer
    *   The Culturefeed organizer to display.
    *
    * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
    *   Return render array or redirect to event detail page.
    */
-  public function detail(string $slug, Organizer $organizer) {
-    // @todo: Redirect to slug if needed (refactor URL class in culturefeed_agenda module).
+  public function detail(string $slug, Organizer $culturefeed_organizer) {
+    if ($slug !== Url::slug($culturefeed_organizer->getName(), $this->currentLanguage->getId())) {
+      return new RedirectResponse(Url::toOrganizerDetail($culturefeed_organizer)->toString(), 301);
+    }
+
     return [
       '#theme' => 'culturefeed_organizer',
-      '#item' => $organizer,
+      '#item' => $culturefeed_organizer,
     ];
   }
 
   /**
    * Title callback for detail pages.
    *
-   * @param \CultuurNet\SearchV3\ValueObjects\Organizer $organizer
+   * @param \CultuurNet\SearchV3\ValueObjects\Organizer $culturefeed_organizer
    *   The Culturefeed event being displayed.
    *
    * @return \Drupal\Component\Render\FormattableMarkup|string
    *   The page title.
    */
-  public function title(Organizer $organizer) {
-    return $organizer->getName()->getValueForLanguage($this->currentLanguage->getId());
+  public function title(Organizer $culturefeed_organizer) {
+    return $culturefeed_organizer->getName()->getValueForLanguage($this->currentLanguage->getId());
   }
 
 }

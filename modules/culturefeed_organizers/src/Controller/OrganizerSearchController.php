@@ -46,7 +46,7 @@ class OrganizerSearchController extends ControllerBase {
    */
   public function searchPage() {
     return [
-      '#theme' => 'culturefeed_organizer_search_page',
+      '#theme' => 'culturefeed_organizers_search_page',
       '#search_form' => $this->buildBlockPlugin('culturefeed_organizer_search_form'),
       '#active_filters' => $this->buildBlockPlugin('culturefeed_search_active_filters_block'),
       '#results' => $this->buildBlockPlugin('culturefeed_search_search_page_results'),

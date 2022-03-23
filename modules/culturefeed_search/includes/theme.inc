@@ -135,7 +135,7 @@ function template_preprocess_culturefeed_search_search_results(array &$variables
   }
 
   // Reset url.
-  $variables['reset_url'] = \Drupal\culturefeed_agenda\Url::fromRoute('<current>')->toString();
+  $variables['reset_url'] = Url::fromRoute('<current>')->toString();
 }
 
 /**
