@@ -5,6 +5,7 @@
  * Builds placeholder replacement tokens for culturefeed organizer related data.
  */
 
+use CultuurNet\SearchV3\ValueObjects\Organizer;
 use Drupal\Core\Render\BubbleableMetadata;
 
 /**
@@ -33,7 +34,7 @@ function culturefeed_organizers_token_info() {
 function culturefeed_organizers_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
 
-  if ($type == 'culturefeed_organizer' && !empty($data['culturefeed_organizer'])) {
+  if ($type == 'culturefeed_organizer' && !empty($data['culturefeed_organizer']) && $data['culturefeed_organizer'] instanceof Organizer) {
     /** @var \CultuurNet\SearchV3\ValueObjects\Organizer $organizer */
     $organizer = $data['culturefeed_organizer'];
     $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();

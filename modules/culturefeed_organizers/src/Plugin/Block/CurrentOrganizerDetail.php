@@ -12,8 +12,8 @@ use Drupal\Core\Plugin\ContextAwarePluginInterface;
  * @Block(
  *  id = "current_organizer_detail",
  *  admin_label = @Translation("Current organizer detail"),
- *  context = {
- *    "culturefeed_organizer" = @ContextDefinition("culturefeed_organizer", required = TRUE)
+ *  context_definitions = {
+ *     "culturefeed_organizer" = @ContextDefinition("culturefeed_organizer", required = TRUE)
  *  }
  * )
  */
