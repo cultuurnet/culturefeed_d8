@@ -9,9 +9,10 @@ culturefeed_search.settings:
     _admin_route: TRUE
 
 culturefeed_search.regions_autocomplete:
-  path: '/culturfeed-search/regions-autocomplete'
+  path: '/culturfeed-search/regions-autocomplete/{type}'
   defaults:
     _controller: '\Drupal\culturefeed_search\Controller\RegionsAutocompleteController::handleAutocomplete'
     _format: json
+    type: value
   requirements:
     _access: 'TRUE'
