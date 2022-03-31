@@ -24,7 +24,7 @@ function template_preprocess_culturefeed_organizer(array &$variables) {
   $variables['id'] = $organizer->getCdbid();
   $variables['name'] = $organizer->getName()->getValueForLanguage($langcode);
   $variables['description'] = $organizer->getDescription() ? $organizer->getDescription()->getValueForLanguage($langcode) : NULL;
-  $variables['image'] = $organizer->getImage();
+  $variables['image'] = $organizer->getMainImage();
 
   if ($address = $organizer->getAddress()) {
     if ($translatedAddress = $address->getAddressForLanguage($langcode)) {
