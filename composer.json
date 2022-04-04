@@ -5,10 +5,8 @@
 	"license": "Apache-2.0",
 	"require": {
 		"cultuurnet/search-v3": "dev-epic/organizers",
-		"cultuurnet/search-v3-php-utilities": "dev-master",
 		"ext-curl": "*",
 		"cultuurnet/calendar-summary-v3": "^3.4",
-		"cultuurnet/culturefeed-php": "^1.13",
 		"drupal/core": "^9.0",
 		"jwage/purl": "^1.0",
 		"ext-intl": "*"
