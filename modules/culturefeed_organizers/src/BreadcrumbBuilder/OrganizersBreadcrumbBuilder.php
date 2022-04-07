@@ -54,7 +54,7 @@ class OrganizersBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $this->breadcrumb = new Breadcrumb();
 
     $this->breadcrumb->addLink(Link::createFromRoute($this->t('Home'), '<front>'));
-    $this->breadcrumb->addLink(Link::createFromRoute($this->t('Organisations'), 'culturefeed_agenda.agenda'));
+    $this->breadcrumb->addLink(Link::createFromRoute($this->t('Organizers'), 'culturefeed_organizers.search'));
 
     $this->breadcrumb->addCacheContexts(['url.path']);
 
