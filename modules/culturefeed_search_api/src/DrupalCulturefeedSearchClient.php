@@ -279,7 +279,31 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    */
   public function searchOrganizers(SearchQueryInterface $searchQuery): PagedCollection {
     $this->alterQuery($searchQuery, 'organizers');
-    return $this->client->searchOrganizers($searchQuery);
+    $query = $searchQuery->toArray();
+    $hash = Crypt::hashBase64(serialize($query));
+    $cid = 'culturefeed_search_api.search_organizers:' . $hash;
+
+    if (isset($this->staticCache[$cid])) {
+      return $this->staticCache[$cid];
+    }
+
+    if ($this->cacheEnabled && ($cache = $this->cacheBackend->get($cid))) {
+      $this->staticCache[$cid] = $cache->data;
+      return $cache->data;
+    }
+
+    $this->staticCache[$cid] = $this->client->searchOrganizers($searchQuery);;
+
+    if ($this->cacheEnabled) {
+      $this->cacheBackend->set(
+        $cid,
+        $this->staticCache[$cid],
+        strtotime('+2 hours'),
+        ['culturefeed_search_api', 'culturefeed_search_api.search_organizers']
+      );
+    }
+
+    return $this->staticCache[$cid];
   }
 
   /**
