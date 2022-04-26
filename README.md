@@ -1,3 +1,10 @@
+## Important note
+This module is provided by  publiq vzw (formerly known as CultuurNet) as it is.
+We do not provide support, nor do we actively continue to develop this module. Pull Requests will be reviewed when time is available with our developers. However we do appreciate the sharing of bugfixes with us.
+If you need active support, we provide it for our API & Widgets, see https://projectaanvraag.uitdatabank.be/ .
+As an exception, critical security updates will still be provided if needed.
+
+
 ## Install
 
 Prerequisites:
