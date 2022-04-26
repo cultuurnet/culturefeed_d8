@@ -1,3 +1,7 @@
+administer culturefeed search configuration:
+  title: 'Administer Culturefeed search configuration'
+  description: 'Allows a user access to the Culturefeed search configuration pages'
+
 administer search api configuration:
   title: 'Administer search API configuration'
   description: 'Allows a user to configure settings related with the search API'

@@ -1,13 +1,3 @@
-culturefeed_search.settings:
-  path: '/admin/config/culturefeed-search'
-  defaults:
-    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
-    _title: 'Culturefeed search configuration'
-  requirements:
-    _permission: 'administer culturefeed search configuration'
-  options:
-    _admin_route: TRUE
-
 culturefeed_search.regions_autocomplete:
   path: '/culturfeed-search/regions-autocomplete'
   defaults:
