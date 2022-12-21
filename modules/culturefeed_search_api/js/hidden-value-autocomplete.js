@@ -23,7 +23,9 @@
         $autocomplete.autocomplete('option', 'minLength', 3);
         // Clear the hidden field when the autocomplete field changes.
         $autocomplete.on('keyup', function (event) {
-          $(event.target).closest('.hidden-value-autocomplete--group').find('input[type="hidden"]').val('');
+          if (event.keyCode !== 13) {
+            $(event.target).closest('.hidden-value-autocomplete--group').find('input[type="hidden"]').val('');
+          }
         });
       }
     }
