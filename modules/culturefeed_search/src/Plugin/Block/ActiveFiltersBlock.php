@@ -8,6 +8,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\culturefeed_search\Event\SearchPagePrepareActiveFiltersEvent;
 use Drupal\culturefeed_search\SearchPageServiceInterface;
+use Drupal\culturefeed_search\SearchPageServiceManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *   category = @Translation("Culturefeed search"),
  * )
  */
-class ActiveFiltersBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The search page service.
@@ -64,11 +65,12 @@ class ActiveFiltersBlock extends BlockBase implements ContainerFactoryPluginInte
     array $configuration,
     string $plugin_id,
     array $plugin_definition,
+    SearchPageServiceManagerInterface $searchPageServiceManager,
     SearchPageServiceInterface $searchPageService,
     RequestStack $requestStack,
     EventDispatcherInterface $eventDispatcher
   ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $searchPageServiceManager);
 
     $this->searchPageService = $searchPageService;
     $this->request = $requestStack->getCurrentRequest();
@@ -83,7 +85,8 @@ class ActiveFiltersBlock extends BlockBase implements ContainerFactoryPluginInte
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('culturefeed_agenda.search_page_service'),
+      $container->get('culturefeed_search.search_page_service_manager'),
+      isset($configuration['service']) ? $container->get($configuration['service']) : $container->get('culturefeed_agenda.search_page_service'),
       $container->get('request_stack'),
       $container->get('event_dispatcher')
     );
