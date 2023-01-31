@@ -32,7 +32,7 @@ class SearchPreprocessor {
       'name' => $event->getName()->getValueForLanguage($langcode),
       'description' => $event->getDescription() ? $event->getDescription()
         ->getValueForLanguage($langcode) : '',
-      'where' => $event->getLocation() ? $this->preprocessPlace($event->getLocation(), $langcode) : NULL,
+      'where' => null !== $event->getLocation() && !$event->isAttendanceModeOnline() ? $this->preprocessPlace($event->getLocation(), $langcode) : NULL,
       'when_summary' => $this->formatEventDatesSummary($event, $langcode),
       'organizer' => ($event->getOrganizer() && $event->getOrganizer()
         ->getName()) ? $event->getOrganizer()
@@ -258,6 +258,9 @@ class SearchPreprocessor {
 
       $variables['performers'] = implode(', ', $performerLabels);
     }
+
+    $variables['attendance_mode'] = $event->getAttendanceMode();
+    $variables['online_url'] = $event->getOnlineUrl();
 
     return $variables;
   }
