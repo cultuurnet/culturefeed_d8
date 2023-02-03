@@ -2,6 +2,7 @@
 
 namespace Drupal\culturefeed_search_api\Element;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
 use Drupal\Core\Render\Element\Textfield;
@@ -59,8 +60,12 @@ class HiddenValueAutocomplete extends FormElement {
       'hidden-value-autocomplete--group',
     ];
 
+    $id = Html::getUniqueId($element['id'] . '--label');
+    $element['#label_for'] = $id;
+
     // Create the autocomplete element with the properties of the parent.
     $element['label'] = [
+      '#id' => $id,
       '#input' => $element['#input'],
       '#type' => 'textfield',
       '#autocomplete_route_name' => $element['#autocomplete_route_name'],
