@@ -60,7 +60,7 @@ class HiddenValueAutocomplete extends FormElement {
       'hidden-value-autocomplete--group',
     ];
 
-    $id = Html::getUniqueId($element['id'] . '--label');
+    $id = Html::getUniqueId($element['#id'] . '--label');
     $element['#label_for'] = $id;
 
     // Create the autocomplete element with the properties of the parent.
