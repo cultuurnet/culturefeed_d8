@@ -278,7 +278,7 @@ class SearchPreprocessor {
    */
   public function preprocessPlace(Place $place, $langcode) {
     $variables = [];
-    $variables['name'] = $place->getName()->getValueForLanguage($langcode);
+    $variables['name'] = null !== $place->getName() ? $place->getName()->getValueForLanguage($langcode) : NULL;
     $variables['address'] = [];
     if ($address = $place->getAddress()) {
       if ($translatedAddress = $address->getAddressForLanguage($langcode)) {
