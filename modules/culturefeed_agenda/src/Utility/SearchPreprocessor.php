@@ -189,11 +189,14 @@ class SearchPreprocessor {
         $directionData = $geoInfo->getLatitude() . ',' . $geoInfo->getLongitude();
       }
       else {
-        /** @var \CultuurNet\SearchV3\ValueObjects\TranslatedAddress $address */
-        $address = $event->getLocation()->getAddress();
-        if ($translatedAddress = $address->getAddressForLanguage($langcode)) {
-          $directionData = $translatedAddress->getStreetAddress() . ' '
-            . $translatedAddress->getPostalCode() . ' ' . $translatedAddress->getAddressLocality();
+        if (null !== $event->getLocation() && null !== $event->getLocation()->getAddress()) {
+          /** @var \CultuurNet\SearchV3\ValueObjects\TranslatedAddress $address */
+          $address = $event->getLocation()->getAddress();
+
+          if ($translatedAddress = $address->getAddressForLanguage($langcode)) {
+            $directionData = $translatedAddress->getStreetAddress() . ' '
+              . $translatedAddress->getPostalCode() . ' ' . $translatedAddress->getAddressLocality();
+          }
         }
       }
 
