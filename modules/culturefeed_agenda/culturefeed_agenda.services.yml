@@ -3,6 +3,9 @@ services:
   culturefeed_agenda.search_page_service:
     class: Drupal\culturefeed_agenda\AgendaSearchPageService
     arguments: ['@request_stack', '@culturefeed_search_api.client', '@culturefeed_search.facet_helper', '@event_dispatcher', '@pager.manager']
+    parent: culturefeed_search.abstract_search_page_service
+    tags:
+      - { name: culturefeed_search_page }
 
   # Culturefeed event parameter convert
   culturefeed_event:

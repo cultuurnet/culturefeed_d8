@@ -32,7 +32,7 @@ class SearchPreprocessor {
       'name' => $event->getName()->getValueForLanguage($langcode),
       'description' => $event->getDescription() ? $event->getDescription()
         ->getValueForLanguage($langcode) : '',
-      'where' => $event->getLocation() ? $this->preprocessPlace($event->getLocation(), $langcode) : NULL,
+      'where' => null !== $event->getLocation() && !$event->isAttendanceModeOnline() ? $this->preprocessPlace($event->getLocation(), $langcode) : NULL,
       'when_summary' => $this->formatEventDatesSummary($event, $langcode),
       'organizer' => ($event->getOrganizer() && $event->getOrganizer()
         ->getName()) ? $event->getOrganizer()
@@ -189,11 +189,14 @@ class SearchPreprocessor {
         $directionData = $geoInfo->getLatitude() . ',' . $geoInfo->getLongitude();
       }
       else {
-        /** @var \CultuurNet\SearchV3\ValueObjects\TranslatedAddress $address */
-        $address = $event->getLocation()->getAddress();
-        if ($translatedAddress = $address->getAddressForLanguage($langcode)) {
-          $directionData = $translatedAddress->getStreetAddress() . ' '
-            . $translatedAddress->getPostalCode() . ' ' . $translatedAddress->getAddressLocality();
+        if (null !== $event->getLocation() && null !== $event->getLocation()->getAddress()) {
+          /** @var \CultuurNet\SearchV3\ValueObjects\TranslatedAddress $address */
+          $address = $event->getLocation()->getAddress();
+
+          if ($translatedAddress = $address->getAddressForLanguage($langcode)) {
+            $directionData = $translatedAddress->getStreetAddress() . ' '
+              . $translatedAddress->getPostalCode() . ' ' . $translatedAddress->getAddressLocality();
+          }
         }
       }
 
@@ -259,6 +262,9 @@ class SearchPreprocessor {
       $variables['performers'] = implode(', ', $performerLabels);
     }
 
+    $variables['attendance_mode'] = $event->getAttendanceMode();
+    $variables['online_url'] = $event->getOnlineUrl();
+
     return $variables;
   }
 
@@ -272,7 +278,7 @@ class SearchPreprocessor {
    */
   public function preprocessPlace(Place $place, $langcode) {
     $variables = [];
-    $variables['name'] = $place->getName()->getValueForLanguage($langcode);
+    $variables['name'] = null !== $place->getName() ? $place->getName()->getValueForLanguage($langcode) : NULL;
     $variables['address'] = [];
     if ($address = $place->getAddress()) {
       if ($translatedAddress = $address->getAddressForLanguage($langcode)) {

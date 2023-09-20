@@ -10,7 +10,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url as CoreUrl;
-use Drupal\culturefeed_agenda\Url;
+use Drupal\culturefeed_search\Url;
 
 /**
  * Preprocess an event item.

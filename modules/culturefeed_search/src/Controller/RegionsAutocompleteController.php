@@ -45,11 +45,13 @@ class RegionsAutocompleteController extends ControllerBase {
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request object.
+   * @param string $type
+   *   The type of autocomplete.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   The autocomplete response.
    */
-  public function handleAutocomplete(Request $request) {
+  public function handleAutocomplete(Request $request, string $type) {
     $suggestions = [];
 
     // Cache by query argument, for 1 day.
@@ -72,7 +74,7 @@ class RegionsAutocompleteController extends ControllerBase {
             if (strpos(strtolower($region->name), $searchString) !== FALSE) {
               $suggestions[] = [
                 'label' => $region->name,
-                'value' => $region->key,
+                'value' => $type === 'label' ? $region->name : $region->key,
               ];
             }
           }

@@ -7,6 +7,7 @@ use CultuurNet\SearchV3\Parameter\Query;
 use CultuurNet\SearchV3\SearchQuery;
 use Drupal\Core\Link;
 use Drupal\Core\Pager\PagerManagerInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface;
@@ -14,7 +15,7 @@ use Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface;
 /**
  * Provides a lazy builder for Culturfeed content fields.
  */
-class CulturefeedContentFieldLazyBuilder {
+class CulturefeedContentFieldLazyBuilder implements TrustedCallbackInterface {
 
   use StringTranslationTrait;
 
@@ -51,6 +52,13 @@ class CulturefeedContentFieldLazyBuilder {
     $this->searchClient = $searchClient;
     $this->pagerManager = $pager_manager;
     $this->pagerElement = 0;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function trustedCallbacks() {
+    return ['buildCulturefeedContent'];
   }
 
   /**

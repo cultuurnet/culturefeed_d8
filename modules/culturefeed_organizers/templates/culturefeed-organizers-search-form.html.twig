@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Default theme implementation for Culturefeed organizers search form.
+ *
+ * Available variables:
+ * - form: The search form
+ *
+ * @ingroup themeable
+ */
+#}
+
+{%
+  set classes = [
+    'culturefeed-organizers-search-form',
+  ]
+%}
+
+<div{{ attributes.addClass(classes) }}>
+  <h3>{{ form.title }}</h3>
+  {{ form | without('title') }}
+</div>

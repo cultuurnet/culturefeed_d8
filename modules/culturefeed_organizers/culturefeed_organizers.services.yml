@@ -1,0 +1,18 @@
+services:
+  culturefeed_organizer.search_page_service:
+    class: Drupal\culturefeed_organizers\OrganizerSearchPageService
+    parent: culturefeed_search.abstract_search_page_service
+    tags:
+      - { name: culturefeed_search_page }
+
+  culturefeed_organizer:
+    class: Drupal\culturefeed_organizers\ParamConverter\CulturefeedOrganizerParamConverter
+    arguments: ['@culturefeed_search_api.client', '@request_stack']
+    tags:
+      - { name: paramconverter }
+
+  culturefeed_organizers.organizers_breadcrumb:
+    class: Drupal\culturefeed_organizers\BreadcrumbBuilder\OrganizersBreadcrumbBuilder
+    arguments: ['@request_stack']
+    tags:
+      - { name: breadcrumb_builder, priority: 1012 }

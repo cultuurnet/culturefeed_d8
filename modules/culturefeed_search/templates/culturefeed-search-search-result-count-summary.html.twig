@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a Culturefeed search result count.
+ *
+ * Available variables:
+ * - summary: The result count summary
+ *
+ * @see template_preprocess_culturefeed_search_search_result_count_summary()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{%
+  set classes = [
+    'culturefeed-search-result-count-summary',
+  ]
+%}
+
+<div{{ attributes.addClass(classes) }}>
+  {% if summary %}
+    {{ summary }}
+  {% endif %}
+</div>

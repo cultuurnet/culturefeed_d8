@@ -49,10 +49,10 @@ class AgendaSearchController extends ControllerBase {
       '#theme' => 'culturefeed_agenda_search_page',
       '#search_form' => $this->buildBlockPlugin('culturefeed_agenda_search_form'),
       '#active_filters' => $this->buildBlockPlugin('culturefeed_search_active_filters_block'),
-      '#results' => $this->buildBlockPlugin('culturefeed_agenda_search_page_results'),
-      '#pager' => $this->buildBlockPlugin('culturefeed_agenda_search_page_pager'),
-      '#result_count' => $this->buildBlockPlugin('culturefeed_agenda_search_result_count'),
-      '#result_count_summary' => $this->buildBlockPlugin('culturefeed_agenda_search_result_count_summary'),
+      '#results' => $this->buildBlockPlugin('culturefeed_search_search_page_results'),
+      '#pager' => $this->buildBlockPlugin('culturefeed_search_search_page_pager'),
+      '#result_count' => $this->buildBlockPlugin('culturefeed_search_search_result_count'),
+      '#result_count_summary' => $this->buildBlockPlugin('culturefeed_search_search_result_count_summary'),
     ];
   }
 
@@ -68,7 +68,9 @@ class AgendaSearchController extends ControllerBase {
   private function buildBlockPlugin($pluginId) {
     $build = [];
 
-    $blockPlugin = $this->blockManager->createInstance($pluginId);
+    $blockPlugin = $this->blockManager->createInstance($pluginId, [
+      'service' => 'culturefeed_agenda.search_page_service',
+    ]);
     if ($blockPlugin->access($this->currentUser())) {
       $build = [
         '#cache' => [

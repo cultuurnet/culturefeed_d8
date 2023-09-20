@@ -1,0 +1,19 @@
+culturefeed_organizers.organizer_detail:
+  path: '/agenda/o/{slug}/{culturefeed_organizer}'
+  defaults:
+    _controller: '\Drupal\culturefeed_organizers\Controller\OrganizerDetailController::detail'
+    _title_callback: '\Drupal\culturefeed_organizers\Controller\OrganizerDetailController::title'
+  options:
+    parameters:
+      culturefeed_organizer:
+        type: culturefeed_organizer
+  requirements:
+    _access: 'TRUE'
+
+culturefeed_organizers.search:
+  path: '/organizers'
+  defaults:
+    _controller: '\Drupal\culturefeed_organizers\Controller\OrganizerSearchController::searchPage'
+    _title: 'Organizers'
+  requirements:
+    _access: 'TRUE'

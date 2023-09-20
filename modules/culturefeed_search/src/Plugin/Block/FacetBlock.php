@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\culturefeed_search\FacetHelper;
 use Drupal\culturefeed_search\SearchPageServiceInterface;
+use Drupal\culturefeed_search\SearchPageServiceManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -37,6 +38,13 @@ class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
   protected $facetHelper;
 
   /**
+   * The search page service manager.
+   *
+   * @var \Drupal\culturefeed_search\SearchPageServiceManagerInterface
+   */
+  protected $searchPageServiceManager;
+
+  /**
    * Constructs a new FacetBlock.
    *
    * @param array $configuration
@@ -45,16 +53,19 @@ class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\culturefeed_search\SearchPageServiceManagerInterface $searchPageServiceManager
+   *   The search page service manager.
    * @param \Drupal\culturefeed_search\SearchPageServiceInterface $searchPageService
    *   The search page service.
    * @param \Drupal\culturefeed_search\FacetHelper $facetHelper
    *   The facet helper service.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, SearchPageServiceInterface $searchPageService, FacetHelper $facetHelper) {
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, SearchPageServiceManagerInterface $searchPageServiceManager, SearchPageServiceInterface $searchPageService, FacetHelper $facetHelper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     $this->searchPageService = $searchPageService;
     $this->facetHelper = $facetHelper;
+    $this->searchPageServiceManager = $searchPageServiceManager;
   }
 
   /**
@@ -65,9 +76,19 @@ class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('culturefeed_agenda.search_page_service'),
+      $container->get('culturefeed_search.search_page_service_manager'),
+      $container->get($configuration['service'] ?? 'culturefeed_agenda.search_page_service'),
       $container->get('culturefeed_search.facet_helper')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration() {
+    return [
+      'service' => 'culturefeed_agenda.search_page_service',
+    ];
   }
 
   /**
@@ -118,6 +139,16 @@ class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#min' => 0,
     ];
 
+    $pageIds = array_keys($this->searchPageServiceManager->getSearchPages());
+
+    $form['service'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Search page to inject'),
+      '#options' => array_combine($pageIds, $pageIds),
+      '#default_value' => $config['service'],
+      '#required' => TRUE,
+    ];
+
     return $form;
   }
 
@@ -127,6 +158,7 @@ class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
   public function blockSubmit($form, FormStateInterface $form_state) {
     $this->configuration['min_depth'] = $form_state->getValue('min_depth');
     $this->configuration['max_depth'] = $form_state->getValue('max_depth');
+    $this->configuration['service'] = $form_state->getValue('service');
   }
 
   /**

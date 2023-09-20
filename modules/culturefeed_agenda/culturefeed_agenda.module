@@ -41,37 +41,6 @@ function culturefeed_agenda_theme() {
     'file' => 'includes/theme.inc',
   ];
 
-  $theme['culturefeed_agenda_search_results'] = [
-    'variables' => [
-      'results' => [],
-      'empty' => NULL,
-    ],
-    'file' => 'includes/theme.inc',
-  ];
-
-  $theme['culturefeed_agenda_search_result_count'] = [
-    'variables' => [
-      'count' => NULL,
-    ],
-    'file' => 'includes/theme.inc',
-  ];
-
-  $theme['culturefeed_agenda_search_result_count_summary'] = [
-    'variables' => [
-      'total' => NULL,
-      'current_page' => NULL,
-      'items_per_page' => NULL,
-    ],
-    'file' => 'includes/theme.inc',
-  ];
-
-  $theme['culturefeed_agenda_search_pager'] = [
-    'variables' => [
-      'pager' => NULL,
-    ],
-    'file' => 'includes/theme.inc',
-  ];
-
   $theme['culturefeed_agenda_search_form'] = [
     'render element' => 'form',
     'file' => 'includes/theme.inc',

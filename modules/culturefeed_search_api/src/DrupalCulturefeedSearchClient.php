@@ -4,6 +4,7 @@ namespace Drupal\culturefeed_search_api;
 
 use CultuurNet\SearchV3\Parameter\AudienceType;
 use CultuurNet\SearchV3\Parameter\Id;
+use CultuurNet\SearchV3\Parameter\Query;
 use CultuurNet\SearchV3\SearchClient;
 use CultuurNet\SearchV3\SearchQuery;
 use CultuurNet\SearchV3\SearchQueryInterface;
@@ -28,6 +29,11 @@ use Monolog\Logger as MonologLogger;
  * Provides a drupal wrapper around the search client.
  */
 class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInterface {
+
+  public const ITEM_ENDPOINTS = [
+    'event' => 'searchEvents',
+    'organizer' => 'searchOrganizers',
+  ];
 
   /**
    * The search client.
@@ -184,7 +190,35 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    * {@inheritdoc}
    */
   public function searchEvent(string $eventId, bool $reset = FALSE) {
-    $cid = 'culturefeed_search_api.search_event:' . $eventId;
+    return $this->searchItem('event', $eventId, $reset);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function searchOrganizer(string $organizerId, bool $reset = FALSE) {
+    return $this->searchItem('organizer', $organizerId, $reset);
+  }
+
+  /**
+   * Search for a single item (eg. organizer, event).
+   *
+   * @param string $type
+   *   The item type.
+   * @param string $id
+   *   The Id to search for.
+   * @param bool $reset
+   *   Indicates if the cache should be reset.
+   *
+   * @return mixed|null
+   *   The item or null.
+   */
+  private function searchItem(string $type, string $id, bool $reset = FALSE) {
+    if (!isset(self::ITEM_ENDPOINTS[$type])) {
+      throw new \Exception('Invalid search type specified');
+    }
+
+    $cid = sprintf('culturefeed_search_api.search_%s:%s', $type, $id);
 
     if (!$reset && isset($this->staticCache[$cid])) {
       return $this->staticCache[$cid];
@@ -196,20 +230,27 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     }
 
     $searchQuery = new SearchQuery(TRUE);
-    $searchQuery->addParameter(new Id($eventId));
-    $searchQuery->addParameter(new AudienceType('*'));
 
-    $this->alterQuery($searchQuery, 'event');
+    // @todo: Remove when the organizer endpoint supports the ID parameter.
+    if ($type === 'organizer') {
+      $searchQuery->addParameter(new Query('id:' . $id));
+    } else {
+      $searchQuery->addParameter(new AudienceType('*'));
+      $searchQuery->addParameter(new Id($id));
+    }
 
-    $events = $this->client->searchEvents($searchQuery);
-    $items = $events->getMember()->getItems() ?? [];
+    $this->alterQuery($searchQuery, $type);
+
+    $method = self::ITEM_ENDPOINTS[$type];
+    $items = $this->client->{$method}($searchQuery);
+    $items = $items->getMember()->getItems() ?? [];
 
     $this->staticCache[$cid] = !empty($items) ? reset($items) : NULL;
 
     if ($this->cacheEnabled) {
       $this->cacheBackend->set($cid, $this->staticCache[$cid], strtotime('+2 hours'), [
         'culturefeed_search_api',
-        'culturefeed_search_api.search_event',
+        'culturefeed_search_api.search_' . $type,
         $cid,
       ]);
     }
@@ -231,6 +272,38 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
   public function searchOffers(SearchQueryInterface $searchQuery): PagedCollection {
     $this->alterQuery($searchQuery, 'offers');
     return $this->client->searchOffers($searchQuery);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function searchOrganizers(SearchQueryInterface $searchQuery): PagedCollection {
+    $this->alterQuery($searchQuery, 'organizers');
+    $query = $searchQuery->toArray();
+    $hash = Crypt::hashBase64(serialize($query));
+    $cid = 'culturefeed_search_api.search_organizers:' . $hash;
+
+    if (isset($this->staticCache[$cid])) {
+      return $this->staticCache[$cid];
+    }
+
+    if ($this->cacheEnabled && ($cache = $this->cacheBackend->get($cid))) {
+      $this->staticCache[$cid] = $cache->data;
+      return $cache->data;
+    }
+
+    $this->staticCache[$cid] = $this->client->searchOrganizers($searchQuery);;
+
+    if ($this->cacheEnabled) {
+      $this->cacheBackend->set(
+        $cid,
+        $this->staticCache[$cid],
+        strtotime('+2 hours'),
+        ['culturefeed_search_api', 'culturefeed_search_api.search_organizers']
+      );
+    }
+
+    return $this->staticCache[$cid];
   }
 
   /**

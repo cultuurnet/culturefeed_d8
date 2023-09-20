@@ -5,7 +5,7 @@ namespace Drupal\culturefeed_search;
 use CultuurNet\SearchV3\SearchQueryInterface;
 
 /**
- * Defines an interface for Culturefeed agenda search page services.
+ * Defines an interface for Culturefeed search page services.
  */
 interface SearchPageServiceInterface {
 
