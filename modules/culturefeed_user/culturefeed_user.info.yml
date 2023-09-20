@@ -1,8 +1,0 @@
-name: 'CultureFeed user'
-type: module
-description: 'Handles the CultureFeed "UiTID" authentication'
-core_version_requirement: ^9
-package: 'CultureFeed'
-dependencies:
-  - culturefeed_api:culturefeed_api
-  - externalauth:externalauth

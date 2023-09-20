@@ -1,21 +1,14 @@
 {
 	"name": "cultuurnet/culturefeed-d8",
 	"type": "drupal-module",
-	"description": "Publiq CultureFeed modules for Drupal 9.",
+	"description": "Publiq CultureFeed modules for Drupal 9 or 10.",
 	"license": "Apache-2.0",
 	"require": {
 		"cultuurnet/search-v3": "dev-epic/organizers",
 		"ext-curl": "*",
-		"cultuurnet/calendar-summary-v3": "^2.0",
-		"drupal/core": "^9.0",
+		"drupal/core": "^9.0 || ^10.0",
 		"jwage/purl": "^1.0",
 		"ext-intl": "*"
-	},
-	"require-dev": {
-		"drupal/coder": "^8.3",
-		"phing/phing": "^2.16",
-		"sebastian/phpcpd": "^3.0",
-		"squizlabs/php_codesniffer": "^3.0"
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true
