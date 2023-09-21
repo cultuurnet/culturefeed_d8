@@ -7,8 +7,8 @@
 		"cultuurnet/search-v3": "dev-php8",
 		"ext-curl": "*",
 		"drupal/core": "^9.0 || ^10.0",
-		"jwage/purl": "^1.0",
-		"ext-intl": "*"
+		"ext-intl": "*",
+		"cultuurnet/calendar-summary-v3": "^4.0"
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true

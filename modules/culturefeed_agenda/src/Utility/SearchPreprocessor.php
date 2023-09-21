@@ -6,7 +6,6 @@ use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\SearchV3\ValueObjects\Event;
 use CultuurNet\SearchV3\ValueObjects\Place;
 use IntlDateFormatter;
-use Purl\Url;
 
 /**
  * A preproccesor utility for search templates.
@@ -35,7 +34,7 @@ class SearchPreprocessor {
       'where' => null !== $event->getLocation() && !$event->isAttendanceModeOnline() ? $this->preprocessPlace($event->getLocation(), $langcode) : NULL,
       'when_summary' => $this->formatEventDatesSummary($event, $langcode),
       'organizer' => ($event->getOrganizer() && $event->getOrganizer()
-        ->getName()) ? $event->getOrganizer()
+          ->getName()) ? $event->getOrganizer()
         ->getName()
         ->getValueForLanguage($langcode) : NULL,
       'age_range' => $event->getTypicalAgeRange() ? $this->formatAgeRange($event->getTypicalAgeRange(), $langcode) : NULL,
@@ -49,15 +48,19 @@ class SearchPreprocessor {
     $image = $event->getImage() ?? $defaultImage;
 
     if (!empty($image)) {
-      $url = Url::parse($image);
-      $url->getQuery()->setData([
+      $query = [];
+      $url = \parse_url($image);
+
+      \parse_str($url['query'], $q);
+
+      $query += [
         'crop' => $settings['image']['crop'] ?? 'auto',
         'scale' => $settings['image']['scale'] ?? 'both',
         'width' => $settings['image']['width'] ?? '150',
         'height' => $settings['image']['height'] ?? '150',
-      ]);
+      ];
 
-      $variables['image'] = $url->__toString();
+      $variables['image'] = \sprintf('%s://%s%s?%s', $url['scheme'], $url['host'], $url['path'], \http_build_query($query));
       $variables['image'] = str_replace('http://', '//', $variables['image']);
       $variables['image'] = str_replace('https://', '//', $variables['image']);
     }
