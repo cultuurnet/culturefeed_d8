@@ -4,7 +4,7 @@
 	"description": "Publiq CultureFeed modules for Drupal 9 or 10.",
 	"license": "Apache-2.0",
 	"require": {
-		"cultuurnet/search-v3": "dev-epic/organizers",
+		"cultuurnet/search-v3": "dev-php8",
 		"ext-curl": "*",
 		"drupal/core": "^9.0 || ^10.0",
 		"jwage/purl": "^1.0",
