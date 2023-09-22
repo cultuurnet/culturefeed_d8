@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *  id = "events_of_organizer",
  *  admin_label = @Translation("Events of organizer"),
- *  context = {
+ *  context_definitions = {
  *    "culturefeed_organizer" = @ContextDefinition("culturefeed_organizer", required = TRUE)
  *  }
  * )
