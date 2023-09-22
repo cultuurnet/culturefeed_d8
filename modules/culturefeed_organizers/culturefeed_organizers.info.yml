@@ -1,10 +1,10 @@
 name: Culturefeed organizers
 description: 'Provides the Culturefeed organizers functionality'
 type: module
-core_version_requirement: ^9
+core_version_requirement: ^9 || ^10
 package: 'CultureFeed'
 dependencies:
-  - culturefeed_search
-  - culturefeed_search_api
+  - culturefeed_d8:culturefeed_search
+  - culturefeed_d8:culturefeed_search_api
 'interface translation project': culturefeed_organizers
 'interface translation server pattern': modules/custom/culturefeed_organizers/translations/%language.po

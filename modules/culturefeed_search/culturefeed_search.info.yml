@@ -1,9 +1,9 @@
 name: Culturefeed search
 description: 'Provides generic search functionality and elements.'
 type: module
-core_version_requirement: ^9
+core_version_requirement: ^9 || ^10
 package: 'CultureFeed'
 dependencies:
-  - culturefeed_search_api:culturefeed_search_api
+  - culturefeed_d8:culturefeed_search_api
 'interface translation project': culturefeed_search
 'interface translation server pattern': modules/custom/culturefeed_search/translations/%language.po
