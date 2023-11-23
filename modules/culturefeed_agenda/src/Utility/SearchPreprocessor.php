@@ -2,15 +2,33 @@
 
 namespace Drupal\culturefeed_agenda\Utility;
 
-use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
+use CultuurNet\SearchV3\ValueObjects\CalendarSummaryFormat;
+use CultuurNet\SearchV3\ValueObjects\CalendarSummaryLanguage;
 use CultuurNet\SearchV3\ValueObjects\Event;
 use CultuurNet\SearchV3\ValueObjects\Place;
-use IntlDateFormatter;
+use Drupal\Core\Datetime\DateFormatterInterface;
 
 /**
  * A preproccesor utility for search templates.
  */
 class SearchPreprocessor {
+
+  /**
+   * The dateformatter service.
+   *
+   * @var DateFormatterInterface
+   */
+  protected DateFormatterInterface $dateFormatter;
+
+  /**
+   * Creates a new search preprocessor service.
+   *
+   * @param DateFormatterInterface $dateFormatter
+   *  The dateformatter service.
+   */
+  public function __construct(DateFormatterInterface $dateFormatter) {
+    $this->dateFormatter = $dateFormatter;
+  }
 
   /**
    * Preprocess event data for twig templates..
@@ -50,8 +68,6 @@ class SearchPreprocessor {
     if (!empty($image)) {
       $query = [];
       $url = \parse_url($image);
-
-      \parse_str($url['query'], $q);
 
       $query += [
         'crop' => $settings['image']['crop'] ?? 'auto',
@@ -227,21 +243,13 @@ class SearchPreprocessor {
         ];
       }
 
-      $dateFormatter = new IntlDateFormatter(
-        'nl_NL',
-        IntlDateFormatter::FULL,
-        IntlDateFormatter::FULL,
-        date_default_timezone_get(),
-        IntlDateFormatter::GREGORIAN,
-        'd MMMM Y'
-      );
-      if ($bookingInfo->getAvailabilityStarts()) {
+      if ($bookingInfo->getAvailabilityStarts() !== NULL) {
         $variables['booking_info']['start_date'] =
-          $dateFormatter->format($bookingInfo->getAvailabilityStarts());
+          $this->dateFormatter->format($bookingInfo->getAvailabilityStarts()->getTimestamp(), 'custom', 'd F Y');
       }
-      if ($bookingInfo->getAvailabilityEnds()) {
+      if ($bookingInfo->getAvailabilityEnds() !== NULL) {
         $variables['booking_info']['end_date'] =
-          $dateFormatter->format($bookingInfo->getAvailabilityEnds());
+          $this->dateFormatter->format($bookingInfo->getAvailabilityEnds()->getTimestamp(), 'custom', 'd F Y');
       }
     }
 
@@ -306,24 +314,14 @@ class SearchPreprocessor {
    * @param \CultuurNet\SearchV3\ValueObjects\Event $event
    * @param string $langcode
    *
-   * @return string
+   * @return string|null
    */
-  protected function formatEventDatesSummary(Event $event, string $langcode) {
-    // Switch the time locale to the requested langcode.
-    switch ($langcode) {
-      case 'fr':
-        $locale = 'fr_FR';
-        break;
-
-      case 'nl':
-      default:
-        $locale = 'nl_NL';
-        break;
+  protected function formatEventDatesSummary(Event $event, string $langcode): ?string {
+    try {
+      return $event->getCalendarSummary()?->getSummary(new CalendarSummaryLanguage($langcode), new CalendarSummaryFormat('text', 'md'));
+    } catch (\Exception $e) {
+      return NULL;
     }
-
-    $formatter = new CalendarHTMLFormatter($locale);
-
-    return $formatter->format($event, 'md');
   }
 
   /**
@@ -332,24 +330,14 @@ class SearchPreprocessor {
    * @param \CultuurNet\SearchV3\ValueObjects\Event $event
    * @param string $langcode
    *
-   * @return string
+   * @return string|null
    */
-  protected function formatEventDatesDetail(Event $event, string $langcode) {
-    // Switch the time locale to the requested langcode.
-    switch ($langcode) {
-      case 'fr':
-        $locale = 'fr_FR';
-        break;
-
-      case 'nl':
-      default:
-        $locale = 'nl_NL';
-        break;
+  protected function formatEventDatesDetail(Event $event, string $langcode): ?string {
+    try {
+      return $event->getCalendarSummary()?->getSummary(new CalendarSummaryLanguage($langcode), new CalendarSummaryFormat('text', 'lg'));
+    } catch (\Exception $e) {
+      return NULL;
     }
-
-    $formatter = new CalendarHTMLFormatter($locale);
-
-    return $formatter->format($event, 'lg');
   }
 
   /**

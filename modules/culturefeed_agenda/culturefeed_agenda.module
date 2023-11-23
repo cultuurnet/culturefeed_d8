@@ -5,6 +5,10 @@
  * Contains culturefeed_agenda.module.
  */
 
+use CultuurNet\SearchV3\Parameter\CalendarSummary;
+use CultuurNet\SearchV3\SearchQueryInterface;
+use CultuurNet\SearchV3\ValueObjects\CalendarSummaryFormat;
+
 /**
  * Implements hook_theme().
  */
@@ -221,5 +225,13 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
         'twitter:image',
       ];
     }
+  }
+}
+
+function culturefeed_agenda_culturefeed_search_api_query_alter(SearchQueryInterface $searchQuery, string $type) {
+  // Add event calendar summaries.
+  if ($type === 'events' || $type === 'event') {
+    $searchQuery->addParameter(new CalendarSummary(new CalendarSummaryFormat('text', 'md')));
+    $searchQuery->addParameter(new CalendarSummary(new CalendarSummaryFormat('text', 'lg')));
   }
 }
