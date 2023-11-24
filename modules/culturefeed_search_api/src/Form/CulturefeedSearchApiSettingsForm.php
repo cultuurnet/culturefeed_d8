@@ -45,6 +45,14 @@ class CulturefeedSearchApiSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('api_key') ?: '',
     ];
 
+    $form['culturefeed_search_api']['header_x_client_properties'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Header: X-Client-Properties'),
+      '#required' => FALSE,
+      '#default_value' => $config->get('header_x_client_properties') ?? NULL,
+      '#description' => $this->t('Header to identify the request source. Leave blank in case you were not explicitly provided with a value.'),
+    ];
+
     $form['culturefeed_search_api']['regions_list'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Regions list JSON location'),
@@ -75,6 +83,7 @@ class CulturefeedSearchApiSettingsForm extends ConfigFormBase {
     $config = $this->config('culturefeed_search_api.settings');
     $config->set('endpoint_url', $form_state->getValue('endpoint_url'));
     $config->set('api_key', $form_state->getValue('api_key'));
+    $config->set('header_x_client_properties', $form_state->getValue('header_x_client_properties'));
     $config->set('enable_cache', $form_state->getValue('enable_cache'));
     $config->set('debug', $form_state->getValue('debug'));
     $config->set('regions_list', $form_state->getValue('regions_list'));
