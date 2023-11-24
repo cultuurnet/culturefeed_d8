@@ -130,9 +130,10 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
 
     $guzzleClient = new Client([
       'base_uri' => $this->config->get('endpoint_url'),
-      'headers' => [
+      'headers' => \array_filter([
         'X-Api-Key' => $this->config->get('api_key'),
-      ],
+        'X-Client-Properties' => $this->config->get('header_x_client_properties'),
+      ]),
       'handler' => $handlerStack,
     ]);
 
