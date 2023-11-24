@@ -6,9 +6,7 @@
 	"require": {
 		"cultuurnet/search-v3": "dev-main",
 		"ext-curl": "*",
-		"drupal/core": "^9.0 || ^10.0",
-		"ext-intl": "*",
-		"cultuurnet/calendar-summary-v3": "dev-main#12237cef58dbd9c96904deda67424d98b23b293a"
+		"drupal/core": "^9.0 || ^10.0"
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true

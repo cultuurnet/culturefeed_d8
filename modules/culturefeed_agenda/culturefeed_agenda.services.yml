@@ -19,3 +19,7 @@ services:
     arguments: ['@request_stack']
     tags:
     - { name: breadcrumb_builder, priority: 1012 }
+
+  culturefeed_agenda.search_preprocessor:
+    class: Drupal\culturefeed_agenda\Utility\SearchPreprocessor
+    arguments: ['@date.formatter']

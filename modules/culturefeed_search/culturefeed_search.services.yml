@@ -5,6 +5,7 @@ services:
 
   culturefeed_search.search_page_service_manager:
     class: Drupal\culturefeed_search\SearchPageServiceManager
+    arguments: ['@Drupal\Component\DependencyInjection\ReverseContainer']
     tags:
       - { name: service_collector, tag: culturefeed_search_page, call: addSearchPage }
 

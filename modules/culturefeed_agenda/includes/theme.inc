@@ -30,7 +30,8 @@ function template_preprocess_culturefeed_event(array &$variables) {
 
   $langcode = $variables['elements']['#langcode'] ?? \Drupal::languageManager()->getCurrentLanguage()->getId();
 
-  $searchPreprocessor = new SearchPreprocessor();
+  /** @var SearchPreprocessor $searchPreprocessor */
+  $searchPreprocessor = \Drupal::service('culturefeed_agenda.search_preprocessor');
 
   // Preprocessor settings.
   $settings = [
