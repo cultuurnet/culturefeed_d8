@@ -228,6 +228,9 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
   }
 }
 
+/**
+ * Implements hook_culturefeed_search_api_query_alter().
+ */
 function culturefeed_agenda_culturefeed_search_api_query_alter(SearchQueryInterface $searchQuery, string $type) {
   // Add event calendar summaries.
   if ($type === 'events' || $type === 'event') {
