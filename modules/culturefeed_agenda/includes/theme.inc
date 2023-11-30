@@ -174,41 +174,6 @@ function template_preprocess_culturefeed_event__full(array &$variables) {
       $variables['themes_urls'][$theme->getLabel()] = Url::fromRoute('culturefeed_agenda.agenda', [], ['query' => $query]);
     }
   }
-
-  // Create a summary from the long description
-  // and strip the summary from the description.
-  $longDescription = \Drupal::service('renderer')->render($variables['description']);
-  $introParagraph = substr($longDescription, strpos($longDescription, '<p'), strpos($longDescription, '</p>') + 4);
-
-  if ($introParagraph) {
-    // Remove the extracted text from the long description.
-    $variables['description'] = [
-      '#markup' => str_replace($introParagraph, '', $longDescription),
-    ];
-
-    // Overwrite the default summary text.
-    $variables['summary'] = [
-      '#markup' => $introParagraph,
-    ];
-  }
-
-  // If the intro contains an equal amount of paragraphs as
-  // the long description, remove the long description.
-  // Use DOMDocument to count the number of top-level paragraphs.
-  $longDescriptionDOM = new DOMDocument();
-  if (!empty($longDescription)) {
-    $longDescriptionDOM->loadHTML($longDescription);
-  }
-
-  $introParagraphDOM = new DOMDocument();
-  if (!empty($introParagraph)) {
-    $introParagraphDOM->loadHTML($introParagraph);
-  }
-
-  if ($longDescriptionDOM->getElementsByTagName('p')->length === $introParagraphDOM->getElementsByTagName('p')->length) {
-    // If the summary and description are the same, remove the description.
-    unset($variables['description']);
-  }
 }
 
 /**
