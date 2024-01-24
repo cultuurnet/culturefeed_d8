@@ -9,7 +9,7 @@ As an exception, critical security updates will still be provided if needed.
 
 Prerequisites:
 
-- php > v7.3 and the php intl extension
+- php > v8.0 and the php intl extension
 - composer installed (http://getcomposer.org/doc/00-intro.md#downloading-the-composer-executable)
 - Drupal installed via composer
 
