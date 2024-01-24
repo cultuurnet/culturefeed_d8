@@ -21,14 +21,6 @@ composer require cultuurnet/culturefeed-d8
 
 Please enable only the modules you need.
 
-### Culturefeed api
-
-Provides the API client to connect with Culturefeed. No caching / logging is foreseen in this module.
-
-### Culturefeed user
-
-Currently only provides an option to login and request info of the current __UiTID__ user.
-
 ### Culturefeed search api
 
 Provides the api client to search in the events database. Caching / logging is foreseen in this module. (See Activating Debugging)
@@ -45,6 +37,9 @@ Basic elements to build up an event search (such as provided by Culturefeed Agen
 ### Culturefeed agenda
 Provides a Culturefeed search page available on 'agenda/search' and detail pages. The blocks provided by this module can be used to extend the detail pages of events, actors and productions. Includes also a simple search form.
 This module provides a controller, but all the agenda components are split up into blocks. You can use the default controller or take over the controller via page manager.
+
+### Culturefeed organizers
+Adds support for searching and viewing organizers
 
 ### Culturefeed_content
 Adds a CultureFeed content field to add a search query to any of your entity types.
