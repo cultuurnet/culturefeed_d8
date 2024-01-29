@@ -6,6 +6,7 @@ use CultuurNet\SearchV3\ValueObjects\CalendarSummaryFormat;
 use CultuurNet\SearchV3\ValueObjects\CalendarSummaryLanguage;
 use CultuurNet\SearchV3\ValueObjects\Event;
 use CultuurNet\SearchV3\ValueObjects\Place;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Datetime\DateFormatterInterface;
 
 /**
@@ -87,14 +88,20 @@ class SearchPreprocessor {
         ->getCopyrightHolder();
     }
 
-    $variables['summary'] = strip_tags($variables['description']);
-    if (!empty($settings['description']['characters'])) {
-      $originalSummary = $variables['summary'];
-      $variables['summary'] = text_summary($variables['summary'], NULL, $settings['description']['characters']);
-      if (strlen($variables['summary']) < strlen($originalSummary)) {
-        // Only add ellipsis if the summary does not end at the end of sentence.
-        $punctuation = ['.', '!', '?', '。', '؟ '];
-        $variables['summary'] .= in_array(substr($variables['summary'], -1), $punctuation) ? '' : '...';
+    $description = $variables['description'] ?? NULL;
+
+    if (NULL !== $description) {
+      // Remove all html tags from the summary.
+      $variables['summary'] = Xss::filter($variables['description'], []);
+
+      if (!empty($settings['description']['characters'])) {
+        $originalSummary = $variables['summary'];
+        $variables['summary'] = \text_summary($variables['summary'], NULL, $settings['description']['characters']);
+        if (\strlen($variables['summary']) < \strlen($originalSummary)) {
+          // Only add ellipsis if the summary does not end at the end of sentence.
+          $punctuation = ['.', '!', '?', '。', '؟ '];
+          $variables['summary'] .= \in_array(\substr($variables['summary'], -1), $punctuation) ? '' : '...';
+        }
       }
     }
 
@@ -184,19 +191,6 @@ class SearchPreprocessor {
    */
   public function preprocessEventDetail(Event $event, string $langcode, array $settings = []) {
     $variables = $this->preprocessEvent($event, $langcode, $settings);
-
-    $variables['summary'] = '';
-    if (!empty($settings['description']['characters'])) {
-      $variables['summary'] = text_summary(
-        $variables['description'],
-        filter_fallback_format(),
-        $settings['description']['characters']
-      );
-
-      if (strlen($variables['summary']) === strlen($variables['description'])) {
-        $variables['summary'] = '';
-      }
-    }
 
     $variables['when_details'] = $this->formatEventDatesDetail($event, $langcode);
 
