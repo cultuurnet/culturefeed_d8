@@ -76,7 +76,6 @@ class AgendaSearchForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
     $query = $this->request->query->all();
     $query['q'] = $form_state->getValue('term');
 

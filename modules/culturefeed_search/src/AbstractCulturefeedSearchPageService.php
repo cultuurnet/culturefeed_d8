@@ -222,8 +222,8 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
 
     foreach ($parameters as $id => $class) {
       // Add the region parameters.
-      $parameterValues = $this->currentRequest->query->get($id);
-      if (!empty($parameterValues)) {
+      $parameterValues = $this->currentRequest->query->all()[$id] ?? NULL;
+      if ($parameterValues !== NULL) {
         if (!is_array($parameterValues)) {
           $parameterValues = [$parameterValues => $parameterValues];
         }
@@ -318,7 +318,7 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
       // Set the active buckets.
       /** @var \Drupal\culturefeed_search\Facet\Facet $facet */
       foreach ($this->facets as $facet) {
-        $queryParams = $this->currentRequest->query->get($facet->getId(), []);
+        $queryParams = $this->currentRequest->query->all()[$facet->getId()] ?? [];
 
         // We accept both arrays and plain values.
         if (!is_array($queryParams)) {

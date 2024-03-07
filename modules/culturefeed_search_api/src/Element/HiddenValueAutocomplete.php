@@ -84,12 +84,14 @@ class HiddenValueAutocomplete extends FormElement {
       '#placeholder' => $element['#placeholder'] ?? NULL,
       '#ajax' => $element['#ajax'] ?? [],
       '#default_value' => $element['#default_value']['label'] ?? NULL,
+      '#error_no_message' => TRUE,
     ];
 
     // Add a hidden field for storing the autocomplete value.
     $element['value'] = [
       '#type' => 'hidden',
       '#default_value' => $element['#default_value']['value'] ?? NULL,
+      '#error_no_message' => TRUE,
     ];
 
     // Remove validation stuff of main element.

@@ -69,7 +69,7 @@ class SearchPagePrepareFacetsEventSubscriber implements EventSubscriberInterface
         // Use the already prepared facet if possible.
         // If not, create a new one here.
         $facet = $facets[$facetId] ?? new Facet($facetId);
-        $value = $this->currentRequest->query->get($facetId);
+        $value = $this->currentRequest->query->all()[$facetId];
         if (is_array($value)) {
           $activeValue = $value;
           $id = key($value);
