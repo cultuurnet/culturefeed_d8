@@ -85,6 +85,7 @@ class HiddenValueAutocomplete extends FormElement {
     $element['value'] = [
       '#type' => 'hidden',
       '#default_value' => $element['#default_value']['value'] ?? NULL,
+      '#error_no_message' => TRUE,
     ];
 
     // Remove validation stuff of main element.
