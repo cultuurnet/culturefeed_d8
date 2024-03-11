@@ -23,7 +23,15 @@ function template_preprocess_culturefeed_organizer(array &$variables) {
 
   $variables['id'] = $organizer->getCdbid();
   $variables['name'] = $organizer->getName()->getValueForLanguage($langcode);
-  $variables['description'] = $organizer->getDescription() ? $organizer->getDescription()->getValueForLanguage($langcode) : NULL;
+  $description = $organizer->getDescription() ? $organizer->getDescription()->getValueForLanguage($langcode) : NULL;
+  if ($description !== NULL) {
+    $variables['description'] = [
+      '#type' => 'processed_text',
+      '#text' => $description,
+      '#format' => 'filtered_html',
+    ];
+  }
+
   $variables['image'] = $organizer->getMainImage();
 
   if ($address = $organizer->getAddress()) {
