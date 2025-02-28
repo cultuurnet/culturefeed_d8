@@ -2,6 +2,7 @@
 
 namespace Drupal\culturefeed_agenda\Utility;
 
+use CultuurNet\SearchV3\Enum\Availability;
 use CultuurNet\SearchV3\ValueObjects\CalendarSummaryFormat;
 use CultuurNet\SearchV3\ValueObjects\CalendarSummaryLanguage;
 use CultuurNet\SearchV3\ValueObjects\Event;
@@ -61,6 +62,7 @@ class SearchPreprocessor {
       'labels' => $event->getLabels() ?? [],
       'vlieg' => self::isVliegEvent($event),
       'uitpas' => self::isUitpasEvent($event),
+      'booking_available' => $event->getBookingAvailability()->getType() === Availability::Available,
     ];
 
     $defaultImage = $settings['image']['default_image'] ?? NULL;
