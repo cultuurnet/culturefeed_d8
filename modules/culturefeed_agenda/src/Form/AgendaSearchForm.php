@@ -78,6 +78,7 @@ class AgendaSearchForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $query = $this->request->query->all();
     $query['q'] = $form_state->getValue('term');
+    unset($query['page']);
 
     // Redirect the user.
     $form_state->setRedirect('culturefeed_agenda.agenda', [], ['query' => array_filter($query)]);
