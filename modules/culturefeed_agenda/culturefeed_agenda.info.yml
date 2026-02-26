@@ -1,7 +1,7 @@
 name: Culturefeed agenda
 description: 'Provides the Culturefeed agenda functionality'
 type: module
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 package: 'CultureFeed'
 dependencies:
   - culturefeed_d8:culturefeed_search

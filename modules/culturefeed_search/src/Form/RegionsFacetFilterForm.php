@@ -13,14 +13,14 @@ class RegionsFacetFilterForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'culturefeed_search_regions_facet_filter_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $form['region'] = [
       '#type' => 'culturefeed_hidden_value_autocomplete',
       '#autocomplete_route_name' => 'culturefeed_search.regions_autocomplete',
@@ -45,7 +45,7 @@ class RegionsFacetFilterForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     $region = $form_state->getValue('region');
 
     if (!empty($region['value'])) {

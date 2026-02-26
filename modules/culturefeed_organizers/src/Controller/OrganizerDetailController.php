@@ -68,11 +68,11 @@ class OrganizerDetailController extends ControllerBase {
    * @param \CultuurNet\SearchV3\ValueObjects\Organizer $culturefeed_organizer
    *   The Culturefeed event being displayed.
    *
-   * @return \Drupal\Component\Render\FormattableMarkup|string
+   * @return string
    *   The page title.
    */
-  public function title(Organizer $culturefeed_organizer) {
-    return $culturefeed_organizer->getName()->getValueForLanguage($this->currentLanguage->getId());
+  public function title(Organizer $culturefeed_organizer): string {
+    return $culturefeed_organizer->getName()?->getValueForLanguage($this->currentLanguage->getId()) ?? '';
   }
 
 }

@@ -14,8 +14,9 @@ class CulturefeedCoreServiceProvider extends ServiceProviderBase {
   /**
    * {@inheritdoc}
    */
-  public function alter(ContainerBuilder $container) {
+  public function alter(ContainerBuilder $container): void {
     // Allow existing Drupal loggers to be added as handlers.
+    // @phpstan-ignore-next-line
     if ($container->has('logger.dblog')) {
       $definition = $container->register('monolog.handler.untranslated_drupal_log', 'Drupal\culturefeed_search_api\Logger\UntranslatedDatabaseLogHandler');
       $definition->addArgument(new Reference('logger.dblog'));

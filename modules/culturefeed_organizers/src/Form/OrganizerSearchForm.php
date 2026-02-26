@@ -13,26 +13,18 @@ use Symfony\Component\HttpFoundation\Request;
 class OrganizerSearchForm extends FormBase {
 
   /**
-   * The current request.
-   *
-   * @var \Symfony\Component\HttpFoundation\Request|null
-   */
-  protected $request;
-
-  /**
    * AgendaSearchForm constructor.
    *
-   * @param \Symfony\Component\HttpFoundation\Request $request
+   * @param null|\Symfony\Component\HttpFoundation\Request $request
    *   The current request.
    */
-  public function __construct(Request $request) {
-    $this->request = $request;
+  public function __construct(protected ?Request $request) {
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): OrganizerSearchForm {
     return new static(
       $container->get('request_stack')->getCurrentRequest()
     );
@@ -41,14 +33,14 @@ class OrganizerSearchForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'culturefeed_organizer_search_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     // Disabling the token will result in a cached block.
     $form['#token'] = FALSE;
 
@@ -59,7 +51,7 @@ class OrganizerSearchForm extends FormBase {
     $form['term'] = [
       '#type' => 'textfield',
       '#placeholder' => $this->t('Enter your search term here', [], ['context' => 'culturefeed_organizer']),
-      '#default_value' => $this->request->query->get('q'),
+      '#default_value' => $this->request?->query->get('q'),
     ];
 
     $form['actions']['search'] = [
@@ -75,8 +67,8 @@ class OrganizerSearchForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    $query = $this->request->query->all();
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $query = $this->request?->query->all() ?? [];
     $query['q'] = $form_state->getValue('term');
     unset($query['page']);
 

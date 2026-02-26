@@ -18,7 +18,7 @@ use Drupal\culturefeed_search\Url;
  * @param array $variables
  *   Array of currently known variables.
  */
-function template_preprocess_culturefeed_event(array &$variables) {
+function template_preprocess_culturefeed_event(array &$variables): void {
   $variables['view_mode'] = $variables['elements']['#view_mode'] ?? 'full';
 
   // Provide a distinct $teaser boolean.
@@ -131,7 +131,7 @@ function template_preprocess_culturefeed_event(array &$variables) {
  * @param array $variables
  *   Array of currently known variables.
  */
-function template_preprocess_culturefeed_event__teaser(array &$variables) {
+function template_preprocess_culturefeed_event__teaser(array &$variables): void {
   $variables['location'] = t('Location to be discussed');
 
   if (!empty($variables['where'])) {
@@ -151,7 +151,7 @@ function template_preprocess_culturefeed_event__teaser(array &$variables) {
  * @param array $variables
  *   Array of currently known variables.
  */
-function template_preprocess_culturefeed_event__full(array &$variables) {
+function template_preprocess_culturefeed_event__full(array &$variables): void {
   if (isset($variables['types'])) {
     $variables['types_urls'] = [];
     foreach ($variables['types'] as $key => $type) {
@@ -183,7 +183,7 @@ function template_preprocess_culturefeed_event__full(array &$variables) {
  * @param array $variables
  *   List of current known variables.
  */
-function template_preprocess_culturefeed_agenda_search_results(array &$variables) {
+function template_preprocess_culturefeed_agenda_search_results(array &$variables): void {
   // Prepare the search result rows.
   $variables['rows'] = [];
 
@@ -213,7 +213,7 @@ function template_preprocess_culturefeed_agenda_search_results(array &$variables
  * @param array $variables
  *   List of current known variables.
  */
-function template_preprocess_culturefeed_agenda_search_result_count_summary(array &$variables) {
+function template_preprocess_culturefeed_agenda_search_result_count_summary(array &$variables): void {
   $variables['summary'] = NULL;
 
   $total = $variables['total'];

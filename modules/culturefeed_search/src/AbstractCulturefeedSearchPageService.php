@@ -15,6 +15,7 @@ use Drupal\culturefeed_search\Event\SearchPagePrepareFacetsEvent;
 use Drupal\culturefeed_search\Event\SearchPageServiceExecuteEvent;
 use Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -30,81 +31,53 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
   use StringTranslationTrait;
 
   /**
-   * The Culturefeed search client.
-   *
-   * @var \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface
-   */
-  protected $searchClient;
-
-  /**
    * Current request.
    *
-   * @var \Symfony\Component\HttpFoundation\Request
+   * @var null|\Symfony\Component\HttpFoundation\Request
    */
-  protected $currentRequest;
-
-  /**
-   * The facet helper service.
-   *
-   * @var \Drupal\culturefeed_search\FacetHelper
-   */
-  protected $facetHelper;
-
-  /**
-   * The event dispatcher.
-   *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcher
-   */
-  protected $eventDispatcher;
-
-  /**
-   * The Pager manager service.
-   *
-   * @var \Drupal\Core\Pager\PagerManagerInterface
-   */
-  protected $pagerManager;
+  protected ?Request $currentRequest;
 
   /**
    * The search query.
    *
    * @var \CultuurNet\SearchV3\SearchQueryInterface
    */
-  protected $searchQuery;
+  protected SearchQueryInterface $searchQuery;
 
   /**
    * The search result.
    *
    * @var \CultuurNet\SearchV3\ValueObjects\PagedCollection
    */
-  protected $searchResult;
+  protected PagedCollection $searchResult;
 
   /**
    * The number of items per page.
    *
    * @var int
    */
-  protected $itemsPerPage = 20;
+  protected int $itemsPerPage = 20;
 
   /**
    * Indicates if a search has been performed.
    *
    * @var bool
    */
-  protected $searched = FALSE;
+  protected bool $searched = FALSE;
 
   /**
    * Indicates if the search failed.
    *
    * @var bool
    */
-  protected $searchFailed = FALSE;
+  protected bool $searchFailed = FALSE;
 
   /**
    * The facets.
    *
-   * @var null
+   * @var ?\Drupal\culturefeed_search\Facet\Facet[]
    */
-  protected $facets = NULL;
+  protected ?array $facets = NULL;
 
   /**
    * AbstractCulturefeedSearchPageService constructor.
@@ -117,15 +90,16 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
    *   Facet helper service.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
-   * @param \Drupal\Core\Pager\PagerManagerInterface $pager_manager
+   * @param \Drupal\Core\Pager\PagerManagerInterface $pagerManager
    *   The Pager manager service.
    */
-  public function __construct(RequestStack $requestStack, DrupalCulturefeedSearchClientInterface $searchClient, FacetHelper $facetHelper, EventDispatcherInterface $eventDispatcher, PagerManagerInterface $pager_manager) {
+  public function __construct(
+    RequestStack $requestStack,
+    protected readonly DrupalCulturefeedSearchClientInterface $searchClient,
+    protected readonly FacetHelper $facetHelper,
+    protected readonly EventDispatcherInterface $eventDispatcher,
+    protected readonly PagerManagerInterface $pagerManager) {
     $this->currentRequest = $requestStack->getCurrentRequest();
-    $this->searchClient = $searchClient;
-    $this->facetHelper = $facetHelper;
-    $this->eventDispatcher = $eventDispatcher;
-    $this->pagerManager = $pager_manager;
 
     // Initialize with an empty search query and search result.
     $this->searchQuery = new SearchQuery(TRUE);
@@ -148,21 +122,21 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
    * @param bool $searched
    *   TRUE to indicate a search was executed.
    */
-  protected function setSearched(bool $searched = TRUE) {
+  protected function setSearched(bool $searched = TRUE): void {
     $this->searched = $searched;
   }
 
   /**
    * Execute the search and set the search result.
    */
-  protected function execute() {
+  protected function execute(): void {
     try {
       // Build the search query.
       $this->searchQuery->setStart($this->pagerManager->findPage() * $this->itemsPerPage);
       $this->searchQuery->setLimit($this->itemsPerPage);
 
       // Set API search parameters according to query parameters.
-      $this->setSearchParameters($this->currentRequest->query->all());
+      $this->setSearchParameters($this->currentRequest?->query->all() ?? []);
 
       // Allow others to alter the query before execution.
       $this->eventDispatcher->dispatch(new SearchPageServiceExecuteEvent($this->searchQuery), SearchPageServiceExecuteEvent::EXECUTE);
@@ -184,12 +158,12 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
   /**
    * Execute the search query.
    */
-  protected function executeQuery() {}
+  protected function executeQuery(): void {}
 
   /**
    * Perform a search if no search has been done yet.
    */
-  protected function search() {
+  protected function search(): void {
     if (!$this->hasSearched()) {
       $this->execute();
     }
@@ -201,7 +175,7 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
    * @param array $params
    *   The search params.
    */
-  protected function setSearchParameters(array $params) {
+  protected function setSearchParameters(array $params): void {
     // Set the search query parameters.
     if (!empty($params['q'])) {
       $this->searchQuery->addParameter(new Query($params['q']));
@@ -222,7 +196,7 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
 
     foreach ($parameters as $id => $class) {
       // Add the region parameters.
-      $parameterValues = $this->currentRequest->query->all()[$id] ?? NULL;
+      $parameterValues = $this->currentRequest?->query->all()[$id] ?? NULL;
       if ($parameterValues !== NULL) {
         if (!is_array($parameterValues)) {
           $parameterValues = [$parameterValues => $parameterValues];
@@ -238,7 +212,7 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
   /**
    * Add the needed facets to the search query.
    */
-  protected function addFacets() {
+  protected function addFacets(): void {
     $this->searchQuery->addParameter(new Facet('regions'));
     $this->searchQuery->addParameter(new Facet('types'));
     $this->searchQuery->addParameter(new Facet('facilities'));
@@ -248,15 +222,15 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
   /**
    * {@inheritdoc}
    */
-  public function getSearchResultItems() {
+  public function getSearchResultItems(): array {
     $this->search();
-    return !empty($this->searchResult->getMember()) ? $this->searchResult->getMember()->getItems() ?? [] : [];
+    return $this->searchResult->getMember()?->getItems() ?? [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getSearchResult() {
+  public function getSearchResult(): PagedCollection {
     $this->search();
     return $this->searchResult;
   }
@@ -264,9 +238,9 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
   /**
    * {@inheritdoc}
    */
-  public function getTotalResults() {
+  public function getTotalResults(): int {
     $this->search();
-    return $this->searchResult->getTotalItems();
+    return $this->searchResult->getTotalItems() ?? 0;
   }
 
   /**
@@ -279,7 +253,7 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
   /**
    * {@inheritdoc}
    */
-  public function markAsFailed() {
+  public function markAsFailed(): void {
     $this->searchFailed = TRUE;
   }
 
@@ -301,14 +275,14 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
    * {@inheritdoc}
    */
   public function getCurrentPage(): int {
-    return (int) $this->currentRequest->query->get('page', 0);
+    return (int) $this->currentRequest?->query->get('page', 0);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getFacets($facetId = NULL) {
-    if (!$this->facets) {
+  public function getFacets($facetId = NULL): NULL|array|\Drupal\culturefeed_search\Facet\Facet {
+    if ($this->facets === NULL) {
       // Perform a search.
       $this->search();
 
@@ -318,7 +292,7 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
       // Set the active buckets.
       /** @var \Drupal\culturefeed_search\Facet\Facet $facet */
       foreach ($this->facets as $facet) {
-        $queryParams = $this->currentRequest->query->all()[$facet->getId()] ?? [];
+        $queryParams = $this->currentRequest?->query->all()[$facet->getId()] ?? [];
 
         // We accept both arrays and plain values.
         if (!is_array($queryParams)) {

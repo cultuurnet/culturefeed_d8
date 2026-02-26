@@ -61,7 +61,7 @@ class Facet {
    * @param FacetBucket $bucket
    *   The bucket to add.
    */
-  public function addBucket(FacetBucket $bucket) {
+  public function addBucket(FacetBucket $bucket): void {
     $this->buckets[$bucket->getId()] = $bucket;
   }
 
@@ -71,7 +71,7 @@ class Facet {
    * @return FacetBucket[]
    *   The buckets in the facet.
    */
-  public function getBuckets() {
+  public function getBuckets(): array {
     return $this->buckets;
   }
 
@@ -81,7 +81,7 @@ class Facet {
    * @param array $buckets
    *   The buckets to set.
    */
-  public function setBuckets(array $buckets) {
+  public function setBuckets(array $buckets): void {
     $this->buckets = $buckets;
   }
 
@@ -91,7 +91,7 @@ class Facet {
    * @return \Drupal\culturefeed_search\Facet\FacetBucket[]
    *   The active buckets.
    */
-  public function getActiveBuckets() {
+  public function getActiveBuckets(): array {
     $activeBuckets = [];
 
     foreach ($this->buckets as $bucket) {
@@ -110,7 +110,7 @@ class Facet {
    * @return \Drupal\culturefeed_search\Facet\FacetBucket[]
    *   The active buckets.
    */
-  private function getActiveBucketsRecursively(FacetBucket $facetBucket) {
+  private function getActiveBucketsRecursively(FacetBucket $facetBucket): array {
     $activeBuckets = [];
 
     if ($facetBucket->isActive()) {
@@ -132,7 +132,7 @@ class Facet {
    * @param array $activeBuckets
    *   Buckets to set active.
    */
-  public function setActiveBuckets(array $activeBuckets) {
+  public function setActiveBuckets(array $activeBuckets): void {
     foreach ($this->buckets as $bucket) {
       $this->checkActiveBucket($bucket, $activeBuckets);
 
@@ -152,7 +152,7 @@ class Facet {
    * @param array $activeBuckets
    *   The active buckets to check against.
    */
-  private function checkActiveBucket(FacetBucket $bucket, array $activeBuckets) {
+  private function checkActiveBucket(FacetBucket $bucket, array $activeBuckets): void {
     if (isset($activeBuckets[$bucket->getId()])) {
       $bucket->setActive();
       $bucket->setLabel($activeBuckets[$bucket->getId()]);

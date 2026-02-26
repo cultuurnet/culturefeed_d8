@@ -17,12 +17,13 @@ use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\monolog\Logger\Logger;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
+use Monolog\Handler\AbstractHandler;
+use Monolog\Level;
 use Monolog\Logger as MonologLogger;
 
 /**
@@ -41,20 +42,6 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    * @var \CultuurNet\SearchV3\SearchClient
    */
   protected $client;
-
-  /**
-   * The cache backend.
-   *
-   * @var \Drupal\Core\Cache\CacheBackendInterface
-   */
-  protected $cacheBackend;
-
-  /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected $languageManager;
 
   /**
    * Is cache enabled.
@@ -78,13 +65,6 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
   protected $config;
 
   /**
-   * The module handler.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
-
-  /**
    * DrupalSearchClient constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactory $configFactory
@@ -98,12 +78,14 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    *   The module handler.
    */
-  public function __construct(ConfigFactory $configFactory, LoggerChannelFactoryInterface $loggerChannelFactory, CacheBackendInterface $cacheBackend, LanguageManagerInterface $languageManager, ModuleHandlerInterface $moduleHandler) {
+  public function __construct(
+    ConfigFactory $configFactory,
+    LoggerChannelFactoryInterface $loggerChannelFactory,
+    protected CacheBackendInterface $cacheBackend,
+    protected LanguageManagerInterface $languageManager,
+    protected ModuleHandlerInterface $moduleHandler
+  ) {
     $this->config = $configFactory->get('culturefeed_search_api.settings');
-
-    $this->languageManager = $languageManager;
-    $this->moduleHandler = $moduleHandler;
-    $this->cacheBackend = $cacheBackend;
     $this->cacheEnabled = $this->config->get('enable_cache') === NULL ? TRUE : $this->config->get('enable_cache');
 
     $logger = $loggerChannelFactory->get('culturefeed_search_api');
@@ -111,11 +93,11 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     $handlerStack = HandlerStack::create();
     if ($logger instanceof MonologLogger) {
       // If debug is enabled, set all handlers to debug mode.
-      $level = $this->config->get('debug') ? Logger::DEBUG : Logger::NOTICE;
+      $level = $this->config->get('debug') ? Level::Debug : Level::Notice;
 
       $handlers = $logger->getHandlers();
-      /** @var \Monolog\Handler\HandlerInterface $handler */
       foreach ($handlers as $handler) {
+        assert($handler instanceof AbstractHandler);
         $handler->setLevel($level);
       }
 
@@ -144,7 +126,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
   /**
    * {@inheritdoc}
    */
-  public function setClient(ClientInterface $client) {
+  public function setClient(ClientInterface $client): void {
     $this->client->setClient($client);
   }
 
@@ -308,12 +290,9 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
   }
 
   /**
-   * Get the available regions.
-   *
-   * @return \stdClass[]
-   *   Array of autocomplete results.
+   * {@inheritdoc}
    */
-  public function getRegions() {
+  public function getRegions(): array {
     $jsonLocation = $this->config->get('regions_list') ?? NULL;
 
     if (empty($jsonLocation)) {
@@ -337,7 +316,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     $data = curl_exec($curl);
     curl_close($curl);
 
-    if (!$data) {
+    if (!is_string($data)) {
       return [];
     }
 
@@ -367,7 +346,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    *   - places
    *   - offers.
    */
-  protected function alterQuery(SearchQueryInterface $searchQuery, $type = 'events') {
+  protected function alterQuery(SearchQueryInterface $searchQuery, $type = 'events'): void {
     $this->moduleHandler->alter('culturefeed_search_api_query', $searchQuery, $type);
   }
 

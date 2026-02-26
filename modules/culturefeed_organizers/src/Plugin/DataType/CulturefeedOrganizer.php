@@ -21,9 +21,9 @@ class CulturefeedOrganizer extends TypedData implements PrimitiveInterface {
   /**
    * The data value.
    *
-   * @var \CultuurNet\SearchV3\ValueObjects\Organizer
+   * @var null|\CultuurNet\SearchV3\ValueObjects\Organizer
    */
-  protected $value;
+  protected ?Organizer $value = NULL;
 
   /**
    * {@inheritdoc}

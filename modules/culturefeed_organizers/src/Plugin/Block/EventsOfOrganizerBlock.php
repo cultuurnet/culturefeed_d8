@@ -25,13 +25,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class EventsOfOrganizerBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The search client.
-   *
-   * @var \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface
-   */
-  protected $searchClient;
-
-  /**
    * Construct a new EventsOfOrganizerBlock.
    *
    * @param array $configuration
@@ -43,9 +36,8 @@ class EventsOfOrganizerBlock extends BlockBase implements ContainerFactoryPlugin
    * @param \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface $searchClient
    *   The search client.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, DrupalCulturefeedSearchClientInterface $searchClient) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected readonly DrupalCulturefeedSearchClientInterface $searchClient) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->searchClient = $searchClient;
   }
 
   /**
@@ -63,7 +55,7 @@ class EventsOfOrganizerBlock extends BlockBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
+  public function defaultConfiguration(): array {
     return [
       'total_items' => 20,
     ];
@@ -72,7 +64,7 @@ class EventsOfOrganizerBlock extends BlockBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function blockForm($form, FormStateInterface $form_state) {
+  public function blockForm($form, FormStateInterface $form_state): array {
     $form = parent::blockForm($form, $form_state);
 
     $config = $this->getConfiguration();
@@ -89,14 +81,14 @@ class EventsOfOrganizerBlock extends BlockBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $form_state) {
+  public function blockSubmit($form, FormStateInterface $form_state): void {
     $this->setConfigurationValue('total_items', $form_state->getValue('total_items'));
   }
 
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     try {
       $config = $this->getConfiguration();
       $query = new SearchQuery();

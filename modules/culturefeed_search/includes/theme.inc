@@ -16,7 +16,7 @@ use Drupal\culturefeed_search\Facet\Facet;
  * @param array $variables
  *   Array of currently known variables.
  */
-function template_preprocess_culturefeed_search_facet(array &$variables) {
+function template_preprocess_culturefeed_search_facet(array &$variables): void {
   /** @var \Drupal\culturefeed_search\Facet\Facet $facet */
   $facet = $variables['facet'];
 
@@ -35,7 +35,7 @@ function template_preprocess_culturefeed_search_facet(array &$variables) {
  * @return array
  *   Facet items render array.
  */
-function _culturefeed_search_build_facet_items(array $items, Facet $facet) {
+function _culturefeed_search_build_facet_items(array $items, Facet $facet): array {
   $facetItems = [];
 
   foreach ($items as $item) {
@@ -69,7 +69,7 @@ function _culturefeed_search_build_facet_items(array $items, Facet $facet) {
  * @param array $variables
  *   Array of currently known variables.
  */
-function template_preprocess_culturefeed_search_facet_item(array &$variables) {
+function template_preprocess_culturefeed_search_facet_item(array &$variables): void {
   /** @var \Drupal\culturefeed_search\Facet\FacetBucket $bucket */
   $bucket = $variables['facet_bucket'];
   $facetId = $variables['facet_id'];
@@ -114,11 +114,11 @@ function template_preprocess_culturefeed_search_facet_item(array &$variables) {
  * @param array $variables
  *   List of current known variables.
  */
-function template_preprocess_culturefeed_search_search_results(array &$variables) {
+function template_preprocess_culturefeed_search_search_results(array &$variables): void {
   // Prepare the search result rows.
   $variables['rows'] = [];
 
-  /** @var \CultuurNet\SearchV3\ValueObjects\Event $item */
+  /** @var \CultuurNet\SearchV3\ValueObjects\Event|\CultuurNet\SearchV3\ValueObjects\Organizer $item */
   foreach ($variables['results'] as $item) {
     $variables['rows'][] = [
       '#theme' => $item instanceof Organizer ? 'culturefeed_organizer' : 'culturefeed_event',
@@ -144,7 +144,7 @@ function template_preprocess_culturefeed_search_search_results(array &$variables
  * @param array $variables
  *   List of current known variables.
  */
-function template_preprocess_culturefeed_search_search_result_count_summary(array &$variables) {
+function template_preprocess_culturefeed_search_search_result_count_summary(array &$variables): void {
   $variables['summary'] = NULL;
 
   $total = $variables['total'];

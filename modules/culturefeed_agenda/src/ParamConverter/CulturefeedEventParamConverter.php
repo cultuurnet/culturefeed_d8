@@ -50,7 +50,7 @@ class CulturefeedEventParamConverter implements ParamConverterInterface {
 
     try {
       // Optionally reset the search cache.
-      return $this->searchClient->searchEvent($value, $this->request->query->has('reset'));
+      return $this->searchClient->searchEvent($value, $this->request?->query->has('reset') ?? FALSE);
     }
     catch (\Throwable $t) {
       return NULL;

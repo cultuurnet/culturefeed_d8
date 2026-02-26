@@ -8,7 +8,7 @@
 /**
  * Implements hook_theme().
  */
-function culturefeed_organizers_theme() {
+function culturefeed_organizers_theme(): array {
   $theme = [];
 
   $theme['culturefeed_organizer'] = [
@@ -53,7 +53,7 @@ function culturefeed_organizers_theme() {
 /**
  * Implements hook_theme_suggestions_culturefeed_organizer().
  */
-function culturefeed_organizers_theme_suggestions_culturefeed_organizer(array $variables) {
+function culturefeed_organizers_theme_suggestions_culturefeed_organizer(array $variables): array {
   $suggestions = [];
   $view_mode = $variables['elements']['#view_mode'] ?? 'full';
 

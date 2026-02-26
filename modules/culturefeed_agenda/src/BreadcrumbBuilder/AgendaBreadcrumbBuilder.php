@@ -17,28 +17,11 @@ class AgendaBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   use StringTranslationTrait;
 
   /**
-   * The current request.
-   *
-   * @var \Symfony\Component\HttpFoundation\Request
-   */
-  protected $currentRequest;
-
-  /**
    * The breadcrumb to build.
    *
    * @var \Drupal\Core\Breadcrumb\Breadcrumb
    */
   protected $breadcrumb;
-
-  /**
-   * AgendaBreadcrumbBuilder constructor.
-   *
-   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-   *   The current request stack.
-   */
-  public function __construct(RequestStack $requestStack) {
-    $this->currentRequest = $requestStack->getCurrentRequest();
-  }
 
   /**
    * {@inheritdoc}

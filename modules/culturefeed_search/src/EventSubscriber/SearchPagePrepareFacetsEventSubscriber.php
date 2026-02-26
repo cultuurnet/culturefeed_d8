@@ -3,10 +3,12 @@
 namespace Drupal\culturefeed_search\EventSubscriber;
 
 use Drupal\Core\KeyValueStore\KeyValueExpirableFactoryInterface;
+use Drupal\Core\KeyValueStore\KeyValueStoreExpirableInterface;
 use Drupal\culturefeed_search\Event\SearchPagePrepareFacetsEvent;
 use Drupal\culturefeed_search\Facet\Facet;
 use Drupal\culturefeed_search\Facet\FacetBucket;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -17,16 +19,16 @@ class SearchPagePrepareFacetsEventSubscriber implements EventSubscriberInterface
   /**
    * The current request.
    *
-   * @var \Symfony\Component\HttpFoundation\Request
+   * @var null|\Symfony\Component\HttpFoundation\Request
    */
-  protected $currentRequest;
+  protected ?Request $currentRequest;
 
   /**
    * The key value store.
    *
    * @var \Drupal\Core\KeyValueStore\KeyValueStoreExpirableInterface
    */
-  protected $keyValueStore;
+  protected KeyValueStoreExpirableInterface $keyValueStore;
 
   /**
    * CatalogSearchPagePrepareFacetsEventSubscriber constructor.
@@ -47,7 +49,7 @@ class SearchPagePrepareFacetsEventSubscriber implements EventSubscriberInterface
    * @param \Drupal\culturefeed_search\Event\SearchPagePrepareFacetsEvent $event
    *   The event containing the facets being prepared.
    */
-  public function onPrepare(SearchPagePrepareFacetsEvent $event) {
+  public function onPrepare(SearchPagePrepareFacetsEvent $event): void {
 
     // The original facets.
     $facets = $event->getFacets();
@@ -64,7 +66,7 @@ class SearchPagePrepareFacetsEventSubscriber implements EventSubscriberInterface
 
     foreach ($supportedFacets as $facetId) {
 
-      if ($this->currentRequest->query->has($facetId)) {
+      if ($this->currentRequest?->query->has($facetId)) {
 
         // Use the already prepared facet if possible.
         // If not, create a new one here.
@@ -101,7 +103,7 @@ class SearchPagePrepareFacetsEventSubscriber implements EventSubscriberInterface
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events[SearchPagePrepareFacetsEvent::PREPARE][] = ['onPrepare', 1000];
     return $events;
   }

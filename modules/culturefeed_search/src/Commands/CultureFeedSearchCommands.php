@@ -14,22 +14,14 @@ class CultureFeedSearchCommands extends DrushCommands {
   use StringTranslationTrait;
 
   /**
-   * The cache tags invalidator.
-   *
-   * @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface
-   */
-  protected $cacheTagsInvalidator;
-
-  /**
    * CultureFeedSearchCommands constructor.
    *
    * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cacheTagsInvalidator
    *   The cache tags invalidator.
    */
   public function __construct(
-    CacheTagsInvalidatorInterface $cacheTagsInvalidator
+    protected readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator
   ) {
-    $this->cacheTagsInvalidator = $cacheTagsInvalidator;
   }
 
   /**
@@ -40,7 +32,7 @@ class CultureFeedSearchCommands extends DrushCommands {
    * @usage culturefeed-search:clear-event-cache
    *   Clear CultureFeed Search event related cache.
    */
-  public function clearSearchEventCache() {
+  public function clearSearchEventCache(): void {
 
     $tagsToInvalidate = [
       'culturefeed_search_api',

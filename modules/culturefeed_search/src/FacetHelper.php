@@ -4,6 +4,7 @@ namespace Drupal\culturefeed_search;
 
 use CultuurNet\SearchV3\ValueObjects\FacetResultItem;
 use CultuurNet\SearchV3\ValueObjects\FacetResults;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\culturefeed_search\Facet\Facet;
 use Drupal\culturefeed_search\Facet\FacetBucket;
 
@@ -14,6 +15,8 @@ class FacetHelper {
 
   const FACET_SORT_ALPHABETICALLY = 1;
   const FACET_SORT_TOTAL_RESULTS = 2;
+
+  public function __construct(protected LanguageManagerInterface $languageManager) {}
 
   /**
    * Build generic facets from the Culturefeed facet results.
@@ -54,7 +57,7 @@ class FacetHelper {
    *   The built facet bucket.
    */
   protected function buildFacetBucket(FacetResultItem $facetResultItem): FacetBucket {
-    $bucket = new FacetBucket($facetResultItem->getValue(), $facetResultItem->getName()->getValueForLanguage(\Drupal::languageManager()->getCurrentLanguage()->getId()), $facetResultItem->getCount());
+    $bucket = new FacetBucket($facetResultItem->getValue(), $facetResultItem->getName()->getValueForLanguage($this->languageManager->getCurrentLanguage()->getId()), $facetResultItem->getCount());
 
     if (!empty($facetResultItem->getChildren())) {
       foreach ($facetResultItem->getChildren() as $resultItemChild) {

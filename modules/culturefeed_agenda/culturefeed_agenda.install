@@ -8,7 +8,7 @@
 /**
  * Write url aliases for the translations.
  */
-function culturefeed_agenda_install() {
+function culturefeed_agenda_install(): void {
   $path_alias = \Drupal::entityTypeManager()->getStorage('path_alias')->create([
     'path' => '/agenda/search',
     'alias' => '/agenda/zoeken',

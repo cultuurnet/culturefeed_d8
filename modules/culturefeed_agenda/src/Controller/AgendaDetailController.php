@@ -52,7 +52,7 @@ class AgendaDetailController extends ControllerBase {
    *   Return render array or redirect to event detail page.
    */
   public function detail($slug, Event $event) {
-    if ($slug !== Url::slug($event->getName(), $this->currentLanguage->getId())) {
+    if ($event->getName() !== NULL && $slug !== Url::slug($event->getName(), $this->currentLanguage->getId())) {
       return new RedirectResponse(Url::toEventDetail($event)->toString(), 301);
     }
 
@@ -77,7 +77,7 @@ class AgendaDetailController extends ControllerBase {
    *   The page title.
    */
   public function title(Event $event) {
-    return $event->getName()->getValueForLanguage($this->currentLanguage->getId());
+    return $event->getName()?->getValueForLanguage($this->currentLanguage->getId()) ?? '';
   }
 
 }

@@ -10,10 +10,12 @@ interface SearchPageServiceManagerInterface {
   /**
    * Appends a search page to the list of known search page services.
    *
-   * @param \Drupal\Core\StringTranslation\Translator\TranslatorInterface $translator
+   * @param \Drupal\culturefeed_search\SearchPageServiceInterface $searchPageService
    *   The search page to be added.
    * @param int $priority
    *   The priority of the search page being added.
+   *
+   * @return \Drupal\culturefeed_search\SearchPageServiceManagerInterface
    */
   public function addSearchPage(SearchPageServiceInterface $searchPageService, $priority = 0): SearchPageServiceManagerInterface;
 

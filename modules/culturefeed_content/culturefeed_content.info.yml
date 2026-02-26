@@ -2,7 +2,7 @@ name: 'CultureFeed Content'
 type: module
 description: 'Field to render a CultureFeed search'
 package: 'CultureFeed'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 dependencies:
   - culturefeed_d8:culturefeed_agenda
 'interface translation project': culturefeed_content

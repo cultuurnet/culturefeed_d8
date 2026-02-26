@@ -3,6 +3,7 @@
 namespace Drupal\culturefeed_organizers\Controller;
 
 use Drupal\Core\Block\BlockManagerInterface;
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -13,20 +14,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class OrganizerSearchController extends ControllerBase {
 
   /**
-   * The block manager.
-   *
-   * @var \Drupal\Core\Block\BlockManagerInterface
-   */
-  protected $blockManager;
-
-  /**
    * AgendaSearchController constructor.
    *
    * @param \Drupal\Core\Block\BlockManagerInterface $blockManager
    *   The block manager.
    */
-  public function __construct(BlockManagerInterface $blockManager) {
-    $this->blockManager = $blockManager;
+  public function __construct(protected BlockManagerInterface $blockManager) {
   }
 
   /**
@@ -44,7 +37,7 @@ class OrganizerSearchController extends ControllerBase {
    * @return array
    *   The response array.
    */
-  public function searchPage() {
+  public function searchPage(): array {
     return [
       '#theme' => 'culturefeed_organizers_search_page',
       '#search_form' => $this->buildBlockPlugin('culturefeed_organizer_search_form'),
@@ -65,13 +58,13 @@ class OrganizerSearchController extends ControllerBase {
    * @return array
    *   The render array.
    */
-  private function buildBlockPlugin($pluginId) {
+  private function buildBlockPlugin($pluginId): array {
     $build = [];
 
     $blockPlugin = $this->blockManager->createInstance($pluginId, [
       'service' => 'culturefeed_organizer.search_page_service',
     ]);
-    if ($blockPlugin->access($this->currentUser())) {
+    if ($blockPlugin instanceof BlockPluginInterface && $blockPlugin->access($this->currentUser())) {
       $build = [
           '#cache' => [
             'keys' => [$pluginId],

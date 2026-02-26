@@ -12,7 +12,7 @@ use CultuurNet\SearchV3\ValueObjects\CalendarSummaryFormat;
 /**
  * Implements hook_theme().
  */
-function culturefeed_agenda_theme() {
+function culturefeed_agenda_theme(): array {
   $theme = [];
 
   $theme['culturefeed_event'] = [
@@ -56,7 +56,7 @@ function culturefeed_agenda_theme() {
 /**
  * Implements hook_theme_suggestions_culturefeed_event().
  */
-function culturefeed_agenda_theme_suggestions_culturefeed_event(array $variables) {
+function culturefeed_agenda_theme_suggestions_culturefeed_event(array $variables): array {
   $suggestions = [];
   $view_mode = $variables['elements']['#view_mode'] ?? 'full';
 
@@ -69,7 +69,7 @@ function culturefeed_agenda_theme_suggestions_culturefeed_event(array $variables
 /**
  * Implements hook_page_attachments_alter().
  */
-function culturefeed_agenda_page_attachments_alter(array &$attachments) {
+function culturefeed_agenda_page_attachments_alter(array &$attachments): void {
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $config = \Drupal::config('culturefeed_agenda.settings');
 
@@ -102,7 +102,7 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
           '#tag' => 'meta',
           '#attributes' => [
             'property' => 'og:title',
-            'content' => $event->getName()->getValueForLanguage($langcode) ?? '',
+            'content' => $event->getName()->getValueForLanguage($langcode),
           ],
         ],
         'og:title',
@@ -116,7 +116,7 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
           '#tag' => 'meta',
           '#attributes' => [
             'property' => 'og:description',
-            'content' => $event->getDescription()->getValueForLanguage($langcode) ?? '',
+            'content' => $event->getDescription()->getValueForLanguage($langcode),
           ],
         ],
         'og:description',
@@ -192,7 +192,7 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
           '#tag' => 'meta',
           '#attributes' => [
             'name' => 'twitter:title',
-            'content' => $event->getName()->getValueForLanguage($langcode) ?? '',
+            'content' => $event->getName()->getValueForLanguage($langcode),
           ],
         ],
         'twitter:title',
@@ -205,7 +205,7 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
           '#tag' => 'meta',
           '#attributes' => [
             'name' => 'twitter:description',
-            'content' => $event->getDescription()->getValueForLanguage($langcode) ?? '',
+            'content' => $event->getDescription()->getValueForLanguage($langcode),
           ],
         ],
         'twitter:description',
@@ -231,7 +231,7 @@ function culturefeed_agenda_page_attachments_alter(array &$attachments) {
 /**
  * Implements hook_culturefeed_search_api_query_alter().
  */
-function culturefeed_agenda_culturefeed_search_api_query_alter(SearchQueryInterface $searchQuery, string $type) {
+function culturefeed_agenda_culturefeed_search_api_query_alter(SearchQueryInterface $searchQuery, string $type): void {
   // Add event calendar summaries.
   if ($type === 'events' || $type === 'event') {
     $searchQuery->addParameter(new CalendarSummary(new CalendarSummaryFormat('text', 'md')));

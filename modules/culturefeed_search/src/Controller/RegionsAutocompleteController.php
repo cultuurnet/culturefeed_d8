@@ -5,7 +5,9 @@ namespace Drupal\culturefeed_search\Controller;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Utility\Error;
 use Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,20 +17,15 @@ use Symfony\Component\HttpFoundation\Request;
 class RegionsAutocompleteController extends ControllerBase {
 
   /**
-   * The Culturefeed search client.
-   *
-   * @var \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClient
-   */
-  protected $searchClient;
-
-  /**
    * Constructs a RegionsAutocompleteController controller.
    *
    * @param \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface $searchClient
    *   The Culturfeed search client.
    */
-  public function __construct(DrupalCulturefeedSearchClientInterface $searchClient) {
-    $this->searchClient = $searchClient;
+  public function __construct(
+    protected readonly DrupalCulturefeedSearchClientInterface $searchClient,
+    protected readonly LoggerInterface $logger
+  ) {
   }
 
   /**
@@ -36,7 +33,8 @@ class RegionsAutocompleteController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('culturefeed_search_api.client')
+      $container->get('culturefeed_search_api.client'),
+      $container->get('logger.factory')->get('culturefeed_search_api'),
     );
   }
 
@@ -66,7 +64,7 @@ class RegionsAutocompleteController extends ControllerBase {
 
     if ($input = $request->query->get('q')) {
       try {
-        $searchString = strtolower($input);
+        $searchString = strtolower((string) $input);
         $regions = $this->searchClient->getRegions();
 
         if (!empty($regions)) {
@@ -81,7 +79,7 @@ class RegionsAutocompleteController extends ControllerBase {
         }
       }
       catch (\Exception $e) {
-        watchdog_exception('culturefeed_search_api', $e);
+        Error::logException($this->logger, $e);
         $cache['#cache']['max-age'] = 0;
       }
     }

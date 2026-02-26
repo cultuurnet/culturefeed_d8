@@ -24,13 +24,6 @@ class SearchPagePagerBlock extends SearchPageBlockBase {
   const PAGER_MAX_LINKS = 5;
 
   /**
-   * The pager manager.
-   *
-   * @var \Drupal\Core\Pager\PagerManagerInterface
-   */
-  protected $pagerManager;
-
-  /**
    * Construct the search page pager block.
    *
    * @param array $configuration
@@ -44,9 +37,8 @@ class SearchPagePagerBlock extends SearchPageBlockBase {
    * @param \Drupal\Core\Pager\PagerManagerInterface $pagerManager
    *   The pager manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, PagerManagerInterface $pagerManager, SearchPageServiceManagerInterface $searchPageServiceManager, SearchPageServiceInterface $searchPageService = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected PagerManagerInterface $pagerManager, SearchPageServiceManagerInterface $searchPageServiceManager, SearchPageServiceInterface $searchPageService) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $searchPageServiceManager, $searchPageService);
-    $this->pagerManager = $pagerManager;
   }
 
   /**
@@ -59,7 +51,7 @@ class SearchPagePagerBlock extends SearchPageBlockBase {
       $plugin_definition,
       $container->get('pager.manager'),
       $container->get('culturefeed_search.search_page_service_manager'),
-      isset($configuration['service']) ? $container->get($configuration['service']) : NULL,
+      isset($configuration['service']) ? $container->get($configuration['service']) : $container->get('culturefeed_agenda.search_page_service'),
     );
   }
 

@@ -25,25 +25,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The search page service.
-   *
-   * @var \Drupal\culturefeed_search\SearchPageServiceInterface
-   */
-  protected $searchPageService;
-
-  /**
    * The request.
    *
    * @var null|\Symfony\Component\HttpFoundation\Request
    */
   protected $request;
-
-  /**
-   * The event dispatcher.
-   *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-   */
-  protected $eventDispatcher;
 
   /**
    * Constructs a new ActiveFiltersBlock.
@@ -68,13 +54,11 @@ class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactory
     SearchPageServiceManagerInterface $searchPageServiceManager,
     SearchPageServiceInterface $searchPageService,
     RequestStack $requestStack,
-    EventDispatcherInterface $eventDispatcher
+    protected EventDispatcherInterface $eventDispatcher
   ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $searchPageServiceManager);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $searchPageServiceManager, $searchPageService);
 
-    $this->searchPageService = $searchPageService;
     $this->request = $requestStack->getCurrentRequest();
-    $this->eventDispatcher = $eventDispatcher;
   }
 
   /**
@@ -99,7 +83,8 @@ class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactory
     $links = [];
 
     // Search term.
-    if ($searchTerm = $this->request->query->get('q')) {
+    if ($this->request !== NULL && $this->request->query->get('q')) {
+      $searchTerm = (string) $this->request->query->get('q');
       $query = $this->request->query->all();
       unset($query['q']);
 
@@ -110,7 +95,7 @@ class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactory
     $facets = $this->searchPageService->getFacets();
     $activeBuckets = [];
 
-    if (!empty($facets)) {
+    if (is_array($facets)) {
       foreach ($facets as $facet) {
         $activeBuckets[$facet->getId()] = $facet->getActiveBuckets();
       }
@@ -120,7 +105,7 @@ class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactory
 
       /** @var \Drupal\culturefeed_search\Facet\FacetBucket $bucket */
       foreach ($buckets as $bucket) {
-        $query = $this->request->query->all();
+        $query = $this->request?->query->all() ?? [];
 
         // Note: At the moment, only 1 bucket per facet is allowed.
         // Un-setting the entire facet is ok at this point.

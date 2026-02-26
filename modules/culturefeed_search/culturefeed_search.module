@@ -8,7 +8,7 @@
 /**
  * Implements hook_theme().
  */
-function culturefeed_search_theme() {
+function culturefeed_search_theme(): array {
   $theme = [];
 
   $theme['culturefeed_search_facet'] = [

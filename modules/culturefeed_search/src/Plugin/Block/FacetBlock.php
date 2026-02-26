@@ -6,9 +6,11 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\culturefeed_search\Facet\Facet;
 use Drupal\culturefeed_search\FacetHelper;
 use Drupal\culturefeed_search\SearchPageServiceInterface;
 use Drupal\culturefeed_search\SearchPageServiceManagerInterface;
+use Drupal\facets\FacetInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -94,7 +96,7 @@ class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     $build = [];
 
     $config = $this->getConfiguration();
@@ -103,10 +105,9 @@ class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $minDepth = $config['min_depth'] ?? 1;
     $maxDepth = !empty($config['max_depth']) ? $config['max_depth'] : NULL;
 
-    /** @var \Drupal\culturefeed_search\Facet\Facet $facet */
     $facet = $this->searchPageService->getFacets($this->getDerivativeId());
 
-    if (!empty($facet) && !empty($facet->getBuckets())) {
+    if ($facet instanceof Facet && !empty($facet->getBuckets())) {
       // Build the facet.
       $build[] = [
         '#theme' => 'culturefeed_search_facet',
@@ -120,7 +121,7 @@ class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function blockForm($form, FormStateInterface $form_state) {
+  public function blockForm($form, FormStateInterface $form_state): array {
     $config = $this->getConfiguration();
 
     $form['min_depth'] = [
@@ -155,7 +156,7 @@ class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $form_state) {
+  public function blockSubmit($form, FormStateInterface $form_state): void {
     $this->configuration['min_depth'] = $form_state->getValue('min_depth');
     $this->configuration['max_depth'] = $form_state->getValue('max_depth');
     $this->configuration['service'] = $form_state->getValue('service');

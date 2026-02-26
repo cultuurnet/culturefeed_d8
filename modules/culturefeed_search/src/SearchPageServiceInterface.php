@@ -3,6 +3,8 @@
 namespace Drupal\culturefeed_search;
 
 use CultuurNet\SearchV3\SearchQueryInterface;
+use CultuurNet\SearchV3\ValueObjects\PagedCollection;
+use Drupal\culturefeed_search\Facet\Facet;
 
 /**
  * Defines an interface for Culturefeed search page services.
@@ -23,7 +25,7 @@ interface SearchPageServiceInterface {
    * @return array
    *   The search result items.
    */
-  public function getSearchResultItems();
+  public function getSearchResultItems(): array;
 
   /**
    * Returns the search result object.
@@ -31,7 +33,7 @@ interface SearchPageServiceInterface {
    * @return \CultuurNet\SearchV3\ValueObjects\PagedCollection
    *   The current search result.
    */
-  public function getSearchResult();
+  public function getSearchResult(): PagedCollection;
 
   /**
    * Get the total number of search results.
@@ -39,12 +41,12 @@ interface SearchPageServiceInterface {
    * @return int
    *   The total results.
    */
-  public function getTotalResults();
+  public function getTotalResults(): int;
 
   /**
    * Mark the current search page as failed.
    */
-  public function markAsFailed();
+  public function markAsFailed(): void;
 
   /**
    * Returns a boolean indicating if the search failed.
@@ -76,9 +78,9 @@ interface SearchPageServiceInterface {
    * @param string|null $facetId
    *   Optional facet Id.
    *
-   * @return \Drupal\culturefeed_search\Facet\Facet[]|Facet\
+   * @return null|\Drupal\culturefeed_search\Facet\Facet[]|Facet\
    *   Array of facets or a single facet.
    */
-  public function getFacets($facetId = NULL);
+  public function getFacets($facetId = NULL): NULL|array|Facet;
 
 }

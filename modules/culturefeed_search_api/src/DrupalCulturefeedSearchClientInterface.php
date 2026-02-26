@@ -35,4 +35,12 @@ interface DrupalCulturefeedSearchClientInterface extends SearchClientInterface {
    */
   public function searchOrganizer(string $organizerId, bool $reset = FALSE);
 
+  /**
+   * Get the available regions.
+   *
+   * @return \stdClass[]
+   *   Array of autocomplete results.
+   */
+  public function getRegions(): array;
+
 }

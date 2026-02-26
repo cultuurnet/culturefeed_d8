@@ -11,7 +11,7 @@ use Drupal\Core\Render\BubbleableMetadata;
 /**
  * Implements hook_token_info().
  */
-function culturefeed_organizers_token_info() {
+function culturefeed_organizers_token_info(): array {
   $info = [];
 
   $info['types']['culturefeed_organizer'] = [
@@ -31,7 +31,7 @@ function culturefeed_organizers_token_info() {
 /**
  * Implements hook_tokens().
  */
-function culturefeed_organizers_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+function culturefeed_organizers_tokens(string $type, array $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata): array {
   $replacements = [];
 
   if ($type == 'culturefeed_organizer' && !empty($data['culturefeed_organizer']) && $data['culturefeed_organizer'] instanceof Organizer) {
@@ -42,7 +42,7 @@ function culturefeed_organizers_tokens($type, $tokens, array $data, array $optio
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'name':
-          $replacements[$original] = $organizer->getName()->getValueForLanguage($langcode);
+          $replacements[$original] = $organizer->getName()?->getValueForLanguage($langcode);
           break;
       }
     }

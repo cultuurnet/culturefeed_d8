@@ -48,7 +48,7 @@ class SearchPreprocessor {
   public function preprocessEvent(Event $event, string $langcode, array $settings = []) {
     $variables = [
       'id' => $event->getCdbid(),
-      'name' => $event->getName()->getValueForLanguage($langcode),
+      'name' => $event->getName()?->getValueForLanguage($langcode),
       'description' => $event->getDescription() ? $event->getDescription()
         ->getValueForLanguage($langcode) : '',
       'where' => null !== $event->getLocation() && !$event->isAttendanceModeOnline() ? $this->preprocessPlace($event->getLocation(), $langcode) : NULL,
@@ -59,10 +59,10 @@ class SearchPreprocessor {
         ->getValueForLanguage($langcode) : NULL,
       'age_range' => $event->getTypicalAgeRange() ? $this->formatAgeRange($event->getTypicalAgeRange(), $langcode) : NULL,
       'themes' => $event->getTermsByDomain('theme'),
-      'labels' => $event->getLabels() ?? [],
+      'labels' => $event->getLabels(),
       'vlieg' => self::isVliegEvent($event),
       'uitpas' => self::isUitpasEvent($event),
-      'booking_available' => $event->getBookingAvailability()->getType() === Availability::Available,
+      'booking_available' => $event->getBookingAvailability()?->getType() === Availability::Available,
     ];
 
     $defaultImage = $settings['image']['default_image'] ?? NULL;
@@ -79,7 +79,7 @@ class SearchPreprocessor {
         'height' => $settings['image']['height'] ?? '150',
       ];
 
-      $variables['image'] = \sprintf('%s://%s%s?%s', $url['scheme'], $url['host'], $url['path'], \http_build_query($query));
+      $variables['image'] = \sprintf('%s://%s%s?%s', $url['scheme'] ?? '', $url['host'] ?? '', $url['path'] ?? '', \http_build_query($query));
       $variables['image'] = str_replace('http://', '//', $variables['image']);
       $variables['image'] = str_replace('https://', '//', $variables['image']);
     }
@@ -90,7 +90,7 @@ class SearchPreprocessor {
         ->getCopyrightHolder();
     }
 
-    $description = $variables['description'] ?? NULL;
+    $description = $variables['description'];
 
     if (NULL !== $description) {
       // Remove all html tags from the summary.
@@ -164,13 +164,12 @@ class SearchPreprocessor {
 
     $variables['prices'] = [];
     if ($priceInfo = $event->getPriceInfo()) {
-      $prices = [];
       foreach ($priceInfo as $price) {
         $value = $price->getPrice() > 0 ? '&euro; ' .
-          str_replace('.', ',', (float) $price->getPrice()) : 'gratis';
+          str_replace('.', ',', (string) $price->getPrice()) : 'gratis';
         $variables['prices'][] = [
           'price' => $value,
-          'info' => $price->getName()->getValueForLanguage($langcode),
+          'info' => $price->getName()?->getValueForLanguage($langcode) ?? '',
         ];
       }
     }
@@ -191,7 +190,7 @@ class SearchPreprocessor {
    * @return array
    *   Collection of preprocessed variables.
    */
-  public function preprocessEventDetail(Event $event, string $langcode, array $settings = []) {
+  public function preprocessEventDetail(Event $event, string $langcode, array $settings = []): array {
     $variables = $this->preprocessEvent($event, $langcode, $settings);
 
     $variables['when_details'] = $this->formatEventDatesDetail($event, $langcode);
@@ -233,8 +232,7 @@ class SearchPreprocessor {
       if ($bookingInfo->getUrl()) {
         $variables['booking_info']['url'] = [
           'url' => $bookingInfo->getUrl(),
-          'label' => !empty($bookingInfo->getUrlLabel()
-            ->getValueForLanguage($langcode)) ? $bookingInfo->getUrlLabel()
+          'label' => !empty($bookingInfo->getUrlLabel()) ? $bookingInfo->getUrlLabel()
             ->getValueForLanguage($langcode) : $bookingInfo->getUrl(),
         ];
       }
@@ -279,11 +277,14 @@ class SearchPreprocessor {
    * Preprocess a place.
    *
    * @param \CultuurNet\SearchV3\ValueObjects\Place $place
-   * @param $langcode
+   *   The place object.
+   * @param string $langcode
+   *   The langcode to use for translations.
    *
    * @return array
+   *   The preprocessed variables.
    */
-  public function preprocessPlace(Place $place, $langcode) {
+  public function preprocessPlace(Place $place, string $langcode): array {
     $variables = [];
     $variables['name'] = null !== $place->getName() ? $place->getName()->getValueForLanguage($langcode) : NULL;
     $variables['address'] = [];
@@ -344,10 +345,10 @@ class SearchPreprocessor {
    *
    * @return string
    */
-  protected function formatAgeRange($range, string $langcode) {
+  protected function formatAgeRange($range, string $langcode): string {
     // Check for empty range values.
     if ($range == '-') {
-      return NULL;
+      return '';
     }
     // Explode range on dash.
     $explRange = explode('-', $range);

@@ -54,12 +54,12 @@ class FacetBucket {
    *
    * @param string $id
    *   Id of the bucket.
-   * @param string|null $label
+   * @param string $label
    *   Label to use for this bucket.
    * @param int $count
    *   Total items found.
    */
-  public function __construct(string $id, string $label = NULL, int $count = 0) {
+  public function __construct(string $id, string $label = '', int $count = 0) {
     $this->id = $id;
     $this->label = $label;
     $this->count = $count;
@@ -71,7 +71,7 @@ class FacetBucket {
    * @return string
    *   The bucket id.
    */
-  public function getId() {
+  public function getId(): string {
     return $this->id;
   }
 
@@ -119,7 +119,7 @@ class FacetBucket {
    * @return string
    *   The bucket label.
    */
-  public function getLabel() {
+  public function getLabel(): string {
     return $this->label;
   }
 
@@ -191,7 +191,7 @@ class FacetBucket {
    * @return bool
    *   Boolean indicating if the bucket has children.
    */
-  public function hasChildren() {
+  public function hasChildren(): bool {
     return !empty($this->children);
   }
 
@@ -201,7 +201,7 @@ class FacetBucket {
    * @return \Drupal\culturefeed_search\Facet\FacetBucket[]
    *   The child buckets.
    */
-  public function getChildren() {
+  public function getChildren(): array {
     return $this->children;
   }
 
@@ -211,7 +211,7 @@ class FacetBucket {
    * @param array $children
    *   Buckets to set as child.
    */
-  public function setChildren(array $children) {
+  public function setChildren(array $children): void {
     $this->children = $children;
   }
 
@@ -221,7 +221,7 @@ class FacetBucket {
    * @param \Drupal\culturefeed_search\Facet\FacetBucket $bucket
    *   The bucket to add.
    */
-  public function addChild(FacetBucket $bucket) {
+  public function addChild(FacetBucket $bucket): void {
     $this->children[] = $bucket;
   }
 

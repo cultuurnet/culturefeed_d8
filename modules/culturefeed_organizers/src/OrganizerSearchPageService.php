@@ -18,7 +18,7 @@ class OrganizerSearchPageService extends AbstractCulturefeedSearchPageService {
   /**
    * {@inheritdoc}
    */
-  protected function executeQuery() {
+  protected function executeQuery(): void {
     $this->searchResult = $this->searchClient->searchOrganizers($this->searchQuery);
   }
 

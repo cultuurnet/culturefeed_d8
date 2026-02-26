@@ -13,7 +13,7 @@ use Drupal\culturefeed_search\Url;
  * @param array $variables
  *   Array of preprocessed variables.
  */
-function template_preprocess_culturefeed_organizer(array &$variables) {
+function template_preprocess_culturefeed_organizer(array &$variables): void {
   /** @var \CultuurNet\SearchV3\ValueObjects\Organizer $organizer */
   $organizer = $variables['elements']['#item'];
   $langcode = $variables['elements']['#langcode'] ?? \Drupal::languageManager()->getCurrentLanguage()->getId();
@@ -22,8 +22,8 @@ function template_preprocess_culturefeed_organizer(array &$variables) {
   $variables['teaser'] = $variables['view_mode'] == 'teaser';
 
   $variables['id'] = $organizer->getCdbid();
-  $variables['name'] = $organizer->getName()->getValueForLanguage($langcode);
-  $description = $organizer->getDescription() ? $organizer->getDescription()->getValueForLanguage($langcode) : NULL;
+  $variables['name'] = $organizer->getName()?->getValueForLanguage($langcode);
+  $description = $organizer->getDescription()?->getValueForLanguage($langcode);
   if ($description !== NULL) {
     $variables['description'] = [
       '#type' => 'processed_text',
@@ -57,12 +57,12 @@ function template_preprocess_culturefeed_organizer(array &$variables) {
  * @param array $variables
  *   Array of preprocessed variables.
  */
-function template_preprocess_culturefeed_organizers_organizer_events(array &$variables) {
+function template_preprocess_culturefeed_organizers_organizer_events(array &$variables): void {
   $variables['items'] = [];
 
   /** @var \CultuurNet\SearchV3\ValueObjects\PagedCollection $result */
   $result = $variables['result'];
-  foreach ($result->getMember()->getItems() as $item) {
+  foreach ($result->getMember()?->getItems() ?? [] as $item) {
     $variables['items'][] = [
       '#theme' => 'culturefeed_event',
       '#view_mode' => 'teaser_mini',

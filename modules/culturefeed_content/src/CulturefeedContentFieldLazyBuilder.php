@@ -20,20 +20,6 @@ class CulturefeedContentFieldLazyBuilder implements TrustedCallbackInterface {
   use StringTranslationTrait;
 
   /**
-   * The Culturefeed search client.
-   *
-   * @var \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface
-   */
-  protected $searchClient;
-
-  /**
-   * The Pager manager service.
-   *
-   * @var \Drupal\Core\Pager\PagerManagerInterface
-   */
-  protected $pagerManager;
-
-  /**
    * The current pager element.
    *
    * @var int
@@ -45,12 +31,10 @@ class CulturefeedContentFieldLazyBuilder implements TrustedCallbackInterface {
    *
    * @param \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface $searchClient
    *   The Culturefeed search client.
-   * @param \Drupal\Core\Pager\PagerManagerInterface $pager_manager
+   * @param \Drupal\Core\Pager\PagerManagerInterface $pagerManager
    *   The Pager manager service.
    */
-  public function __construct(DrupalCulturefeedSearchClientInterface $searchClient, PagerManagerInterface $pager_manager) {
-    $this->searchClient = $searchClient;
-    $this->pagerManager = $pager_manager;
+  public function __construct(protected DrupalCulturefeedSearchClientInterface $searchClient, protected PagerManagerInterface $pagerManager) {
     $this->pagerElement = 0;
   }
 
@@ -87,7 +71,7 @@ class CulturefeedContentFieldLazyBuilder implements TrustedCallbackInterface {
    * @return array
    *   Render array.
    */
-  public function buildCulturefeedContent(string $title = '', string $query = '', string $viewMode = '', int $limit = 10, string $sort = NULL, string $sortDirection = 'desc', bool $defaultMoreLink = TRUE, string $moreLink = '', bool $showPager = FALSE) {
+  public function buildCulturefeedContent(string $title = '', string $query = '', string $viewMode = '', int $limit = 10, string $sort = NULL, string $sortDirection = 'desc', bool $defaultMoreLink = TRUE, string $moreLink = '/', bool $showPager = FALSE) {
     if (!empty($query)) {
       $query = str_replace(',', ' AND ', '(' . rtrim($query . ')', ','));
     }
@@ -97,7 +81,7 @@ class CulturefeedContentFieldLazyBuilder implements TrustedCallbackInterface {
     }
     else {
       try {
-        $moreLink = Link::fromTextAndUrl($this->t('Show all events'), Url::fromUserInput($moreLink ?? '/'));
+        $moreLink = Link::fromTextAndUrl($this->t('Show all events'), Url::fromUserInput($moreLink));
       }
       catch (\InvalidArgumentException $e) {
         $moreLink = NULL;
@@ -107,8 +91,8 @@ class CulturefeedContentFieldLazyBuilder implements TrustedCallbackInterface {
     $build = [
       '#theme' => 'culturefeed_content_formatter',
       '#items' => [],
-      '#view_mode' => $viewMode ?? 'teaser',
-      '#title' => $title ?? '',
+      '#view_mode' => $viewMode,
+      '#title' => $title,
       '#more_link' => $moreLink,
       '#cache' => [
         'tags' => [
@@ -135,13 +119,11 @@ class CulturefeedContentFieldLazyBuilder implements TrustedCallbackInterface {
       }
 
       $results = $this->searchClient->searchEvents($searchQuery);
-      if (!empty($results->getMember()->getItems())) {
-        $build['#items'] = $results->getMember()->getItems();
-      }
+      $build['#items'] = $results->getMember()?->getItems() ?? [];
 
       if ($showPager && $limit) {
         // Initialize the pager.
-        $this->pagerManager->createPager($results->getTotalItems(), $limit, $this->pagerElement);
+        $this->pagerManager->createPager($results->getTotalItems() ?? 0, $limit, $this->pagerElement);
 
         $build['#pager'] = [
           '#type' => 'pager',

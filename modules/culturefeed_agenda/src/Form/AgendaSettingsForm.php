@@ -13,21 +13,21 @@ class AgendaSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'culturefeed_agenda_settings_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {
+  protected function getEditableConfigNames(): array {
     return ['culturefeed_agenda.settings'];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $config = $this->config('culturefeed_agenda.settings');
 
     $form['culturefeed_search_api']['google_maps_api_key'] = [
@@ -43,7 +43,7 @@ class AgendaSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     $config = $this->config('culturefeed_agenda.settings');
     $config->set('google_maps_api_key', $form_state->getValue('google_maps_api_key'));
     $config->save();

@@ -4,7 +4,7 @@ namespace Drupal\culturefeed_search_api\Element;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element\FormElement;
+use Drupal\Core\Render\Element\FormElementBase;
 use Drupal\Core\Render\Element\Textfield;
 
 /**
@@ -16,12 +16,12 @@ use Drupal\Core\Render\Element\Textfield;
  *
  * @FormElement("culturefeed_hidden_value_autocomplete")
  */
-class HiddenValueAutocomplete extends FormElement {
+class HiddenValueAutocomplete extends FormElementBase {
 
   /**
    * {@inheritdoc}
    */
-  public function getInfo() {
+  public function getInfo(): array {
     $class = get_class($this);
 
     return [
@@ -53,7 +53,7 @@ class HiddenValueAutocomplete extends FormElement {
    * @return array
    *   The processed element.
    */
-  public static function processElement(array &$element, FormStateInterface $form_state, array &$complete_form) {
+  public static function processElement(array &$element, FormStateInterface $form_state, array &$complete_form): array {
     $element['#tree'] = TRUE;
 
     $element['#wrapper_attributes']['class'] = [
@@ -113,7 +113,7 @@ class HiddenValueAutocomplete extends FormElement {
    * @return array
    *   The processed element.
    */
-  public static function processAutocompleteLibrary(array &$element, FormStateInterface $form_state, array &$complete_form) {
+  public static function processAutocompleteLibrary(array &$element, FormStateInterface $form_state, array &$complete_form): array {
     if (!empty($element['#attributes']['data-autocomplete-path'])) {
       $element['#attributes']['class'][] = 'hidden-value-autocomplete';
       $element['#attached']['library'] = ['culturefeed_search_api/hidden-value-autocomplete'];
@@ -125,7 +125,7 @@ class HiddenValueAutocomplete extends FormElement {
   /**
    * Validate the hidden autocomplete.
    */
-  public static function validateHiddenAutocomplete(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function validateHiddenAutocomplete(array &$element, FormStateInterface $form_state, array &$complete_form): void {
     if (!$element['#no_validate'] && $element['#required'] && empty($element['value']['#value'])) {
       $form_state->setError($element, t('@name field is required.', ['@name' => $element['#title']]));
     }

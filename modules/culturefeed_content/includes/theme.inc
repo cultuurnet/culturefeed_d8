@@ -11,7 +11,7 @@
  * @param array $variables
  *   Array of currently known variables.
  */
-function template_preprocess_culturefeed_content_formatter(array &$variables) {
+function template_preprocess_culturefeed_content_formatter(array &$variables): void {
   $items = $variables['items'];
   $variables['items'] = [];
 

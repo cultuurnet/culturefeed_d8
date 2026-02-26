@@ -11,7 +11,7 @@ services:
 
   culturefeed_search.facet_helper:
     class: Drupal\culturefeed_search\FacetHelper
-    arguments: []
+    arguments: ['@language_manager']
 
   culturefeed_search.search_page_prepare_facets_event_subscriber:
     class: Drupal\culturefeed_search\EventSubscriber\SearchPagePrepareFacetsEventSubscriber

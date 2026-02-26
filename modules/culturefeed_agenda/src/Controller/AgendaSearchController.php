@@ -3,6 +3,7 @@
 namespace Drupal\culturefeed_agenda\Controller;
 
 use Drupal\Core\Block\BlockManagerInterface;
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -71,7 +72,8 @@ class AgendaSearchController extends ControllerBase {
     $blockPlugin = $this->blockManager->createInstance($pluginId, [
       'service' => 'culturefeed_agenda.search_page_service',
     ]);
-    if ($blockPlugin->access($this->currentUser())) {
+
+    if ($blockPlugin instanceof BlockPluginInterface && $blockPlugin->access($this->currentUser())) {
       $build = [
         '#cache' => [
           'keys' => [$pluginId],

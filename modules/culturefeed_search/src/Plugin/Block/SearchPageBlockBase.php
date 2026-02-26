@@ -18,20 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class SearchPageBlockBase extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The search page service.
-   *
-   * @var \Drupal\culturefeed_search\SearchPageServiceInterface
-   */
-  protected $searchPageService;
-
-  /**
-   * The search page service manager.
-   *
-   * @var \Drupal\culturefeed_search\SearchPageServiceManagerInterface
-   */
-  protected $searchPageServiceManager;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
@@ -58,20 +44,17 @@ abstract class SearchPageBlockBase extends BlockBase implements ContainerFactory
    *   The plugin implementation definition.
    * @param \Drupal\culturefeed_search\SearchPageServiceManagerInterface $searchPageServiceManager
    *   The search page service manager.
-   * @param \Drupal\culturefeed_search\SearchPageServiceInterface|null $searchPageService
+   * @param \Drupal\culturefeed_search\SearchPageServiceInterface $searchPageService
    *   The search page service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, SearchPageServiceManagerInterface $searchPageServiceManager, SearchPageServiceInterface $searchPageService = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, protected SearchPageServiceManagerInterface $searchPageServiceManager, protected SearchPageServiceInterface $searchPageService) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-
-    $this->searchPageServiceManager = $searchPageServiceManager;
-    $this->searchPageService = $searchPageService;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     return Cache::mergeTags(
       [
         'culturefeed_search_api',
@@ -84,7 +67,7 @@ abstract class SearchPageBlockBase extends BlockBase implements ContainerFactory
   /**
    * {@inheritdoc}
    */
-  public function blockForm($form, FormStateInterface $form_state) {
+  public function blockForm($form, FormStateInterface $form_state): array {
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
 
@@ -104,7 +87,7 @@ abstract class SearchPageBlockBase extends BlockBase implements ContainerFactory
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $form_state) {
+  public function blockSubmit($form, FormStateInterface $form_state): void {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
     $this->configuration['service'] = $values['service'];

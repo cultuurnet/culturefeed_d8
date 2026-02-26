@@ -14,21 +14,21 @@ class CulturefeedSearchApiSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'culturefeed_search_api_settings_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {
+  protected function getEditableConfigNames(): array {
     return ['culturefeed_search_api.settings'];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $config = $this->config('culturefeed_search_api.settings');
 
     $form['culturefeed_search_api']['endpoint_url'] = [
@@ -79,7 +79,7 @@ class CulturefeedSearchApiSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     $config = $this->config('culturefeed_search_api.settings');
     $config->set('endpoint_url', $form_state->getValue('endpoint_url'));
     $config->set('api_key', $form_state->getValue('api_key'));

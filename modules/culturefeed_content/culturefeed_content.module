@@ -8,7 +8,7 @@
 /**
  * Implements hook_theme().
  */
-function culturefeed_content_theme() {
+function culturefeed_content_theme(): array {
   $theme = [];
 
   $theme['culturefeed_content_formatter'] = [

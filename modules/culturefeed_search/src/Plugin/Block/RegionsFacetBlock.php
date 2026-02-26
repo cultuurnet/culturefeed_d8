@@ -69,7 +69,7 @@ class RegionsFacetBlock extends FacetBlock {
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     $build = parent::build();
 
     if (!empty($build)) {
