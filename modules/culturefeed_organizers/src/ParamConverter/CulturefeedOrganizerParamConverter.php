@@ -4,6 +4,7 @@ namespace Drupal\culturefeed_organizers\ParamConverter;
 
 use Drupal\Core\ParamConverter\ParamConverterInterface;
 use Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Route;
 
@@ -13,18 +14,11 @@ use Symfony\Component\Routing\Route;
 class CulturefeedOrganizerParamConverter implements ParamConverterInterface {
 
   /**
-   * The Culturefeed search client.
-   *
-   * @var \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface
-   */
-  protected $searchClient;
-
-  /**
    * The current request.
    *
    * @var null|\Symfony\Component\HttpFoundation\Request
    */
-  protected $request;
+  protected ?Request $request;
 
   /**
    * CulturefeedEventParamConverter constructor.
@@ -34,8 +28,10 @@ class CulturefeedOrganizerParamConverter implements ParamConverterInterface {
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
    */
-  public function __construct(DrupalCulturefeedSearchClientInterface $searchClient, RequestStack $requestStack) {
-    $this->searchClient = $searchClient;
+  public function __construct(
+    protected readonly DrupalCulturefeedSearchClientInterface $searchClient,
+    RequestStack $requestStack,
+  ) {
     $this->request = $requestStack->getCurrentRequest();
   }
 

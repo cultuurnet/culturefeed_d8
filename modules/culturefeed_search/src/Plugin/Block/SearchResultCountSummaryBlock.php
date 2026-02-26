@@ -17,7 +17,7 @@ class SearchResultCountSummaryBlock extends SearchPageBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     return [
       '#theme' => 'culturefeed_search_search_result_count_summary',
       '#total' => $this->searchPageService->getTotalResults(),
@@ -29,7 +29,7 @@ class SearchResultCountSummaryBlock extends SearchPageBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return Cache::mergeContexts(parent::getCacheContexts(), ['url']);
   }
 

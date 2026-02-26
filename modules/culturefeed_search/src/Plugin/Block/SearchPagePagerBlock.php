@@ -60,7 +60,7 @@ class SearchPagePagerBlock extends SearchPageBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     // Initialize the pager.
     $this->pagerManager->createPager($this->searchPageService->getTotalResults(), $this->searchPageService->getItemsPerPage());
 
@@ -76,7 +76,7 @@ class SearchPagePagerBlock extends SearchPageBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return Cache::mergeContexts(parent::getCacheContexts(), ['url']);
   }
 

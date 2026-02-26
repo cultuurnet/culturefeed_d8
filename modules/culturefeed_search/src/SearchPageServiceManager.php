@@ -17,14 +17,12 @@ class SearchPageServiceManager implements SearchPageServiceManagerInterface {
   protected array $searchPageServices = [];
 
   /**
-   * The ReverseContainer service.
+   * Constructs SearchPageServiceManager.
    *
-   * @var \Drupal\Component\DependencyInjection\ReverseContainer
+   * @param \Drupal\Component\DependencyInjection\ReverseContainer $reverseContainer
+   *   The reverse container.
    */
-  protected ReverseContainer $reverseContainer;
-
-  public function __construct(ReverseContainer $reverseContainer) {
-    $this->reverseContainer = $reverseContainer;
+  public function __construct(protected readonly ReverseContainer $reverseContainer) {
   }
 
   /**

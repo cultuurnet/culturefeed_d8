@@ -24,7 +24,7 @@ class CultureFeedContentFieldType extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public static function defaultStorageSettings() {
+  public static function defaultStorageSettings(): array {
     return [
       'max_length' => 255,
       'is_ascii' => FALSE,
@@ -35,7 +35,7 @@ class CultureFeedContentFieldType extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
+  public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition): array {
     $properties['filter_query'] = DataDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Filter query'));
     $properties['query_string'] = DataDefinition::create('string')
@@ -58,7 +58,7 @@ class CultureFeedContentFieldType extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public static function schema(FieldStorageDefinitionInterface $field_definition) {
+  public static function schema(FieldStorageDefinitionInterface $field_definition): array {
     $schema = [
       'columns' => [
         'filter_query' => [
@@ -102,7 +102,7 @@ class CultureFeedContentFieldType extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public function isEmpty() {
+  public function isEmpty(): bool {
     return FALSE;
   }
 

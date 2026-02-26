@@ -36,7 +36,7 @@ class SearchPagePrepareActiveFiltersEvent extends Event {
    * @return array
    *   The links.
    */
-  public function getLinks() {
+  public function getLinks(): array {
     return $this->links;
   }
 
@@ -48,7 +48,7 @@ class SearchPagePrepareActiveFiltersEvent extends Event {
    *
    * @return $this
    */
-  public function setLinks(array $links) {
+  public function setLinks(array $links): self {
     $this->links = $links;
     return $this;
   }

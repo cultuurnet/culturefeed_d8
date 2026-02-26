@@ -17,7 +17,7 @@ class FacetBlock extends DeriverBase {
   /**
    * {@inheritdoc}
    */
-  public function getDerivativeDefinitions($base_plugin_definition) {
+  public function getDerivativeDefinitions($base_plugin_definition): array {
     $facets = [
       'types' => $this->t('What', [], ['context' => 'culturefeed_search']),
       'facilities' => $this->t('Facilities', [], ['context' => 'culturefeed_search']),

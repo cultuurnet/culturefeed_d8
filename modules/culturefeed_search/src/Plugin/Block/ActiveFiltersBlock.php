@@ -10,6 +10,7 @@ use Drupal\culturefeed_search\SearchPageServiceInterface;
 use Drupal\culturefeed_search\SearchPageServiceManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -28,7 +29,7 @@ class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactory
    *
    * @var null|\Symfony\Component\HttpFoundation\Request
    */
-  protected $request;
+  protected ?Request $request;
 
   /**
    * Constructs a new ActiveFiltersBlock.
@@ -80,7 +81,7 @@ class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactory
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     $links = [];
 
     // Search term.
@@ -129,7 +130,7 @@ class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactory
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return Cache::mergeContexts(parent::getCacheContexts(), ['url']);
   }
 

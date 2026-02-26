@@ -16,20 +16,12 @@ class SearchPageServiceExecuteEvent extends Event {
   const EXECUTE = 'culturefeed_search_page.execute';
 
   /**
-   * The search page query.
-   *
-   * @var \CultuurNet\SearchV3\SearchQueryInterface
-   */
-  protected $query;
-
-  /**
    * CulturefeedSearchPagePrepareFacetsEvent constructor.
    *
    * @param \CultuurNet\SearchV3\SearchQueryInterface $query
    *   The search query.
    */
-  public function __construct(SearchQueryInterface $query) {
-    $this->query = $query;
+  public function __construct(protected SearchQueryInterface $query) {
   }
 
   /**
@@ -38,7 +30,7 @@ class SearchPageServiceExecuteEvent extends Event {
    * @return \CultuurNet\SearchV3\SearchQueryInterface
    *   The search query.
    */
-  public function getQuery() {
+  public function getQuery(): SearchQueryInterface {
     return $this->query;
   }
 

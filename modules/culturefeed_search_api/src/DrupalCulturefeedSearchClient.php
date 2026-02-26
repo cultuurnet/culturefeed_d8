@@ -41,21 +41,21 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
    *
    * @var \CultuurNet\SearchV3\SearchClient
    */
-  protected $client;
+  protected SearchClient $client;
 
   /**
    * Is cache enabled.
    *
    * @var bool
    */
-  protected $cacheEnabled;
+  protected bool $cacheEnabled;
 
   /**
    * The static cache.
    *
    * @var array
    */
-  protected $staticCache;
+  protected array $staticCache = [];
 
   /**
    * The search client config.

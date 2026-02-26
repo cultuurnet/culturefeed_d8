@@ -4,9 +4,8 @@ namespace Drupal\culturefeed_organizers\Controller;
 
 use CultuurNet\SearchV3\ValueObjects\Organizer;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\culturefeed_search\Url;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -19,25 +18,13 @@ class OrganizerDetailController extends ControllerBase {
    *
    * @var \Drupal\Core\Language\LanguageInterface
    */
-  protected $currentLanguage;
+  protected LanguageInterface $currentLanguage;
 
   /**
    * AgendaDetailController constructor.
-   *
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
-   *   The language manager.
    */
-  public function __construct(LanguageManagerInterface $languageManager) {
-    $this->currentLanguage = $languageManager->getCurrentLanguage();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('language_manager')
-    );
+  public function __construct() {
+    $this->currentLanguage = $this->languageManager()->getCurrentLanguage();
   }
 
   /**

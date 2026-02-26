@@ -8,18 +8,11 @@ namespace Drupal\culturefeed_search\Facet;
 class Facet {
 
   /**
-   * The facet Id.
-   *
-   * @var string
-   */
-  protected $id;
-
-  /**
    * The buckets for this facet.
    *
    * @var FacetBucket[]
    */
-  protected $buckets = [];
+  protected array $buckets = [];
 
   /**
    * Facet constructor.
@@ -27,8 +20,7 @@ class Facet {
    * @param string $id
    *   The facet Id.
    */
-  public function __construct(string $id) {
-    $this->id = $id;
+  public function __construct(protected string $id) {
   }
 
   /**

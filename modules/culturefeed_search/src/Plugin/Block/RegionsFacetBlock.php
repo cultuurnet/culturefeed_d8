@@ -21,13 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class RegionsFacetBlock extends FacetBlock {
 
   /**
-   * The form builder.
-   *
-   * @var \Drupal\Core\Form\FormBuilderInterface
-   */
-  protected $formBuilder;
-
-  /**
    * Constructs a new RegionsFacetBlock.
    *
    * @param array $configuration
@@ -45,10 +38,16 @@ class RegionsFacetBlock extends FacetBlock {
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The form builder.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, SearchPageServiceManagerInterface $searchPageServiceManager, SearchPageServiceInterface $searchPageService, FacetHelper $facetHelper, FormBuilderInterface $formBuilder) {
+  public function __construct(
+    array $configuration,
+    string $plugin_id,
+    array $plugin_definition,
+    SearchPageServiceManagerInterface $searchPageServiceManager,
+    SearchPageServiceInterface $searchPageService,
+    FacetHelper $facetHelper,
+    protected readonly FormBuilderInterface $formBuilder,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $searchPageServiceManager, $searchPageService, $facetHelper);
-
-    $this->formBuilder = $formBuilder;
   }
 
   /**
@@ -83,7 +82,7 @@ class RegionsFacetBlock extends FacetBlock {
   /**
    * {@inheritdoc}
    */
-  public function getDerivativeId() {
+  public function getDerivativeId(): string {
     return 'regions';
   }
 

@@ -37,7 +37,7 @@ class SearchPagePrepareFacetsEvent extends Event {
    * @return \Drupal\culturefeed_search\Facet\Facet[]
    *   The prepared facets.
    */
-  public function getFacets() {
+  public function getFacets(): array {
     return $this->facets;
   }
 
@@ -49,7 +49,7 @@ class SearchPagePrepareFacetsEvent extends Event {
    *
    * @return $this
    */
-  public function setFacets(array $facets) {
+  public function setFacets(array $facets): self {
     $this->facets = $facets;
     return $this;
   }

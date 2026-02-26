@@ -17,7 +17,7 @@ class SearchPageResultsBlock extends SearchPageBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     $build = [];
 
     $results = $this->searchPageService->getSearchResultItems();
@@ -38,7 +38,7 @@ class SearchPageResultsBlock extends SearchPageBlockBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return Cache::mergeContexts(parent::getCacheContexts(), ['url']);
   }
 

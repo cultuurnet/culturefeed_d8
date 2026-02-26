@@ -8,27 +8,6 @@ namespace Drupal\culturefeed_search\Facet;
 class FacetBucket {
 
   /**
-   * The bucket Id.
-   *
-   * @var string
-   */
-  protected $id;
-
-  /**
-   * The bucket count.
-   *
-   * @var int
-   */
-  protected $count = 0;
-
-  /**
-   * The bucket label.
-   *
-   * @var string
-   */
-  protected $label;
-
-  /**
    * The bucket status.
    *
    * @var bool
@@ -59,10 +38,7 @@ class FacetBucket {
    * @param int $count
    *   Total items found.
    */
-  public function __construct(string $id, string $label = '', int $count = 0) {
-    $this->id = $id;
-    $this->label = $label;
-    $this->count = $count;
+  public function __construct(protected string $id, protected string $label = '', protected int $count = 0) {
   }
 
   /**

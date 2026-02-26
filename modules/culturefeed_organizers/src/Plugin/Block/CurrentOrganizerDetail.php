@@ -22,7 +22,7 @@ class CurrentOrganizerDetail extends BlockBase implements ContextAwarePluginInte
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     return [
       '#theme' => 'culturefeed_organizer',
       '#item' => $this->getContextValue('culturefeed_organizer'),
@@ -32,14 +32,14 @@ class CurrentOrganizerDetail extends BlockBase implements ContextAwarePluginInte
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     return Cache::mergeTags(parent::getCacheTags(), ['culturefeed_search_api']);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return Cache::mergeContexts(parent::getCacheContexts(), ['url.path']);
   }
 

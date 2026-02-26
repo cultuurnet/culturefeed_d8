@@ -24,7 +24,7 @@ class CulturefeedContentFieldLazyBuilder implements TrustedCallbackInterface {
    *
    * @var int
    */
-  protected $pagerElement;
+  protected int $pagerElement = 0;
 
   /**
    * CulturefeedContentFieldLazyBuilder constructor.
@@ -35,7 +35,6 @@ class CulturefeedContentFieldLazyBuilder implements TrustedCallbackInterface {
    *   The Pager manager service.
    */
   public function __construct(protected DrupalCulturefeedSearchClientInterface $searchClient, protected PagerManagerInterface $pagerManager) {
-    $this->pagerElement = 0;
   }
 
   /**

@@ -18,9 +18,9 @@ class AgendaBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   /**
    * The breadcrumb to build.
    *
-   * @var \Drupal\Core\Breadcrumb\Breadcrumb
+   * @var null|\Drupal\Core\Breadcrumb\Breadcrumb
    */
-  protected $breadcrumb;
+  protected ?Breadcrumb $breadcrumb = NULL;
 
   /**
    * {@inheritdoc}

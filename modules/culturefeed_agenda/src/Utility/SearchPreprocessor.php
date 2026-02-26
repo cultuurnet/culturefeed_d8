@@ -16,20 +16,14 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 class SearchPreprocessor {
 
   /**
-   * The dateformatter service.
-   *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
-   */
-  protected DateFormatterInterface $dateFormatter;
-
-  /**
    * Creates a new search preprocessor service.
    *
    * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
    *   The dateformatter service.
    */
-  public function __construct(DateFormatterInterface $dateFormatter) {
-    $this->dateFormatter = $dateFormatter;
+  public function __construct(
+    protected readonly DateFormatterInterface $dateFormatter,
+  ) {
   }
 
   /**

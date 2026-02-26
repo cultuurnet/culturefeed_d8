@@ -15,10 +15,10 @@ class AgendaSearchForm extends FormBase {
   /**
    * AgendaSearchForm constructor.
    *
-   * @param \Symfony\Component\HttpFoundation\Request $request
+   * @param null|\Symfony\Component\HttpFoundation\Request $request
    *   The current request.
    */
-  public function __construct(protected Request $request) {
+  public function __construct(protected readonly ?Request $request) {
   }
 
   /**
@@ -51,7 +51,7 @@ class AgendaSearchForm extends FormBase {
     $form['term'] = [
       '#type' => 'textfield',
       '#placeholder' => $this->t('Enter your search term here', [], ['context' => 'culturefeed_agenda']),
-      '#default_value' => $this->request->query->get('q'),
+      '#default_value' => $this->request?->query->get('q'),
     ];
 
     $form['actions']['search'] = [
@@ -68,7 +68,7 @@ class AgendaSearchForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $query = $this->request->query->all();
+    $query = $this->request?->query->all() ?? [];
     $query['q'] = $form_state->getValue('term');
     unset($query['page']);
 

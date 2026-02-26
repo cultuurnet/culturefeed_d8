@@ -18,7 +18,7 @@ class OrganizerSearchForm extends FormBase {
    * @param null|\Symfony\Component\HttpFoundation\Request $request
    *   The current request.
    */
-  public function __construct(protected ?Request $request) {
+  public function __construct(protected readonly ?Request $request) {
   }
 
   /**

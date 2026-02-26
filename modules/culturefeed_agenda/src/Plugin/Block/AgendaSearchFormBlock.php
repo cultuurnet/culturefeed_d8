@@ -20,13 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AgendaSearchFormBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The form builder.
-   *
-   * @var \Drupal\Core\Form\FormBuilderInterface
-   */
-  protected $formBuilder;
-
-  /**
    * Construct an agenda search form block.
    *
    * @param array $configuration
@@ -38,9 +31,8 @@ class AgendaSearchFormBlock extends BlockBase implements ContainerFactoryPluginI
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The form builder.
    */
-  public function __construct($configuration, $plugin_id, $plugin_definition, FormBuilderInterface $formBuilder) {
+  public function __construct($configuration, $plugin_id, $plugin_definition, protected readonly FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->formBuilder = $formBuilder;
   }
 
   /**

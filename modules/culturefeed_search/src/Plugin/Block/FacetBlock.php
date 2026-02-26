@@ -25,27 +25,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The search page service.
-   *
-   * @var \Drupal\culturefeed_search\SearchPageServiceInterface
-   */
-  protected $searchPageService;
-
-  /**
-   * The facet helper service.
-   *
-   * @var \Drupal\culturefeed_search\FacetHelper
-   */
-  protected $facetHelper;
-
-  /**
-   * The search page service manager.
-   *
-   * @var \Drupal\culturefeed_search\SearchPageServiceManagerInterface
-   */
-  protected $searchPageServiceManager;
-
-  /**
    * Constructs a new FacetBlock.
    *
    * @param array $configuration
@@ -61,12 +40,15 @@ class FacetBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * @param \Drupal\culturefeed_search\FacetHelper $facetHelper
    *   The facet helper service.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, SearchPageServiceManagerInterface $searchPageServiceManager, SearchPageServiceInterface $searchPageService, FacetHelper $facetHelper) {
+  public function __construct(
+    array $configuration,
+    string $plugin_id,
+    array $plugin_definition,
+    protected readonly SearchPageServiceManagerInterface $searchPageServiceManager,
+    protected readonly SearchPageServiceInterface $searchPageService,
+    protected readonly FacetHelper $facetHelper,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-
-    $this->searchPageService = $searchPageService;
-    $this->facetHelper = $facetHelper;
-    $this->searchPageServiceManager = $searchPageServiceManager;
   }
 
   /**

@@ -24,13 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CultureFeedContentDefaultFormatter extends FormatterBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Culturefeed search client.
-   *
-   * @var \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface
-   */
-  protected $searchClient;
-
-  /**
    * Constructs an ImageFormatter object.
    *
    * @param string $plugin_id
@@ -50,9 +43,17 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
    * @param \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface $searchClient
    *   The Culturefeed search client.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, DrupalCulturefeedSearchClientInterface $searchClient) {
+  public function __construct(
+    $plugin_id,
+    $plugin_definition,
+    FieldDefinitionInterface $field_definition,
+    array $settings,
+    $label,
+    $view_mode,
+    array $third_party_settings,
+    protected readonly DrupalCulturefeedSearchClientInterface $searchClient,
+  ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
-    $this->searchClient = $searchClient;
   }
 
   /**
@@ -74,7 +75,7 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
   /**
    * {@inheritdoc}
    */
-  public static function defaultSettings() {
+  public static function defaultSettings(): array {
     return [
       'view_mode' => 'teaser',
       'pager' => FALSE,
@@ -84,7 +85,7 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
+  public function settingsForm(array $form, FormStateInterface $form_state): array {
     $form = parent::settingsForm($form, $form_state);
 
     $form['view_mode'] = [
@@ -107,7 +108,7 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
   /**
    * {@inheritdoc}
    */
-  public function settingsSummary() {
+  public function settingsSummary(): array {
     $summary = [];
     $summary[] = $this->t('View mode: %view_mode', ['%view_mode' => $this->getSetting('view_mode')]);
     $summary[] = $this->t('Pager: %pager', ['%pager' => $this->getSetting('pager') ? $this->t('Displayed') : $this->t('Hidden')]);
@@ -117,7 +118,7 @@ class CultureFeedContentDefaultFormatter extends FormatterBase implements Contai
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode): array {
     $elements = [];
 
     /** @var \Drupal\culturefeed_content\Plugin\Field\FieldType\CultureFeedContentFieldType $item */

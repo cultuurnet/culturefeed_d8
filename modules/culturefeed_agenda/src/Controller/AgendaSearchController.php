@@ -14,20 +14,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AgendaSearchController extends ControllerBase {
 
   /**
-   * The block manager.
-   *
-   * @var \Drupal\Core\Block\BlockManagerInterface
-   */
-  protected $blockManager;
-
-  /**
    * AgendaSearchController constructor.
    *
    * @param \Drupal\Core\Block\BlockManagerInterface $blockManager
    *   The block manager.
    */
-  public function __construct(BlockManagerInterface $blockManager) {
-    $this->blockManager = $blockManager;
+  public function __construct(protected readonly BlockManagerInterface $blockManager) {
   }
 
   /**

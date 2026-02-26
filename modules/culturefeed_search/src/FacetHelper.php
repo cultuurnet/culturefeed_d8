@@ -13,8 +13,8 @@ use Drupal\culturefeed_search\Facet\FacetBucket;
  */
 class FacetHelper {
 
-  const FACET_SORT_ALPHABETICALLY = 1;
-  const FACET_SORT_TOTAL_RESULTS = 2;
+  public const FACET_SORT_ALPHABETICALLY = 1;
+  public const FACET_SORT_TOTAL_RESULTS = 2;
 
   public function __construct(protected LanguageManagerInterface $languageManager) {}
 

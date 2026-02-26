@@ -22,7 +22,7 @@ class CultureFeedContentFieldWidget extends WidgetBase {
   /**
    * {@inheritdoc}
    */
-  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
 
     $item =& $items[$delta];
 
@@ -108,7 +108,7 @@ class CultureFeedContentFieldWidget extends WidgetBase {
   /**
    * {@inheritdoc}
    */
-  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state): array {
     foreach ($values as $delta => $formValues) {
       if (isset($formValues['sort']) && $formValues['sort'] === '_none') {
         $values[$delta]['sort'] = NULL;

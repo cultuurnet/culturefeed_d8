@@ -19,7 +19,7 @@ class OrganizerSearchController extends ControllerBase {
    * @param \Drupal\Core\Block\BlockManagerInterface $blockManager
    *   The block manager.
    */
-  public function __construct(protected BlockManagerInterface $blockManager) {
+  public function __construct(protected readonly BlockManagerInterface $blockManager) {
   }
 
   /**
