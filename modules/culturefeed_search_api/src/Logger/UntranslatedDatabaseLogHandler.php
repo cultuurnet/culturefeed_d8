@@ -40,18 +40,18 @@ class UntranslatedDatabaseLogHandler extends AbstractHandler {
     $context = $record['context'] + [
       'channel' => $record['channel'],
       'link' => '',
-      'user' => isset($record->extra['user']) ? $record->extra['user'] : NULL,
-      'uid' => isset($record->extra['uid']) ? $record->extra['uid'] : 0,
-      'request_uri' => isset($record->extra['request_uri']) ? $record->extra['request_uri'] : '',
-      'referer' => isset($record->extra['referer']) ? $record->extra['referer'] : '',
-      'ip' => isset($record->extra['ip']) ? $record->extra['ip'] : 0,
+      'user' => $record->extra['user'] ?? NULL,
+      'uid' => $record->extra['uid'] ?? 0,
+      'request_uri' => $record->extra['request_uri'] ?? '',
+      'referer' => $record->extra['referer'] ?? '',
+      'ip' => $record->extra['ip'] ?? 0,
       'timestamp' => $record->datetime->format('U'),
       '@log_message' => Markup::create($record->message),
     ];
 
     $this->dbLog->log($record->level->toRFC5424Level(), '@log_message', $context);
 
-    return true;
+    return TRUE;
   }
 
 }

@@ -13,6 +13,7 @@ use Drupal\Core\Pager\PagerManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\culturefeed_search\Event\SearchPagePrepareFacetsEvent;
 use Drupal\culturefeed_search\Event\SearchPageServiceExecuteEvent;
+use Drupal\culturefeed_search\Facet\Facet as DrupalCulturefeedSearchFacet;
 use Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,7 +99,8 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
     protected readonly DrupalCulturefeedSearchClientInterface $searchClient,
     protected readonly FacetHelper $facetHelper,
     protected readonly EventDispatcherInterface $eventDispatcher,
-    protected readonly PagerManagerInterface $pagerManager) {
+    protected readonly PagerManagerInterface $pagerManager,
+  ) {
     $this->currentRequest = $requestStack->getCurrentRequest();
 
     // Initialize with an empty search query and search result.
@@ -281,7 +283,7 @@ abstract class AbstractCulturefeedSearchPageService implements SearchPageService
   /**
    * {@inheritdoc}
    */
-  public function getFacets($facetId = NULL): NULL|array|\Drupal\culturefeed_search\Facet\Facet {
+  public function getFacets($facetId = NULL): NULL|array|DrupalCulturefeedSearchFacet {
     if ($this->facets === NULL) {
       // Perform a search.
       $this->search();

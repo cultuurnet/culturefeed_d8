@@ -21,10 +21,12 @@ class RegionsAutocompleteController extends ControllerBase {
    *
    * @param \Drupal\culturefeed_search_api\DrupalCulturefeedSearchClientInterface $searchClient
    *   The Culturfeed search client.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
   public function __construct(
     protected readonly DrupalCulturefeedSearchClientInterface $searchClient,
-    protected readonly LoggerInterface $logger
+    protected readonly LoggerInterface $logger,
   ) {
   }
 

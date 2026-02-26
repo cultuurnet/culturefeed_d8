@@ -66,13 +66,13 @@ class OrganizerSearchController extends ControllerBase {
     ]);
     if ($blockPlugin instanceof BlockPluginInterface && $blockPlugin->access($this->currentUser())) {
       $build = [
-          '#cache' => [
-            'keys' => [$pluginId],
-            'contexts' => $blockPlugin->getCacheContexts(),
-            'tags' => Cache::mergeTags(['block_view'], $blockPlugin->getCacheTags()),
-            'max-age' => $blockPlugin->getCacheMaxAge(),
-          ],
-        ] + $blockPlugin->build();
+        '#cache' => [
+          'keys' => [$pluginId],
+          'contexts' => $blockPlugin->getCacheContexts(),
+          'tags' => Cache::mergeTags(['block_view'], $blockPlugin->getCacheTags()),
+          'max-age' => $blockPlugin->getCacheMaxAge(),
+        ],
+      ] + $blockPlugin->build();
     }
 
     return $build;

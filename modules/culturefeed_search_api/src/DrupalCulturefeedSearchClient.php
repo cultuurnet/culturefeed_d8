@@ -83,10 +83,10 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
     LoggerChannelFactoryInterface $loggerChannelFactory,
     protected CacheBackendInterface $cacheBackend,
     protected LanguageManagerInterface $languageManager,
-    protected ModuleHandlerInterface $moduleHandler
+    protected ModuleHandlerInterface $moduleHandler,
   ) {
     $this->config = $configFactory->get('culturefeed_search_api.settings');
-    $this->cacheEnabled = $this->config->get('enable_cache') === NULL ? TRUE : $this->config->get('enable_cache');
+    $this->cacheEnabled = $this->config->get('enable_cache') ?? TRUE;
 
     $logger = $loggerChannelFactory->get('culturefeed_search_api');
 
@@ -214,10 +214,11 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
 
     $searchQuery = new SearchQuery(TRUE);
 
-    // @todo: Remove when the organizer endpoint supports the ID parameter.
+    // @todo Remove when the organizer endpoint supports the ID parameter.
     if ($type === 'organizer') {
       $searchQuery->addParameter(new Query('id:' . $id));
-    } else {
+    }
+    else {
       $searchQuery->addParameter(new AudienceType('*'));
       $searchQuery->addParameter(new Id($id));
     }
@@ -275,7 +276,7 @@ class DrupalCulturefeedSearchClient implements DrupalCulturefeedSearchClientInte
       return $cache->data;
     }
 
-    $this->staticCache[$cid] = $this->client->searchOrganizers($searchQuery);;
+    $this->staticCache[$cid] = $this->client->searchOrganizers($searchQuery);
 
     if ($this->cacheEnabled) {
       $this->cacheBackend->set(

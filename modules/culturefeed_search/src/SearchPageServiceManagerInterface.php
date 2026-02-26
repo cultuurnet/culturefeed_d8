@@ -16,6 +16,7 @@ interface SearchPageServiceManagerInterface {
    *   The priority of the search page being added.
    *
    * @return \Drupal\culturefeed_search\SearchPageServiceManagerInterface
+   *   The search page service manager.
    */
   public function addSearchPage(SearchPageServiceInterface $searchPageService, $priority = 0): SearchPageServiceManagerInterface;
 

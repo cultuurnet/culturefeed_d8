@@ -55,7 +55,6 @@ class AgendaSearchFormBlock extends BlockBase implements ContainerFactoryPluginI
     );
   }
 
-
   /**
    * {@inheritdoc}
    */

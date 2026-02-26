@@ -32,10 +32,12 @@ class SearchPagePagerBlock extends SearchPageBlockBase {
    *   The plugin id.
    * @param mixed $plugin_definition
    *   The plugin definition.
-   * @param \Drupal\culturefeed_search\SearchPageServiceInterface $searchPageService
-   *   The search page service.
    * @param \Drupal\Core\Pager\PagerManagerInterface $pagerManager
    *   The pager manager.
+   * @param \Drupal\culturefeed_search\SearchPageServiceManagerInterface $searchPageServiceManager
+   *   The search page service manager.
+   * @param \Drupal\culturefeed_search\SearchPageServiceInterface $searchPageService
+   *   The search page service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, protected PagerManagerInterface $pagerManager, SearchPageServiceManagerInterface $searchPageServiceManager, SearchPageServiceInterface $searchPageService) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $searchPageServiceManager, $searchPageService);

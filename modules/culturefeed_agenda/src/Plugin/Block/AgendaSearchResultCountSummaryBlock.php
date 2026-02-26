@@ -2,7 +2,6 @@
 
 namespace Drupal\culturefeed_agenda\Plugin\Block;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\culturefeed_search\Plugin\Block\SearchResultCountSummaryBlock;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

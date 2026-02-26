@@ -5,7 +5,6 @@
  * Template preprocessors for agenda templates.
  */
 
-use Drupal\culturefeed_agenda\Utility\SearchPreprocessor;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
@@ -30,7 +29,7 @@ function template_preprocess_culturefeed_event(array &$variables): void {
 
   $langcode = $variables['elements']['#langcode'] ?? \Drupal::languageManager()->getCurrentLanguage()->getId();
 
-  /** @var SearchPreprocessor $searchPreprocessor */
+  /** @var \Drupal\culturefeed_agenda\Utility\SearchPreprocessor $searchPreprocessor */
   $searchPreprocessor = \Drupal::service('culturefeed_agenda.search_preprocessor');
 
   // Preprocessor settings.

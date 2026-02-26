@@ -63,13 +63,13 @@ class CulturefeedSearchApiSettingsForm extends ConfigFormBase {
     $form['culturefeed_search_api']['enable_cache'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable cache'),
-      '#default_value' => $config->get('enable_cache') === NULL ? TRUE : $config->get('enable_cache'),
+      '#default_value' => $config->get('enable_cache') ?? TRUE,
     ];
 
     $form['culturefeed_search_api']['debug'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable debug'),
-      '#default_value' => $config->get('debug') === NULL ? FALSE : $config->get('debug'),
+      '#default_value' => $config->get('debug') ?? FALSE,
       '#description' => $this->t('When enabling debug mode. All API calls will be logged. This option only works if you have the monolog module installed and configured.'),
     ];
 

@@ -2,7 +2,6 @@
 
 namespace Drupal\culturefeed_search\Plugin\Block;
 
-use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -40,6 +39,8 @@ class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactory
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\culturefeed_search\SearchPageServiceManagerInterface $searchPageServiceManager
+   *   The search page service manager.
    * @param \Drupal\culturefeed_search\SearchPageServiceInterface $searchPageService
    *   The search page service.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
@@ -54,7 +55,7 @@ class ActiveFiltersBlock extends SearchPageBlockBase implements ContainerFactory
     SearchPageServiceManagerInterface $searchPageServiceManager,
     SearchPageServiceInterface $searchPageService,
     RequestStack $requestStack,
-    protected EventDispatcherInterface $eventDispatcher
+    protected EventDispatcherInterface $eventDispatcher,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $searchPageServiceManager, $searchPageService);
 

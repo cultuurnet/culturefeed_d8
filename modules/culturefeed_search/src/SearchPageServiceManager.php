@@ -3,7 +3,6 @@
 namespace Drupal\culturefeed_search;
 
 use Drupal\Component\DependencyInjection\ReverseContainer;
-use Drupal\Core\DrupalKernelInterface;
 
 /**
  * Provides a SearchPageServiceManager to manage the known search page services.
@@ -20,7 +19,7 @@ class SearchPageServiceManager implements SearchPageServiceManagerInterface {
   /**
    * The ReverseContainer service.
    *
-   * @var ReverseContainer
+   * @var \Drupal\Component\DependencyInjection\ReverseContainer
    */
   protected ReverseContainer $reverseContainer;
 

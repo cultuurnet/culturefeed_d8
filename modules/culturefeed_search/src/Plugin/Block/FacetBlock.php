@@ -10,7 +10,6 @@ use Drupal\culturefeed_search\Facet\Facet;
 use Drupal\culturefeed_search\FacetHelper;
 use Drupal\culturefeed_search\SearchPageServiceInterface;
 use Drupal\culturefeed_search\SearchPageServiceManagerInterface;
-use Drupal\facets\FacetInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

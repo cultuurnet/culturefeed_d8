@@ -33,7 +33,7 @@ class Url extends CoreUrl {
   }
 
   /**
-   *  Creates a new Url object that points to the organizer detail page.
+   * Creates a new Url object that points to the organizer detail page.
    *
    * @param \CultuurNet\SearchV3\ValueObjects\Organizer $organizer
    *   The organizer to generate an url for.
@@ -55,6 +55,8 @@ class Url extends CoreUrl {
   /**
    * Gets a slug from a given TranslatedString object.
    *
+   * @param \CultuurNet\SearchV3\ValueObjects\TranslatedString|null $name
+   *   The name to generate a slug for.
    * @param string $langcode
    *   Language to use for generation.
    *

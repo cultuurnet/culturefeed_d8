@@ -7,7 +7,6 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a breadcrumb builder for organizers.

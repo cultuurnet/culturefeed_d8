@@ -4,11 +4,9 @@ namespace Drupal\culturefeed_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\culturefeed_search\SearchPageServiceInterface;
-use Drupal\culturefeed_search\SearchPageServiceManager;
 use Drupal\culturefeed_search\SearchPageServiceManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

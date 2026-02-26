@@ -3,7 +3,6 @@
 namespace Drupal\culturefeed_organizers;
 
 use Drupal\culturefeed_search\AbstractCulturefeedSearchPageService;
-use Drupal\culturefeed_search\SearchPageServiceInterface;
 
 /**
  * Central OrganizersSearchPageService for search page handling.

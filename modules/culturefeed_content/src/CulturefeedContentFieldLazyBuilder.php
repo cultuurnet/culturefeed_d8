@@ -71,7 +71,7 @@ class CulturefeedContentFieldLazyBuilder implements TrustedCallbackInterface {
    * @return array
    *   Render array.
    */
-  public function buildCulturefeedContent(string $title = '', string $query = '', string $viewMode = '', int $limit = 10, string $sort = NULL, string $sortDirection = 'desc', bool $defaultMoreLink = TRUE, string $moreLink = '/', bool $showPager = FALSE) {
+  public function buildCulturefeedContent(string $title = '', string $query = '', string $viewMode = '', int $limit = 10, ?string $sort = NULL, string $sortDirection = 'desc', bool $defaultMoreLink = TRUE, string $moreLink = '/', bool $showPager = FALSE) {
     if (!empty($query)) {
       $query = str_replace(',', ' AND ', '(' . rtrim($query . ')', ','));
     }

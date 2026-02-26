@@ -18,22 +18,22 @@ class SearchPreprocessor {
   /**
    * The dateformatter service.
    *
-   * @var DateFormatterInterface
+   * @var \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected DateFormatterInterface $dateFormatter;
 
   /**
    * Creates a new search preprocessor service.
    *
-   * @param DateFormatterInterface $dateFormatter
-   *  The dateformatter service.
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
+   *   The dateformatter service.
    */
   public function __construct(DateFormatterInterface $dateFormatter) {
     $this->dateFormatter = $dateFormatter;
   }
 
   /**
-   * Preprocess event data for twig templates..
+   * Preprocess event data for twig templates.
    *
    * @param \CultuurNet\SearchV3\ValueObjects\Event $event
    *   The event to process.
@@ -51,13 +51,13 @@ class SearchPreprocessor {
       'name' => $event->getName()?->getValueForLanguage($langcode),
       'description' => $event->getDescription() ? $event->getDescription()
         ->getValueForLanguage($langcode) : '',
-      'where' => null !== $event->getLocation() && !$event->isAttendanceModeOnline() ? $this->preprocessPlace($event->getLocation(), $langcode) : NULL,
+      'where' => NULL !== $event->getLocation() && !$event->isAttendanceModeOnline() ? $this->preprocessPlace($event->getLocation(), $langcode) : NULL,
       'when_summary' => $this->formatEventDatesSummary($event, $langcode),
       'organizer' => ($event->getOrganizer() && $event->getOrganizer()
-          ->getName()) ? $event->getOrganizer()
+        ->getName()) ? $event->getOrganizer()
         ->getName()
         ->getValueForLanguage($langcode) : NULL,
-      'age_range' => $event->getTypicalAgeRange() ? $this->formatAgeRange($event->getTypicalAgeRange(), $langcode) : NULL,
+      'age_range' => $event->getTypicalAgeRange() ? $this->formatAgeRange($event->getTypicalAgeRange()) : NULL,
       'themes' => $event->getTermsByDomain('theme'),
       'labels' => $event->getLabels(),
       'vlieg' => self::isVliegEvent($event),
@@ -203,7 +203,7 @@ class SearchPreprocessor {
         $directionData = $geoInfo->getLatitude() . ',' . $geoInfo->getLongitude();
       }
       else {
-        if (null !== $event->getLocation() && null !== $event->getLocation()->getAddress()) {
+        if (NULL !== $event->getLocation() && NULL !== $event->getLocation()->getAddress()) {
           /** @var \CultuurNet\SearchV3\ValueObjects\TranslatedAddress $address */
           $address = $event->getLocation()->getAddress();
 
@@ -286,7 +286,7 @@ class SearchPreprocessor {
    */
   public function preprocessPlace(Place $place, string $langcode): array {
     $variables = [];
-    $variables['name'] = null !== $place->getName() ? $place->getName()->getValueForLanguage($langcode) : NULL;
+    $variables['name'] = NULL !== $place->getName() ? $place->getName()->getValueForLanguage($langcode) : NULL;
     $variables['address'] = [];
     if ($address = $place->getAddress()) {
       if ($translatedAddress = $address->getAddressForLanguage($langcode)) {
@@ -309,14 +309,18 @@ class SearchPreprocessor {
    * Format all the event dates to 1 summary variable.
    *
    * @param \CultuurNet\SearchV3\ValueObjects\Event $event
+   *   The event.
    * @param string $langcode
+   *   The langcode.
    *
    * @return string|null
+   *   The formatted date.
    */
   protected function formatEventDatesSummary(Event $event, string $langcode): ?string {
     try {
       return $event->getCalendarSummary()?->getSummary(new CalendarSummaryLanguage($langcode), new CalendarSummaryFormat('text', 'md'));
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return NULL;
     }
   }
@@ -325,14 +329,18 @@ class SearchPreprocessor {
    * Format the event dates for the detail page.
    *
    * @param \CultuurNet\SearchV3\ValueObjects\Event $event
+   *   The event.
    * @param string $langcode
+   *   The langcode.
    *
    * @return string|null
+   *   The formatted date.
    */
   protected function formatEventDatesDetail(Event $event, string $langcode): ?string {
     try {
       return $event->getCalendarSummary()?->getSummary(new CalendarSummaryLanguage($langcode), new CalendarSummaryFormat('text', 'lg'));
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return NULL;
     }
   }
@@ -341,11 +349,12 @@ class SearchPreprocessor {
    * Format an age range value according to langcode.
    *
    * @param string $range
-   * @param string $langcode
+   *   The range in UDB.
    *
    * @return string
+   *   The formatted age range.
    */
-  protected function formatAgeRange($range, string $langcode): string {
+  protected function formatAgeRange(string $range): string {
     // Check for empty range values.
     if ($range == '-') {
       return '';
@@ -362,14 +371,15 @@ class SearchPreprocessor {
   }
 
   /**
-   * Check if event is considered a "Vlieg" event and return either
-   * the minimum age or a boolean value.
+   * Check if event is considered a "Vlieg" event.
    *
    * @param \CultuurNet\SearchV3\ValueObjects\Event $event
+   *   The event.
    *
    * @return bool|string
+   *   Bool if age is decided by labels. String if decided by age range.
    */
-  public static function isVliegEvent(Event $event) {
+  public static function isVliegEvent(Event $event): bool|string {
     $range = $event->getTypicalAgeRange();
     $labels = $event->getLabels();
     $labels = array_merge($labels, $event->getHiddenLabels());
@@ -398,8 +408,10 @@ class SearchPreprocessor {
    * Check if event is considered an "Uitpas" event.
    *
    * @param \CultuurNet\SearchV3\ValueObjects\Event $event
+   *   The event.
    *
    * @return bool
+   *   TRUE if event is an "Uitpas" event.
    */
   public static function isUitpasEvent(Event $event) {
     $labels = $event->getLabels();

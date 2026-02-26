@@ -20,7 +20,7 @@ class CultureFeedSearchCommands extends DrushCommands {
    *   The cache tags invalidator.
    */
   public function __construct(
-    protected readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator
+    protected readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator,
   ) {
   }
 

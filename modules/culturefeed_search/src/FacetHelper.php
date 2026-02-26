@@ -82,7 +82,7 @@ class FacetHelper {
    * @return \Drupal\culturefeed_search\Facet\Facet
    *   The limited facet.
    */
-  public function limitFacet(Facet $facet, int $minDepth = 1, int $maxDepth = NULL) {
+  public function limitFacet(Facet $facet, int $minDepth = 1, ?int $maxDepth = NULL) {
     $buckets = $facet->getBuckets();
 
     if ($minDepth !== 1) {
