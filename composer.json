@@ -6,7 +6,7 @@
 	"require": {
 		"cultuurnet/search-v3": "dev-main",
 		"ext-curl": "*",
-		"drupal/core": "^9.0 || ^10.0"
+		"drupal/core": "^10.0 || ^11.0"
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true
