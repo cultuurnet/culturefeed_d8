@@ -51,9 +51,11 @@
       return false;
     }
     var term = event.target.value;
-    if (term.length > 0 && options.firstCharacterBlacklist.indexOf(term) !== -1) {
+    var denyList = options.firstCharacterDenyList || '';
+    if (term.length > 0 && denyList.includes(term[0])) {
       return false;
     }
+    
     return term.length >= options.minLength;
   };
 
